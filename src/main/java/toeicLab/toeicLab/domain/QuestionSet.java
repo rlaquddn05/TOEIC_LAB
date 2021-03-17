@@ -1,0 +1,43 @@
+package toeicLab.toeicLab.domain;
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.*;
+
+@Entity
+@Getter @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class QuestionSet{
+
+    @Id
+    @GeneratedValue
+    private String id;
+
+    @ManyToOne //@JoinColumn
+    private Member member;
+
+    @Enumerated
+    private QuestionSetType questionSetType;
+
+    private LocalDateTime createdAt;
+
+    @OneToMany
+    private List<Question> questions = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> submittedAnswers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "questionSet")
+    private List<UserRecording> userRecordings = new ArrayList<>();
+
+
+    private LocalDateTime timer;
+
+
+
+
+}

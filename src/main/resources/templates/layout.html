@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'토익연구소 ::' + (${title} ?: 'Welcome.')">My Store</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/c2ffd287d8.js" crossorigin="anonymous"></script>
+
+    <link th:href="@{/css/common/common.css}" rel="stylesheet">
+
+    <th:block layout:fragment="css"></th:block>
+    <th:block layout:fragment="js"></th:block>
+</head>
+<body>
+
+<th:block th:replace="common_fragments::header"></th:block>
+
+<th:block layout:fragment="content"></th:block>
+
+<th:block th:replace="common_fragments::footer"></th:block>
+
+</body>
+</html>

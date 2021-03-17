@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='Create Meeting!'">
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</th:block>
+<th:block layout:fragment="js">
+    <script type="text/javascript" th:src="@{/js/add_row.js}"></script>
+</th:block>
+
+<div layout:fragment="content">
+    <div class="container">
+        <div id="create-meeting">
+            <form action="" method="post">
+                <div id="time" th:id="time">
+                    <h4>일시: <input type="date" ></h4>
+                </div>
+                <div id="top" class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <h1>TOEIC</h1>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <h1>TOEIC SPEAKING</h1>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div id="bottom" class="row">
+                    <div class="col-md-1"></div>
+                    <div class="py-5 col-md-4" >
+                        <div id="RC-LC-box">
+
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-block" id="add-RC-LC-meeting">+</button>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="py-5 col-md-4" id="SPK-box">
+                        <button type="button" class="btn btn-outline-primary btn-block" id="add-SPK-meeting" >+</button>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div id="sub-btn">
+                    <button type="submit" class="btn btn-primary float-right">스터디방 만들기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</html>

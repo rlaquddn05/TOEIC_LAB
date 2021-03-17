@@ -1,0 +1,73 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='Result!'">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</th:block>
+
+<div layout:fragment="content">
+    <div class="container">
+        <div class="py-5 row">
+            <div class="col-3">
+                <table>
+                    <tr>
+                        <td>연습문제/모의시험</td>
+                    </tr><!--연습문제이면 연습문제로 띄우기-->
+                    <tr>
+                        <td>PART1</td>
+                    </tr><!---->
+                    <tr>
+                        <td>PART2</td>
+                    </tr><!---->
+                    <tr>
+                        <td>PART3</td>
+                    </tr><!---->
+                    <tr>
+                        <td>PART4</td>
+                    </tr><!---->
+                </table>
+            </div>
+            <div class="col-6">
+                <table>
+                    <tr>
+                        <td>L/C 문제풀이 결과</td>
+                    </tr>
+                    <tr>
+                        <td>PART1</td>
+                    </tr><!---->
+                    <tr>
+                        <td>PART2</td>
+                    </tr><!---->
+                    <tr>
+                        <td>PART3</td>
+                    </tr><!---->
+                    <tr>
+                        <td>PART4</td>
+                    </tr><!---->
+                </table>
+            </div>
+            <div class="col-3">
+                <table>
+                    <tr>
+                        <td>맞은문항/전체문항</td>
+                        <td>0/0</td>
+                    </tr>
+                    <tr th:colspan="2">
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!--comment 넣어야할곳-->
+        <div id="rc_comment" class="py-3">
+            <p>comment box</p>
+
+
+        </div>
+
+    </div>
+</div>
+</html>
