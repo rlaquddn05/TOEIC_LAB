@@ -71,7 +71,6 @@ public class MainController {
 
     @GetMapping("/create_meeting")
     public String createMeeting(){
-
         return "/view/create_meeting";
     }
 
