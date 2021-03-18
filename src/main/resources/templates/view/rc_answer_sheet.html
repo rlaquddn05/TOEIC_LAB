@@ -9,65 +9,33 @@
 
 <div layout:fragment="content">
     <div class="container">
-        <div class="py-5 row">
-            <div class="col-3">
-                <table>
-                    <tr>
-                        <td>연습문제/모의시험</td>
-                    </tr><!--연습문제이면 연습문제로 띄우기-->
-                    <tr>
-                        <td>PART1</td>
-                    </tr><!---->
-                    <tr>
-                        <td>PART2</td>
-                    </tr><!---->
-                    <tr>
-                        <td>PART3</td>
-                    </tr><!---->
-                    <tr>
-                        <td>PART4</td>
-                    </tr><!---->
-                </table>
-            </div>
-            <div class="col-6">
-                <table>
-                    <tr>
-                        <td>L/C 문제풀이 결과</td>
-                    </tr>
-                    <tr>
-                        <td>PART1</td>
-                    </tr><!---->
-                    <tr>
-                        <td>PART2</td>
-                    </tr><!---->
-                    <tr>
-                        <td>PART3</td>
-                    </tr><!---->
-                    <tr>
-                        <td>PART4</td>
-                    </tr><!---->
-                </table>
-            </div>
-            <div class="col-3">
-                <table>
-                    <tr>
-                        <td>맞은문항/전체문항</td>
-                        <td>0/0</td>
-                    </tr>
-                    <tr th:colspan="2">
+       <div class="py-5">
+           <div>
+               <h2>문제창</h2>
 
-                    </tr>
-                </table>
+           </div>
+           <div>
+               <span>A. ~~~</span>
+               <span>B. ~~~</span>
+               <span>C. ~~~</span>
+               <span>D. ~~~</span>
+           </div>
+           <div>
+               <h2>해답</h2>
+           </div>
+       </div>
+        <div class="row">
+            <div class="col-8"></div>
+            <div class="col-2">
+        <form>
+            <button class="btn btn-primary"> 오답노트 추가</button>
+        </form>
+            </div>
+            <div class="col-2">
+        <button class="btn btn-primary">목록으로</button>
             </div>
         </div>
-
-        <!--comment 넣어야할곳-->
-        <div id="rc_comment" class="py-3">
-            <p>comment box</p>
-
-
-        </div>
-
     </div>
 </div>
+
 </html>

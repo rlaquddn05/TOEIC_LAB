@@ -1,10 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='Result!'">
 
-</body>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</th:block>
+
+<div layout:fragment="content">
+    <div class="container">
+        <div class="py-5 row">
+            <div class="col-3">
+                <table>
+                    <tr>
+                        <td>연습문제/모의시험</td>
+                    </tr>
+                    <tr>
+                        <td>PART1</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-6">
+                <table>
+                    <tr>
+                        <td>L/C 문제풀이 결과</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="container">
+                                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
+                                <div id="demo" class="collapse">
+                                    <button class="btn btn-warning btn-sm"><a th:href="@{/rc_answer_sheet}">1</a></button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-3">
+                <table>
+                    <tr>
+                        <td>맞은문항/전체문항</td>
+                        <td>0/0</td>
+                    </tr>
+                    <tr th:colspan="2">
+                        <td>그래프자리</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!--comment 넣어야할곳-->
+        <div id="rc_comment" class="py-3">
+            <p>comment box</p>
+
+
+        </div>
+
+    </div>
+</div>
+
 </html>

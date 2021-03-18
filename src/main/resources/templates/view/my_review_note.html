@@ -2,44 +2,188 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout" th:with="title='select_test'">
+      layout:decorate="layout" th:with="title='ReviewNote'">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/select/select.css}">
+
 </th:block>
 
 
 <div layout:fragment="content">
     <div th:class="container">
 
-        <div class="py-5 text-center">
-            <p class="lead">오답노트 선택하기</p>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!--                    <p>Tab</p>-->
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#lc">LC</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#rc">RC</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#speaking">SPEAKING</a>
+                        </li>
+                    </ul>
+                    <!--                    <p>Tab-Content</p>-->
+                    <div class="tab-content">
+                        <!--                        <p>Tab-LC</p>-->
+                        <div class="tab-pane fade show active" id="lc">
+                            <div class="row" style="border: #444444 solid 1px; padding: 10px;">
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block">Part</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-3">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#LC-Q">문제보기</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#LC-A">해답보기</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block">오답노트 빼기</button>
+                                    </div>
+                                </div>
+                                <div id="LC-Q" class="collapse" style="padding: 10px 30px;">
+                                    <div class="text">
+                                        This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.
+                                    </div>
+                                    <div>
+                                        <br>
+                                        <label>(A)</label>
+                                        <br>
+                                        <label>(B)</label>
+                                        <br>
+                                        <label>(C)</label>
+                                        <br>
+                                        <label>(D)</label>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="col-1 btn btn-outline-primary btn-block" style="float: right">PLAY</button>
+                                        <br/>
+                                        <br/>
+                                        <hr/>
+                                    </div>
+                                </div>
+
+                                <div id="LC-A" class="collapse" style="padding: 0px 30px;">
+                                    <div>
+                                        <br>
+                                        <label>The Answer is </label>
+                                    </div>
+                                    This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <p>Tab-RC</p>-->
+                        <div class="tab-pane fade" id="rc">
+                            <div class="row" style="border: #444444 solid 1px; padding: 10px;">
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block">Part</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-3">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#RC-Q">문제보기</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#RC-A">해답보기</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block">오답노트 빼기</button>
+                                    </div>
+                                </div>
+                                <div id="RC-Q" class="collapse" style="padding: 10px 30px;">
+                                    Following the resignation of Mr. Scott, the board of directors carried out an ------- search to find a new CFO.Following the resignation of Mr. Scott, the board of directors carried out an ------- search to find a new CFO.Following the resignation of Mr. Scott, the board of directors carried out an ------- search to find a new CFO.
+                                    <div>
+                                        <br>
+                                        <label>(A)</label>
+                                        <br>
+                                        <label>(B)</label>
+                                        <br>
+                                        <label>(C)</label>
+                                        <br>
+                                        <label>(D)</label>
+                                    </div>
+                                    <hr/>
+                                </div>
+                                <div id="RC-A" class="collapse" style="padding: 0px 30px;">
+                                    <div>
+                                        <br>
+                                        <label>The Answer is </label>
+                                    </div>
+                                    해답 해답 해답 해답
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <p>Tab-SPEAKING</p>-->
+                        <div class="tab-pane fade" id="speaking">
+                            <div class="row" style="border: #444444 solid 1px; padding: 10px;">
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block">Part</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-3">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#SPEAK-Q">문제보기</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#SPEAK-A">해답보기</button>
+                                    </div>
+                                </div>
+                                <div class="col-1"></div>
+                                <div class="col-2">
+                                    <div class="select">
+                                        <button type="button" class="btn btn-outline-primary btn-block">오답노트 빼기</button>
+                                    </div>
+                                </div>
+                                <div id="SPEAK-Q" class="collapse" style="padding: 10px 30px;">
+                                    <div class="text">
+                                        This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.
+                                    </div>
+                                    <div>
+                                        <button type="button" class="col-1 btn btn-outline-primary btn-block" style="float: right">PLAY</button>
+                                        <br/>
+                                        <br/>
+                                        <hr/>
+                                    </div>
+                                </div>
+
+                                <div id="SPEAK-A" class="collapse" style="padding: 0px 30px;">
+                                    This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="py-5 text-center">
-            <div class="select">
-                <button type="button" class="btn btn-outline-primary btn-block">
-                    <a href="">
-                        <p>LC 오답노트</p>
-                    </a>
-                </button>
-            </div>
-            <div class="select">
-                <button type="button" class="btn btn-outline-primary btn-block">
-                    <a href="/rc_sheet">
-                        <p>RC 오답노트</p>
-                    </a>
-                </button>
-            </div>
-            <div class="select">
-                <button type="button" class="btn btn-outline-primary btn-block">
-                    <a href="">
-                        <p>SPEAK 오답노트</p>
-                    </a>
-                </button>
-            </div>
-        </div>
-        <div class="col-1"></div>
     </div>
 </div>
 </div>
