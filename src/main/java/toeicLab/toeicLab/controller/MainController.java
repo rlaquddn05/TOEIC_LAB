@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import toeicLab.toeicLab.domain.Member;
+import toeicLab.toeicLab.user.CurrentUser;
 
 @Controller
 @Slf4j
@@ -51,6 +53,8 @@ public class MainController {
 
     @GetMapping("/my_page")
     public String myPage(){
+
+
         return "/view/my_page";
     }
 

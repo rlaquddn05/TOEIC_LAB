@@ -21,9 +21,11 @@ public class StudyGroupApplication {
     private Member member;
 
     @ElementCollection
-    private List<StudygroupApplicaionTag> tags;
+    private List<StudyGroupApplicationTag> tags;
 
     private LocalDateTime submitTime;
 
     private boolean matching;
+
+    private int value;
 }
