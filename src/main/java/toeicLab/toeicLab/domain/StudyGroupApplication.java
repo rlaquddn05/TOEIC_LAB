@@ -17,7 +17,7 @@ public class StudyGroupApplication {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     private Member member;
 
     @ElementCollection

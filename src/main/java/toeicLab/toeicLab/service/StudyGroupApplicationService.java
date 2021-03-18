@@ -23,6 +23,23 @@ public class StudyGroupApplicationService {
         return studyGroupApplicationRepository.findAll();
     }
 
+    public List<StudyGroup> matchStudyGroups(){
+        List<StudyGroupApplication> applicationPool = getStudyGroupApplicationList();
+        List<StudyGroup> result = new ArrayList<>();
+        while (applicationPool.size()>3){
+            StudyGroup studyGroup = matchOneStudyGroup(applicationPool.get(0), getStudyGroupApplicationList());
+            if (studyGroup.getMembers().size()!=0){
+                result.add(studyGroup);
+                for(Member member : studyGroup.getMembers()){
+                    applicationPool.remove(member.getStudyGroupApplication());
+                }
+            } else {
+                applicationPool.remove(applicationPool.get(0));
+            }
+        }
+        return result;
+    }
+
     public StudyGroup matchOneStudyGroup(StudyGroupApplication application, List<StudyGroupApplication> applicationPool) {
         List<StudyGroupApplication> list1 = findAgeMatches(application, applicationPool);
         List<StudyGroupApplication> list2 = findLevelMatches(application, list1);
