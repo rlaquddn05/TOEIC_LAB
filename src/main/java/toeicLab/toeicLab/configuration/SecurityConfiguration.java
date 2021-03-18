@@ -45,7 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/signup",
                         "/send_find_id_link",
                         "/send_reset_password_link",
-                        "/my_review_note")
+                        "/my_review_note",
+                        "/spk_sheet",
+                        "/spk_confirm_answer",
+                        "/result_sheet",
+                        "/lc_answer_sheet",
+                        "/spk_answer_sheet")
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")
