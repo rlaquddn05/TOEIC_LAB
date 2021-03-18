@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/select_test",
                         "/login",
                         "/signup",
+                        "/my_page",
                         "/send_find_id_link",
                         "/send_reset_password_link",
                         "/my_review_note",
