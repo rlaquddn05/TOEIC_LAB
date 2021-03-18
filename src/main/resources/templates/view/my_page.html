@@ -1,10 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='my_page'">
+<div layout:fragment="content">
+    <div class="container">
+        <main>
+            <div>
+                <h2>내 정보</h2>
+                <p class="lead">회원님의 개인정보 수정하실 수 있습니다.</p>
+            </div>
 
-</body>
-</html>
+            <div class="row g-10">
+
+                <form name = "updateForm" class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="user_id" class="form-label">UserId</label>
+                            <input type="text" class="form-control"
+                                   name="user_id" id="user_id"
+                                   aria-describedby="user_id_help_text"
+                                   value="user_id" readonly="readonly">
+                            <div class="invalid-feedback">필수 사항입니다.</div>
+                            <small id="username_help_text"
+                                   class="form-text text-muted">
+                                회원님의 아이디입니다.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control"
+                                   name="password" id="password"
+                                   aria-describedby="password_help_text"
+                                   value="password" required>
+                            <div class="invalid-feedback">필수 사항입니다.</div>
+                            <small id="password_help_text"
+                                   class="form-text text-muted">
+                                패스워드를 수정 하실 수 있습니다.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="nickname" class="form-label">Nickname</label>
+                            <input type="text" class="form-control"
+                                   name="nickname" id="nickname"
+                                   aria-describedby="nickname_help_text"
+                                   value="nickname" required>
+                            <div class="invalid-feedback">필수 사항입니다.</div>
+                            <small id="nickname_help_text"
+                                   class="form-text text-muted">
+                                회원님의 닉네임입니다.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="gender" class="form-label">Gender</label>
+                            <input type="text" class="form-control"
+                                   name="gender" id="gender"
+                                   aria-describedby="gender_help_text" value="gender"
+                                   required readonly="readonly">
+                            <div class="invalid-feedback">필수 사항입니다.</div>
+                            <small id="gender_help_text"
+                                   class="form-text text-muted">
+                                회원님의 성별입니다.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="contact" class="form-label">Contact</label>
+                            <input type="tel" class="form-control"
+                                   name="contact" id="contact"
+                                   aria-describedby="contact_help_text" value="contact"
+                                   required>
+                            <div class="invalid-feedback">필수 사항입니다.</div>
+                            <small id="contact_help_text"
+                                   class="form-text text-muted">
+                                회원님의 전화번호입니다.
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="address" class="form-control"
+                                   name="address" id="address"
+                                   aria-describedby="address_help_text" value="address"
+                                   required>
+                            <div class="invalid-feedback">필수 사항입니다.</div>
+                            <small id="address_help_text"
+                                   class="form-text text-muted">
+                                회원님의 주소입니다.
+                            </small>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="zipcode" class="form-label">우편번호</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="zipcode" readonly>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label for="city"  class="form-label">기본주소</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="city" readonly>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label for="street" class="form-label">상세주소</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="street">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <label class="form-label">기본주소</label>
+                            <button class="w-100 btn btn-dark" type="button">주소 검색</button>
+                        </div>
+                    </div>
+
+                    <hr class="col-12 my-4">
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-dark">정보수정</button>
+                        <button type="button" class="btn btn-dark">뒤로가기</button>
+                        <button type="button" class="btn btn-dark">탈퇴하기</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </main>
+        <footer class="my-5 pt-5">
+
+        </footer>
+    </div>
+
+</div>
