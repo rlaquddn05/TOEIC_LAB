@@ -50,6 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/spk_confirm_answer",
                         "/result_sheet",
                         "/lc_answer_sheet",
+                        "/my_page",
                         "/spk_answer_sheet")
                 .permitAll()
 
