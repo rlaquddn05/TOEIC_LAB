@@ -8,6 +8,7 @@ import toeicLab.toeicLab.domain.StudyGroup;
 import toeicLab.toeicLab.domain.StudyGroupApplication;
 import toeicLab.toeicLab.domain.StudyGroupApplicationTag;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
+import toeicLab.toeicLab.repository.StudyGroupRepository;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudyGroupApplicationService {
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
+    private final StudyGroupRepository studyGroupRepository;
+
 
     public List<StudyGroupApplication> getStudyGroupApplicationList() {
         return studyGroupApplicationRepository.findAll();
@@ -27,14 +30,15 @@ public class StudyGroupApplicationService {
         List<StudyGroupApplication> applicationPool = getStudyGroupApplicationList();
         List<StudyGroup> result = new ArrayList<>();
         while (applicationPool.size() > 3) {
-            StudyGroup studyGroup = matchOneStudyGroup(applicationPool.get(0), getStudyGroupApplicationList());
-            if (studyGroup.getMembers().size() != 0) {
+            StudyGroupApplication target = applicationPool.get(0);
+            applicationPool.remove(0);
+            StudyGroup studyGroup = matchOneStudyGroup(target, applicationPool);
+            if (studyGroup.getMembers() != null) {
                 result.add(studyGroup);
+                studyGroupRepository.save(studyGroup);
                 for (Member member : studyGroup.getMembers()) {
                     applicationPool.remove(member.getStudyGroupApplication());
                 }
-            } else {
-                applicationPool.remove(applicationPool.get(0));
             }
         }
         return result;
@@ -46,17 +50,16 @@ public class StudyGroupApplicationService {
         List<StudyGroupApplication> list3 = findDayMatches(application, list2);
         List<StudyGroupApplication> list4 = findGenderMatches(application, list3);
 
+        StudyGroup result = new StudyGroup();
         if (list4.size() >= 3) {
-            application.setMatching(true);
+            List<Member> members = new ArrayList<>();
+            members.add(list4.get(0).getMember());
+            members.add(list4.get(1).getMember());
+            members.add(list4.get(2).getMember());
+            members.add(list4.get(3).getMember());
+            result.setMembers(members);
         }
-
-        StudyGroup studyGroup = new StudyGroup();
-        List<Member> members = new ArrayList<>();
-        members.add(list4.get(0).getMember());
-        members.add(list4.get(1).getMember());
-        members.add(list4.get(2).getMember());
-        studyGroup.setMembers(members);
-        return studyGroup;
+        return result;
     }
 
     private int gcd(int a, int b) {
@@ -70,12 +73,12 @@ public class StudyGroupApplicationService {
         List<StudyGroupApplication> result = new ArrayList<>();
         result.add(application);
 
-        for (StudyGroupApplication s1 : list2) {
-            for (StudyGroupApplication s2 : result) {
+        for (int i = 0; i<list2.size(); i++) {
+            for (int j = 0; j<result.size(); j++) {
                 int count = 1;
-                if (gcd(s1.getValue(), s2.getValue()) != 1) {
+                if (gcd(list2.get(i).getValue(), result.get(j).getValue()) != 1) {
                     if (count == result.size()) {
-                        result.add(s1);
+                        result.add(list2.get(i));
                     }
                 }
             }
@@ -88,18 +91,18 @@ public class StudyGroupApplicationService {
         List<StudyGroupApplication> result = new ArrayList<>();
         result.add(application);
 
-        for (StudyGroupApplication s1 : list3) {
-            if (application.getValue() % s1.getMember().getGenderType().get() == 0) {
-                for (StudyGroupApplication s2 : result) {
+        for (int i = 0; i<list3.size(); i++) {
+            if (application.getValue() % list3.get(i).getMember().getGenderType().get() == 0) {
+                for (int j = 0; j<result.size(); j++) {
                     int count = 1;
-                    if (s1.getValue() % s2.getMember().getGenderType().get() == 0) {
+                    if (list3.get(i).getValue() % result.get(j).getMember().getGenderType().get() == 0) {
                         count++;
                         if (count == result.size()) {
-                            result.add(s1);
+                            result.add(list3.get(i));
                         }
                     }
                 }
-                result.add(s1);
+                result.add(list3.get(i));
             }
         }
         return result;
@@ -117,13 +120,13 @@ public class StudyGroupApplicationService {
                 tagValue = StudyGroupApplicationTag.AGE_20S.get();
             case 3:
                 tagValue = StudyGroupApplicationTag.AGE_30S.get();
+            default: break;
         }
 
         return tagValue;
     }
 
     private List<StudyGroupApplication> findAgeMatches(StudyGroupApplication application, List<StudyGroupApplication> applicationPool) {
-        int tagValueOfThisPersonsAge = getTagValueFromAge(application);
         List<StudyGroupApplication> result = new ArrayList<>();
         result.add(application);
 
@@ -133,14 +136,14 @@ public class StudyGroupApplicationService {
 
         for (int checkAge : ageCheckList) {
             if (application.getValue() % checkAge == 0) {
-                for (StudyGroupApplication s1 : applicationPool) {
-                    if (checkAge == getTagValueFromAge(s1)) {
-                        for (StudyGroupApplication s2 : result) {
+                for (int i = 0; i<applicationPool.size(); i++) {
+                    if (checkAge == getTagValueFromAge(applicationPool.get(i))) {
+                        for (int j = 0; j<result.size(); j++) {
                             int count = 1;
-                            if (getTagValueFromAge(s2) == getTagValueFromAge(s1)) {
+                            if (getTagValueFromAge(result.get(j)) == getTagValueFromAge(applicationPool.get(i))) {
                                 count++;
                                 if (count == result.size()) {
-                                    result.add(s1);
+                                    result.add(applicationPool.get(i));
                                 }
                             }
                         }
@@ -161,15 +164,15 @@ public class StudyGroupApplicationService {
 
         for (int checkLevel : LevelCheckList) {
             if (application.getValue() % checkLevel == 0) {
-                for (StudyGroupApplication s1 : list1) {
-                    int sLevel = s1.getMember().getLevelType().get();
+                for (int i = 0; i<list1.size(); i++) {
+                    int sLevel = list1.get(i).getMember().getLevelType().get();
                     if (checkLevel == sLevel) {
-                        for (StudyGroupApplication s2 : result) {
+                        for (int j = 0; j<result.size(); j++) {
                             int count = 1;
-                            if (s2.getMember().getLevelType().get() == s1.getMember().getLevelType().get()) {
+                            if (result.get(j).getMember().getLevelType().get() == list1.get(i).getMember().getLevelType().get()) {
                                 count++;
                                 if (count == result.size()) {
-                                    result.add(s1);
+                                    result.add(list1.get(i));
                                 }
                             }
                         }

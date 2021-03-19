@@ -9,6 +9,7 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
 import toeicLab.toeicLab.repository.StudyGroupRepository;
+import toeicLab.toeicLab.service.StudyGroupApplicationService;
 
 import javax.annotation.PostConstruct;
 
@@ -21,12 +22,13 @@ public class DevConfiguration {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final StudyGroupRepository studyGroupRepository;
+    private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private final int NUMBER_OF_DUMMY_USERS = 1000;
+    private final int NUMBER_OF_DUMMY_USERS = 20;
     private final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
-    private final int[] tagValues = {2, 3, 5, 7, 11, 13, };
+    private final int[] tagValues = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
     @PostConstruct
     public void createDummyUsers() {
@@ -41,13 +43,25 @@ public class DevConfiguration {
                     .build();
             memberRepository.save(member);
 
-//            StudyGroupApplication studyGroupApplication = StudyGroupApplication.builder()
-//                    .member(member)
-//                    .tags()
-//                    .build();
-//            studyGroupApplicationRepository.save(studyGroupApplication)
+            int value=1;
+            for(int j : tagValues){
+                value *= Math.random()>0.5?j:1;
+            }
+            if(value==1){
+                value=2*3*5*7*11*13*17*19*23*29;
+            }
+            StudyGroupApplication studyGroupApplication = StudyGroupApplication.builder()
+                    .member(member)
+                    .value(value)
+                    .build();
+            studyGroupApplicationRepository.save(studyGroupApplication);
         }
         log.info("DummyUsers created.");
+    }
+
+    @PostConstruct
+    public void testMatchStudyGroup(){
+        studyGroupApplicationService.matchStudyGroups();
     }
 
 
