@@ -15,6 +15,11 @@ import toeicLab.toeicLab.user.SignUpForm;
 import toeicLab.toeicLab.user.SignUpValidator;
 
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import toeicLab.toeicLab.domain.Member;
+import toeicLab.toeicLab.user.CurrentUser;
 
 @Controller
 @Slf4j
