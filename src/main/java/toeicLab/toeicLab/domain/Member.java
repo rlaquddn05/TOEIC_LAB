@@ -27,8 +27,8 @@ public class Member {
 
     private String nickname;
 
-//    @Enumerated(EnumType.STRING)
-//    private GenderType genderType;
+    @Enumerated(EnumType.STRING)
+    private GenderType genderType;
 
     private String gender;
 
