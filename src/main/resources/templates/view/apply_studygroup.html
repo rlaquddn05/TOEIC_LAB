@@ -1,11 +1,101 @@
-<!--스터디-->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='ReviewNote'">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-</body>
+<th:block layout:fragment="css">
+
+</th:block>
+<th:block layout:fragment="js">
+    <script type="text/javascript" th:src="@{/js/check_all.js}"></script>
+</th:block>
+
+<div layout:fragment="content">
+    <div th:class="container">
+
+        <div class="py-4 text-center">
+            <h2>스터디 신청하기</h2>
+            <p class="lead">신청서를 작성하고 제출 버튼을 클릭해주세요</p>
+        </div>
+
+        <!--        <div style="border: #444444 solid 1px; padding: 10px;">-->
+
+        <form th:action="@{/signup}" method="post" name="applyForm">
+
+            <div style="border: #37423b solid 1px; padding: 10px; OVERFLOW-Y:auto; width:100%; height:150px; margin-bottom: 10px;">
+                <h4>스터디 안내사항</h4>
+                <hr/>
+                <ol>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                </ol>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" th:value="true" class="form-check-input" id="agreement">
+                <label class="form-check-label" for="agreement">동의합니다.</label>
+                <div class="invalid-feedback">약관에 동의하셔야 합니다.
+                </div>
+            </div>
+
+            <hr class="my-2">
+
+            <div style="margin-top: 10px; margin-bottom: 10px">
+                <h4>희망연령(복수응답가능)</h4>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <input type="checkbox" id="checkAll" class="chk">
+                    <label>전체</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" name="check[]" class="chk" value="ten">
+                    <label>10대</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" name="check[]" class="chk" value="twenty">
+                    <label>20대</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" name="check[]" class="chk" value="thirty">
+                    <label>30대</label>
+                </div>
+            </div>
+
+            <hr class="my-2">
+
+            <div style="margin-top: 10px; margin-bottom: 10px">
+                <h4>희망레벨(복수응답가능)</h4>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <input type="checkbox" id="up">
+                    <label>상</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" id="middle">
+                    <label>중</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" id="down">
+                    <label>하</label>
+                </div>
+            </div>
+
+            <hr class="my-2">
+
+            <button class="w-100 btn btn-dark btn-lg" type="submit">신청서 제출하기</button>
+        </form>
+    </div>
+    <br>
+</div>
+</div>
 </html>

@@ -55,8 +55,8 @@ public class Member {
     @ManyToMany(mappedBy = "members")
     private List<StudyGroup> studyGroupList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<StudyGroupApplication> studyGroupApplicationsLists = new ArrayList<>();
+    @OneToOne
+    private StudyGroupApplication studyGroupApplication;
 
     @OneToMany
     private List<Word> wordList = new ArrayList<>();

@@ -17,13 +17,15 @@ public class StudyGroupApplication {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     private Member member;
 
     @ElementCollection
-    private List<StudygroupApplicaionTag> tags;
+    private List<StudyGroupApplicationTag> tags;
 
     private LocalDateTime submitTime;
 
     private boolean matching;
+
+    private int value;
 }
