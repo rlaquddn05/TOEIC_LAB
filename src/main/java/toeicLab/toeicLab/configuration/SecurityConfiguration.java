@@ -53,7 +53,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/lc_answer_sheet",
                         "/apply_studygroup",
                         "/my_page",
-                        "/spk_answer_sheet")
+                        "/spk_answer_sheet",
+                        "/my_studygroup_list",
+                        "/practice_test")
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")

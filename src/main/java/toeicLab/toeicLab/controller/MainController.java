@@ -189,4 +189,9 @@ public class MainController {
         return "/view/schedule";
     }
 
+    @GetMapping("/practice_test")
+    public String practiceTest(){
+        return "/view/practice_test";
+    }
+
 }

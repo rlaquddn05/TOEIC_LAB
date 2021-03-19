@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='Set Question'">
+
+<th:block layout:fragment="css">
+
+</th:block>
+<th:block layout:fragment="js">
+
+</th:block>
+
+<div layout:fragment="content">
+    <div class="container">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="py-5 col-6">
+                        <h1>연습문제</h1>
+                        <div id="box">
+
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-block" id="add-question">+</button>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+                <div id="sub-btn">
+                    <button type="submit" class="btn btn-primary float-right">연습 문제 풀기</button>
+                </div>
+            </form>
+    </div>
+</div>
+
+
+</html>
