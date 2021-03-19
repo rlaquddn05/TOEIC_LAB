@@ -6,4 +6,15 @@ import toeicLab.toeicLab.domain.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    Member findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUserId(String userId);
+
+    boolean existsByNickname(String nickname);
+
+    boolean existsByContact(String contact);
+
+    Member findByUserId(String userId);
 }

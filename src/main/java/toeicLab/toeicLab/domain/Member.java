@@ -21,14 +21,16 @@ public class Member {
     @GeneratedValue
     private Long id;
 
-    private String username;
+    private String userId;
 
     private String password;
 
     private String nickname;
 
-    @Enumerated(EnumType.STRING)
-    private GenderType genderType;
+//    @Enumerated(EnumType.STRING)
+//    private GenderType genderType;
+
+    private String gender;
 
     @Enumerated(EnumType.STRING)
     private MemberType memberType;

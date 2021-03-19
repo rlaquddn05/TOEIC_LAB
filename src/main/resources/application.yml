@@ -10,10 +10,20 @@ spring:
       properties:
       format_sql: true
     open-in-view: true
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#      username: ghlim909@gmail.com
+#    password: geonho1234!
+#    properties:
+#      mail.smtp.auth: true
+#      mail.smtp.starttls.enable: true
 
-profiles:
+  profiles:
     active: dev
 
 #logging:
 #  level:
 #    org.hibernate.SQL: debug
+
+

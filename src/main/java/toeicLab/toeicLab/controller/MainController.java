@@ -1,26 +1,36 @@
 package toeicLab.toeicLab.controller;
 
+import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+import toeicLab.toeicLab.domain.Member;
+import toeicLab.toeicLab.service.MemberService;
+import toeicLab.toeicLab.user.CurrentUser;
+import toeicLab.toeicLab.user.SignUpForm;
+import toeicLab.toeicLab.user.SignUpValidator;
+
+import javax.validation.Valid;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class MainController {
 
+    private final SignUpValidator signUpValidator;
+    private final MemberService memberService;
+
     @GetMapping("/")
     public String index(){
-
         return "/view/index";
     }
 
     @GetMapping("/login")
     public String showLoginPage(){
-
         return "/view/login";
     }
 
@@ -45,9 +55,24 @@ public class MainController {
     }
 
     @GetMapping("/signup")
-    public String signup(){
+    public String signup(Model model){
+        model.addAttribute(new SignUpForm());
         return "/view/signup";
     }
+
+    @PostMapping("/signup")
+    public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors){
+        if(errors.hasErrors()){
+            log.info("유효성 에러 발생!");
+            return "/view/signup";
+        }
+        signUpValidator.validate(signUpForm, errors);
+        log.info("유효성 검사 끝!");
+        Member member = memberService.createNewMember(signUpForm);
+//        memberService.sendSignUpEmail(member);
+        return "redirect:/";
+    }
+
 
     @GetMapping("/my_page")
     public String myPage(){
