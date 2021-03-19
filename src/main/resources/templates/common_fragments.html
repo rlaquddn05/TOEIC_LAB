@@ -29,9 +29,9 @@
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/select_test}">모의시험</a></li>
             <li class="nav-item dropdown"><a href="#"><span>연습 문제</span><i class="fas fa-chevron-down"></i></a>
                 <ul>
-                    <li class="dropdown-item"><a class="nav-link" href="#">RC 연습문제</a></li>
-                    <li class="dropdown-item"><a class="nav-link" href="#">LC 연습문제</a></li>
-                    <li class="dropdown-item"><a class="nav-link" href="#">SPK 연습문제</a></li>
+                    <li class="dropdown-item"><a class="nav-link" href="#" th:href="@{/practice_test/{id}(id=${'rc'})}">RC 연습문제</a></li>
+                    <li class="dropdown-item"><a class="nav-link" href="#" th:href="@{/practice_test/{id}(id=${'lc'})}">LC 연습문제</a></li>
+                    <li class="dropdown-item"><a class="nav-link" href="#" th:href="@{/practice_test/{id}(id=${'spk'})}">SPK 연습문제</a></li>
                 </ul>
             </li>
             <li class="nav-item"><a class="nav-link"  href="/" th:href="@{/}">스터디 신청</a></li>

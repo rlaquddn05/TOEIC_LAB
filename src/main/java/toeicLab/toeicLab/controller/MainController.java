@@ -189,8 +189,9 @@ public class MainController {
         return "/view/schedule";
     }
 
-    @GetMapping("/practice_test")
-    public String practiceTest(){
+    @GetMapping("/practice_test/{id}")
+    public String practiceTest(@PathVariable String id, Model model){
+        System.out.println(id);
         return "/view/practice_test";
     }
 
