@@ -10,18 +10,18 @@
 
 
 
-<div layout:fragment="content">
+<div layout:fragment="RC_List(questionList)">
     <div class="container">
         <form action="" method="post">
             <h1>RC-SHEET</h1>
             <!--Part5-->
-            <div class="py-5 text-center">
+            <div th:each="question:${questionList}" class="py-5 text-center">
                 <div>
                     <p th:type="text">이곳은 문제가 들어올곳</p>
                 </div>
                 <div class="form-check form-check-inline1">
                     <input class="form-check-input" type="radio" th:name="p5_answer" th:value="A" id="part5_radio1">
-                    <label class="form-check-label" for="part5_radio1">A. 첫번째 보기</label>
+                    <label class="form-check-label" for="part5_radio1" th:text="${ }"></label>
                 </div>
                 <div class="form-check form-check-inline1">
                     <input  class="form-check-input" type="radio" th:name="p5_answer" th:value="B" id="part5_radio2">

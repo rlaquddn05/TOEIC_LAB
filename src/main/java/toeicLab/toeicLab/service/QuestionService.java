@@ -6,14 +6,18 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.LC;
+import toeicLab.toeicLab.domain.Question;
 import toeicLab.toeicLab.domain.QuestionType;
 import toeicLab.toeicLab.domain.RC;
+import toeicLab.toeicLab.repository.LCRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
+import toeicLab.toeicLab.repository.RCRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +35,8 @@ public class QuestionService {
     private final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 10;
     private final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 10;
     private final QuestionRepository questionRepository;
+    private final RCRepository rcRepository;
+    private final LCRepository lcRepository;
 
     private int smallSetId = 1;
 
@@ -41,6 +47,10 @@ public class QuestionService {
             lc.setQuestionType(QuestionType.PART1);
             lc.setImage((int) (Math.random() * 50 + 1) + ".jpg");
             lc.setAnswer("A");
+            lc.setExampleA("A");
+            lc.setExampleB("B");
+            lc.setExampleC("C");
+            lc.setExampleD("D");
             lc.setSolution(aRandomSentence()+" "+aRandomSentence());
             questionRepository.save(lc);
         }
@@ -53,6 +63,9 @@ public class QuestionService {
             lc.setQuestionType(QuestionType.PART2);
             lc.setContent("Mark your answer on your answer sheet");
             lc.setAnswer("A");
+            lc.setExampleA("A");
+            lc.setExampleB("B");
+            lc.setExampleC("C");
             lc.setSolution(aRandomSentence()+" "+aRandomSentence());
             questionRepository.save(lc);
         }
@@ -196,6 +209,51 @@ public class QuestionService {
             paragraph += aRandomSentence();
         }
         return paragraph;
+    }
+
+
+    public List<RC> getRCList(){
+        return rcRepository.findAll();
+    }
+
+    public List<LC> getLCList(){
+        return lcRepository.findAll();
+    }
+
+    public List<Question> getList() {
+        return questionRepository.findAll();
+    }
+
+    public Question createPart1() {
+        List<Question> part1 = new ArrayList<>();
+        for (Question q : getLCList()){
+            if(q.getQuestionType().equals(QuestionType.PART1)){
+                part1.add(q);
+            }
+        }
+
+        return  part1.get((int)(Math.random()*part1.size()));
+    }
+
+    public Question createPart2() {
+        List<Question> part2 = new ArrayList<>();
+        for (Question q : getLCList()){
+            if(q.getQuestionType().equals(QuestionType.PART2)){
+                part2.add(q);
+            }
+        }
+
+        return  part2.get((int)(Math.random()*part2.size()));
+    }
+
+    public Question createPart3() {
+        List<Question> part3 = new ArrayList<>();
+        for (Question q : getLCList()){
+            if(q.getQuestionType().equals(QuestionType.PART3)){
+                part3.add(q);
+            }
+        }
+        return part3.get((int)(Math.random()*part3.size()));
     }
 
 }
