@@ -74,14 +74,16 @@ public class StudyGroupApplicationService {
         list2.remove(0);
         result.add(application);
 
-        for (int i = 0; i<list2.size(); i++) {
-            for (int j = 0; j<result.size(); j++) {
-                int count = 0;
-                if (gcd((int)list2.get(i).getValue(), (int)result.get(j).getValue()) != 1) {
-                    if (count == result.size()) {
-                        result.add(list2.get(i));
-                    }
+        for (int i = 0; i < list2.size(); i++) {
+            int count = 0;
+            for (int j = 0; j < result.size(); j++) {
+
+                if (gcd((int) list2.get(i).getValue(), (int) result.get(j).getValue()) != 1) {
+                   ++count;
                 }
+            }
+            if (count == result.size()) {
+                result.add(list2.get(i));
             }
 
         }
@@ -93,18 +95,20 @@ public class StudyGroupApplicationService {
         list3.remove(0);
         result.add(application);
 
-        for (int i = 0; i<list3.size(); i++) {
+        for (int i = 0; i < list3.size(); i++) {
             if (application.getValue() % list3.get(i).getMember().getGenderType().get() == 0) {
-                for (int j = 0; j<result.size(); j++) {
-                    int count = 0;
+                int count = 0;
+                for (int j = 0; j < result.size(); j++) {
+
                     if (list3.get(i).getValue() % result.get(j).getMember().getGenderType().get() == 0) {
                         count++;
-                        if (count == result.size()) {
-                            result.add(list3.get(i));
-                        }
+
                     }
                 }
-                result.add(list3.get(i));
+                if (count == result.size()) {
+                    result.add(list3.get(i));
+                }
+
             }
         }
         return result;
@@ -125,7 +129,8 @@ public class StudyGroupApplicationService {
             case 3:
                 tagValue = StudyGroupApplicationTag.AGE_30S.get();
                 break;
-            default: break;
+            default:
+                break;
         }
 
         return tagValue;
@@ -141,16 +146,17 @@ public class StudyGroupApplicationService {
 
         for (int checkAge : ageCheckList) {
             if (target.getValue() % checkAge == 0) {
-                for (int i = 0; i<applicationPool.size(); i++) {
-                    if (getTagValueFromAge(applicationPool.get(i)) % checkAge == 0) {
-                        for (int j = 0; j<result.size(); j++) {
-                            int count = 0;
+                for (int i = 0; i < applicationPool.size(); i++) {
+                    if (getTagValueFromAge(applicationPool.get(i)) == checkAge) {
+                        int count = 0;
+                        for (int j = 0; j < result.size(); j++) {
+
                             if (applicationPool.get(i).getValue() % getTagValueFromAge(result.get(j)) == 0) {
-                                count++;
-                                if (count == result.size()) {
-                                    result.add(applicationPool.get(i));
-                                }
+                                ++count;
                             }
+                        }
+                        if (count == result.size()) {
+                            result.add(applicationPool.get(i));
                         }
                     }
                 }
@@ -170,16 +176,16 @@ public class StudyGroupApplicationService {
 
         for (int checkLevel : LevelCheckList) {
             if (application.getValue() % checkLevel == 0) {
-                for (int i = 0; i<list1.size(); i++) {
+                for (int i = 0; i < list1.size(); i++) {
                     if (checkLevel == list1.get(i).getMember().getLevelType().get()) {
-                        for (int j = 0; j<result.size(); j++) {
-                            int count = 0;
+                        int count = 0;
+                        for (int j = 0; j < result.size(); j++) {
                             if (result.get(j).getMember().getLevelType().get() == list1.get(i).getMember().getLevelType().get()) {
                                 count++;
-                                if (count == result.size()) {
-                                    result.add(list1.get(i));
-                                }
                             }
+                        }
+                        if (count == result.size()) {
+                            result.add(list1.get(i));
                         }
                     }
                 }

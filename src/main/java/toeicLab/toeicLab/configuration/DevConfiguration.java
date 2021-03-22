@@ -24,13 +24,13 @@ public class DevConfiguration {
     private final StudyGroupRepository studyGroupRepository;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private final int NUMBER_OF_DUMMY_USERS = 1000;
+    private final int NUMBER_OF_DUMMY_USERS = 500;
     private final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
     private final int[] tagValues = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
-//    @PostConstruct
+    @PostConstruct
     public void createDummyUsers() {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
             Member member = Member.builder()
@@ -59,12 +59,7 @@ public class DevConfiguration {
         log.info("DummyUsers created.");
     }
 
-    @PostConstruct
-    public void testMatchStudyGroup(){
-        studyGroupApplicationService.matchStudyGroups();
-    }
-
-    @PostConstruct
+//    @PostConstruct
     public void createTestUsers() {
         Member member = Member.builder()
                 .email("a@a.a")
@@ -79,4 +74,8 @@ public class DevConfiguration {
         log.info("a@a.a created.");
     }
 
+    @PostConstruct
+    public void testMatchStudyGroup(){
+        studyGroupApplicationService.matchStudyGroups();
+    }
 }
