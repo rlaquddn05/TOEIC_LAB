@@ -7,7 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-      properties:
+    properties:
       format_sql: true
     open-in-view: true
 #  mail:
