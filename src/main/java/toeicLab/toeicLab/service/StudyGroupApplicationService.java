@@ -33,7 +33,7 @@ public class StudyGroupApplicationService {
             StudyGroupApplication target = applicationPool.get(0);
             applicationPool.remove(0);
             StudyGroup studyGroup = matchOneStudyGroup(target, applicationPool);
-            if (studyGroup.getMembers() != null) {
+            if (studyGroup.getMembers().size() == 4) {
                 result.add(studyGroup);
                 studyGroupRepository.save(studyGroup);
                 for (Member member : studyGroup.getMembers()) {
@@ -44,14 +44,14 @@ public class StudyGroupApplicationService {
         return result;
     }
 
-    public StudyGroup matchOneStudyGroup(StudyGroupApplication application, List<StudyGroupApplication> applicationPool) {
-        List<StudyGroupApplication> list1 = findAgeMatches(application, applicationPool);
-        List<StudyGroupApplication> list2 = findLevelMatches(application, list1);
-        List<StudyGroupApplication> list3 = findDayMatches(application, list2);
-        List<StudyGroupApplication> list4 = findGenderMatches(application, list3);
+    public StudyGroup matchOneStudyGroup(StudyGroupApplication target, List<StudyGroupApplication> applicationPool) {
+        List<StudyGroupApplication> list1 = findAgeMatches(target, applicationPool);
+        List<StudyGroupApplication> list2 = findLevelMatches(target, list1);
+        List<StudyGroupApplication> list3 = findDayMatches(target, list2);
+        List<StudyGroupApplication> list4 = findGenderMatches(target, list3);
 
         StudyGroup result = new StudyGroup();
-        if (list4.size() >= 3) {
+        if (list4.size() >= 4) {
             List<Member> members = new ArrayList<>();
             members.add(list4.get(0).getMember());
             members.add(list4.get(1).getMember());
@@ -71,12 +71,13 @@ public class StudyGroupApplicationService {
 
     private List<StudyGroupApplication> findDayMatches(StudyGroupApplication application, List<StudyGroupApplication> list2) {
         List<StudyGroupApplication> result = new ArrayList<>();
+        list2.remove(0);
         result.add(application);
 
         for (int i = 0; i<list2.size(); i++) {
             for (int j = 0; j<result.size(); j++) {
-                int count = 1;
-                if (gcd(list2.get(i).getValue(), result.get(j).getValue()) != 1) {
+                int count = 0;
+                if (gcd((int)list2.get(i).getValue(), (int)result.get(j).getValue()) != 1) {
                     if (count == result.size()) {
                         result.add(list2.get(i));
                     }
@@ -89,12 +90,13 @@ public class StudyGroupApplicationService {
 
     private List<StudyGroupApplication> findGenderMatches(StudyGroupApplication application, List<StudyGroupApplication> list3) {
         List<StudyGroupApplication> result = new ArrayList<>();
+        list3.remove(0);
         result.add(application);
 
         for (int i = 0; i<list3.size(); i++) {
             if (application.getValue() % list3.get(i).getMember().getGenderType().get() == 0) {
                 for (int j = 0; j<result.size(); j++) {
-                    int count = 1;
+                    int count = 0;
                     if (list3.get(i).getValue() % result.get(j).getMember().getGenderType().get() == 0) {
                         count++;
                         if (count == result.size()) {
@@ -116,31 +118,34 @@ public class StudyGroupApplicationService {
         switch (application.getMember().getAge() / 10) {
             case 1:
                 tagValue = StudyGroupApplicationTag.AGE_10S.get();
+                break;
             case 2:
                 tagValue = StudyGroupApplicationTag.AGE_20S.get();
+                break;
             case 3:
                 tagValue = StudyGroupApplicationTag.AGE_30S.get();
+                break;
             default: break;
         }
 
         return tagValue;
     }
 
-    private List<StudyGroupApplication> findAgeMatches(StudyGroupApplication application, List<StudyGroupApplication> applicationPool) {
+    private List<StudyGroupApplication> findAgeMatches(StudyGroupApplication target, List<StudyGroupApplication> applicationPool) {
         List<StudyGroupApplication> result = new ArrayList<>();
-        result.add(application);
+        result.add(target);
 
         int[] ageCheckList = new int[]{StudyGroupApplicationTag.AGE_10S.get(),
                 StudyGroupApplicationTag.AGE_20S.get(),
                 StudyGroupApplicationTag.AGE_30S.get()};
 
         for (int checkAge : ageCheckList) {
-            if (application.getValue() % checkAge == 0) {
+            if (target.getValue() % checkAge == 0) {
                 for (int i = 0; i<applicationPool.size(); i++) {
-                    if (checkAge == getTagValueFromAge(applicationPool.get(i))) {
+                    if (getTagValueFromAge(applicationPool.get(i)) % checkAge == 0) {
                         for (int j = 0; j<result.size(); j++) {
-                            int count = 1;
-                            if (getTagValueFromAge(result.get(j)) == getTagValueFromAge(applicationPool.get(i))) {
+                            int count = 0;
+                            if (applicationPool.get(i).getValue() % getTagValueFromAge(result.get(j)) == 0) {
                                 count++;
                                 if (count == result.size()) {
                                     result.add(applicationPool.get(i));
@@ -156,6 +161,7 @@ public class StudyGroupApplicationService {
 
     private List<StudyGroupApplication> findLevelMatches(StudyGroupApplication application, List<StudyGroupApplication> list1) {
         List<StudyGroupApplication> result = new ArrayList<>();
+        list1.remove(0);
         result.add(application);
 
         int[] LevelCheckList = new int[]{StudyGroupApplicationTag.LEVEL_BEGINNER.get(),
@@ -165,10 +171,9 @@ public class StudyGroupApplicationService {
         for (int checkLevel : LevelCheckList) {
             if (application.getValue() % checkLevel == 0) {
                 for (int i = 0; i<list1.size(); i++) {
-                    int sLevel = list1.get(i).getMember().getLevelType().get();
-                    if (checkLevel == sLevel) {
+                    if (checkLevel == list1.get(i).getMember().getLevelType().get()) {
                         for (int j = 0; j<result.size(); j++) {
-                            int count = 1;
+                            int count = 0;
                             if (result.get(j).getMember().getLevelType().get() == list1.get(i).getMember().getLevelType().get()) {
                                 count++;
                                 if (count == result.size()) {

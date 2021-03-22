@@ -24,13 +24,13 @@ public class DevConfiguration {
     private final StudyGroupRepository studyGroupRepository;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private final int NUMBER_OF_DUMMY_USERS = 20;
+    private final int NUMBER_OF_DUMMY_USERS = 1000;
     private final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
     private final int[] tagValues = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
-    @PostConstruct
+//    @PostConstruct
     public void createDummyUsers() {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
             Member member = Member.builder()
@@ -43,15 +43,15 @@ public class DevConfiguration {
                     .build();
             memberRepository.save(member);
 
-            int value=1;
-            for(int j : tagValues){
+            long value=1;
+            for(long j : tagValues){
                 value *= Math.random()>0.5?j:1;
             }
             if(value==1){
-                value=2*3*5*7*11*13*17*19*23*29;
+                value= 2L *3*5*7*11*13*17*19*23*29;
             }
             StudyGroupApplication studyGroupApplication = StudyGroupApplication.builder()
-                    .member(member)
+                    .member(memberRepository.findByEmail("dummy" + i + "@a.a"))
                     .value(value)
                     .build();
             studyGroupApplicationRepository.save(studyGroupApplication);

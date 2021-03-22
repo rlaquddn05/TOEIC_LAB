@@ -55,7 +55,7 @@ public class Member {
     @ManyToMany(mappedBy = "members")
     private List<StudyGroup> studyGroupList = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(mappedBy = "member")
     private StudyGroupApplication studyGroupApplication;
 
     @OneToMany
