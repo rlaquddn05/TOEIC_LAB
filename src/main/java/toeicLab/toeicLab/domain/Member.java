@@ -71,8 +71,7 @@ public class Member {
     @OneToMany
     private List<Schedule> schedules = new ArrayList<>();
     
-    
-    //TODO passwordEncoder 추가
+
     @Transactional
     public void encodePassword(PasswordEncoder passwordEncoder){
 

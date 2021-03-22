@@ -64,5 +64,19 @@ public class DevConfiguration {
         studyGroupApplicationService.matchStudyGroups();
     }
 
+    @PostConstruct
+    public void createTestUsers() {
+        Member member = Member.builder()
+                .email("a@a.a")
+                .password(passwordEncoder.encode("1234"))
+                .memberType(MemberType.USER)
+                .levelType(levelTypes[(int)(Math.random()*3)])
+                .age((int)(Math.random()*25)+10)
+                .genderType(genderTypes[(int)(Math.random()*2)])
+                .build();
+
+        memberRepository.save(member);
+        log.info("a@a.a created.");
+    }
 
 }

@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.Member;
+import toeicLab.toeicLab.domain.QuestionSet;
 import toeicLab.toeicLab.service.MemberService;
+import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.user.CurrentUser;
 import toeicLab.toeicLab.user.SignUpForm;
 import toeicLab.toeicLab.user.SignUpValidator;
@@ -28,6 +31,7 @@ public class MainController {
 
     private final SignUpValidator signUpValidator;
     private final MemberService memberService;
+    private final QuestionSetService questionSetService;
 
     @GetMapping("/")
     public String index(){
@@ -193,6 +197,31 @@ public class MainController {
     public String practiceTest(@PathVariable String id, Model model){
         System.out.println(id);
         return "/view/practice_test";
+    }
+
+    @GetMapping("/test/{type}")
+    @Transactional
+    public String test1(@CurrentUser Member member, @PathVariable String type, Model model){
+        QuestionSet list = new QuestionSet();
+        switch (type){
+            case "quarter":
+                list = questionSetService.createQuarterToeic();
+                break;
+
+            case "half":
+
+                break;
+
+
+            case "full":
+
+                break;
+            default:
+
+                break;
+        }
+        model.addAttribute("QuestionList", list.getQuestions());
+        return "/view/question/test";
     }
 
 }
