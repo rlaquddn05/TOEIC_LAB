@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import toeicLab.toeicLab.domain.Question;
 import toeicLab.toeicLab.domain.QuestionSet;
+import toeicLab.toeicLab.domain.QuestionSetType;
+import toeicLab.toeicLab.domain.QuestionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,36 +13,31 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QuestionSetService {
-    private final int [] PART1 = {5};
-    private final int [] PART2 = {8};
-    private final int [] PART3 = {2};
-    private final int [] PART4 = {2};
+
+    private final int [] PART1 = {3, 6, 6};
+    private final int [] PART2 = {4, 8, 25};
+    private final int [] PART3 = {3, 6, 13}; // set수, set당 3문제
+    private final int [] PART4 = {3, 6, 10}; // set수, set당 3문제
+    private final int [] PART5 = {4, 8, 30};
+    private final int [] PART6 = {2, 4, 4}; // set수, set당 4문제
+    private final int [] PART7_SINGLE = {2, 4};// set수, set당 3~5문제
+    private final int [] PART7_MULTIPLE = {1, 2};// set수, set당 3~5문제
+
 
     private final QuestionService questionService;
 
-    public QuestionSet createQuarterToeic() {
+    public QuestionSet createToeicSet(QuestionSetType questionSetType) {
         QuestionSet result = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
-        for(int i=0; i< PART1[0]; i++){
-            if (questionList.contains(questionService.createPart1())){
-                continue;
-            }
-            questionList.add(questionService.createPart1());
-        }
-        for (int i=0; i<PART2[0];i++){
-            if (questionList.contains(questionService.createPart2())){
-                continue;
-            }
-            questionList.add(questionService.createPart2());
-        }
-        for (int i=0; i<PART3[0];i++){
-            if (questionList.contains(questionService.createPart3())){
-                continue;
-            }
-            questionList.add(questionService.createPart3());
-        }
 
-        result.setQuestions(questionList);
+        questionList.addAll(questionService.createQuestionList(QuestionType.PART1, PART1[questionSetType.get()]));
+        questionList.addAll(questionService.createQuestionList(QuestionType.PART2, PART2[questionSetType.get()]));
+        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, PART3[questionSetType.get()]));
+        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, PART4[questionSetType.get()]));
+
+        questionList.addAll(questionService.createQuestionList(QuestionType.PART5, PART5[questionSetType.get()]));
+        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, PART6[questionSetType.get()]));
+        questionList.addAll(questionService.createPart7(questionSetType));
         return result;
     }
 }

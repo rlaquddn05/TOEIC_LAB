@@ -205,7 +205,7 @@ public class MainController {
         QuestionSet list = new QuestionSet();
         switch (type){
             case "quarter":
-                list = questionSetService.createQuarterToeic();
+//                list = questionSetService.createQuarterToeic();
                 break;
 
             case "half":

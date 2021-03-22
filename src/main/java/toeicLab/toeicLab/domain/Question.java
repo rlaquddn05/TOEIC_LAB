@@ -18,6 +18,8 @@ public class Question {
 
     private String image;
 
+    private int smallSetType;
 
+    private int smallSetId;
 
 }

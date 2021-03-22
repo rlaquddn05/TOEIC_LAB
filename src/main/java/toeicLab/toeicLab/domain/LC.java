@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @DiscriminatorValue("LC")
-public class LC extends Question{
+public class LC extends Question {
     private String recording;
 
     private String content;
@@ -23,4 +23,5 @@ public class LC extends Question{
     private String exampleD;
 
     private String solution;
+
 }
