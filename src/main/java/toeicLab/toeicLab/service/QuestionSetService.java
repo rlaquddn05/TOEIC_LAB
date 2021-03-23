@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
+import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,7 +23,6 @@ public class QuestionSetService {
     private final int [] PART4 = {3, 6, 10}; // set수, set당 3문제
     private final int [] PART5 = {4, 8, 30};
     private final int [] PART6 = {2, 4, 4}; // set수, set당 4문제
-
 
     private final QuestionSetRepository questionSetRepository;
     private final QuestionService questionService;
@@ -42,7 +42,15 @@ public class QuestionSetService {
         result.setQuestions(questionList);
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
-         questionSetRepository.save(result);
+        questionSetRepository.save(result);
         return result;
     }
+
+    private final MemberRepository memberRepository;
+    @PostConstruct
+    public void TestCreateToeicSet(){
+        Member member = memberRepository.findByEmail("a@a.a");
+        createToeicSet(member, QuestionSetType.QUARTER_TOEIC);
+    }
+
 }

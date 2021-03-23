@@ -14,4 +14,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findAllBySmallSetId(int smallSetId);
 
     List<Question> findAllByQuestionTypeAndSmallSetType(QuestionType questionType, int smallSetType);
+
 }

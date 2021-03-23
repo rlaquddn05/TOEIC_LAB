@@ -194,7 +194,7 @@ public class DevConfiguration {
             int smallSetType = (int) (Math.random() * 3 + 3);
             for (int j = 1; j <= smallSetType; j++) {
                 RC rc = new RC();
-                rc.setQuestionType(QuestionType.PART7_SINGLE_PARAGRAPH);
+                rc.setQuestionType(QuestionType.PART7_MULTIPLE_PARAGRAPH);
                 rc.setContent(aRandomParagraph());
                 rc.setContent2(aRandomParagraph());
                 if(Math.random()<0.3){
@@ -275,7 +275,7 @@ public class DevConfiguration {
         log.info("a@a.a created.");
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void testMatchStudyGroup(){
         studyGroupApplicationService.matchStudyGroups();
     }

@@ -5,13 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.QuestionRepository;
-import toeicLab.toeicLab.repository.QuestionSetRepository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -31,12 +27,12 @@ public class QuestionService {
         List<Question> result = new ArrayList<>();
 
         for (int i = 1; i <= numberOfQuestions; ++i) {
-            int ran = ((int) (Math.random() * allQuestionList.size()));
-            if (result.contains(allQuestionList.get(ran))) {
+            Question question = allQuestionList.get((int)(Math.random() * allQuestionList.size()));
+            if (result.contains(question)) {
                 --i;
                 continue;
             }
-            result.add(allQuestionList.get(ran));
+            result.add(question);
         }
 
         return result;
