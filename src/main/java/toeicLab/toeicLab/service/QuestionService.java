@@ -8,7 +8,9 @@ import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -17,18 +19,20 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
+    private final int[] PART7_SINGLE = {2, 4};// set수, set당 3~5문제
+    private final int[] PART7_MULTIPLE = {1, 2};// set수, set당 3~5문제
 
     public List<Question> getList() {
         return questionRepository.findAll();
     }
 
-    public List<Question> createQuestionList(QuestionType questionType,int numberOfQuestions) {
+    public List<Question> createQuestionList(QuestionType questionType, int numberOfQuestions) {
         List<Question> allQuestionList = questionRepository.findAllByQuestionType(questionType);
         List<Question> result = new ArrayList<>();
 
-        for (int i=1; i<=numberOfQuestions; ++i){
-            int ran = ((int)(Math.random()*allQuestionList.size()));
-            if (result.contains(allQuestionList.get(ran))){
+        for (int i = 1; i <= numberOfQuestions; ++i) {
+            int ran = ((int) (Math.random() * allQuestionList.size()));
+            if (result.contains(allQuestionList.get(ran))) {
                 --i;
                 continue;
             }
@@ -38,24 +42,135 @@ public class QuestionService {
         return result;
     }
 
-    public List<Question> createQuestionListWithSmallSet(QuestionType questionType, int numberOfSmallSets){
+    public List<Question> createQuestionListWithSmallSet(QuestionType questionType, int numberOfSmallSets) {
         List<Question> allQuestionList = questionRepository.findAllByQuestionType(questionType);
         List<Question> result = new ArrayList<>();
-        List<Question> smallSetHead = new ArrayList<>();
-        for (int i=1; i<= numberOfSmallSets; ++i){
-            Question question = allQuestionList.get((int)(Math.random()*allQuestionList.size()));
-            if (!smallSetHead.contains(question)){
-                smallSetHead.add(question);
-
+        List<Question> duplicateCheckList = new ArrayList<>();
+        for (int i = 1; i <= numberOfSmallSets; ++i) {
+            Question question = allQuestionList.get((int) (Math.random() * allQuestionList.size()));
+            if (!duplicateCheckList.contains(question)) {
+                duplicateCheckList.add(question);
             }
-            result.addAll(questionRepository.findAllBySmallSetId(smallSetHead.get(i).getSmallSetId()));
+            result.addAll(questionRepository.findAllBySmallSetId(question.getSmallSetId()));
         }
         return result;
     }
 
-    public List<Question> createPart7(QuestionSetType questionSetType){
+    public List<Question> createPart7ByQuestionSetType(QuestionSetType questionSetType) {
         List<Question> result = new ArrayList<>();
+        int[] smallSet_Single = new int[3];
+        int[] smallSet_Multiple= new int[3];
 
+        switch (questionSetType.get()) {
+            case 1: // quarter
+                switch ((int) (Math.random() * 2)) {
+                    case 0:
+                        smallSet_Single = new int[]{0, 1, 1};
+                        smallSet_Multiple =  new int[]{0,1,0};
+                        break;
+                    case 1:
+                        smallSet_Single = new int[]{1, 0, 1};
+                        smallSet_Multiple =  new int[]{0,0,1};
+                        break;
+                }
+                break;
+
+            case 2: // half
+                switch ((int) (Math.random() * 3)) {
+                    case 0:
+                        smallSet_Single = new int[]{0, 1, 2};
+                        smallSet_Multiple =  new int[]{0,1,1};
+                        break;
+                    case 1:
+                        smallSet_Single = new int[]{0, 0, 4};
+                        smallSet_Multiple =  new int[]{0,0,2};
+                        break;
+                    case 2:
+                        smallSet_Single = new int[]{0, 2, 2};
+                        smallSet_Multiple =  new int[]{1,0,1};
+                        break;
+                }
+                break;
+
+            case 3: // full
+                switch ((int) (Math.random() * 6)) {
+                    case 0:
+                        smallSet_Single = new int[]{0, 1, 5};                        
+                        break;
+                    case 1:
+                        smallSet_Single = new int[]{3, 0, 4};                        
+                        break;
+                    case 2:
+                        smallSet_Single = new int[]{2, 2, 3};                        
+                        break;
+                    case 3:
+                        smallSet_Single = new int[]{1, 4, 2};                       
+                        break;
+                    case 4:
+                        smallSet_Single = new int[]{5, 1, 2};                       
+                        break;
+                    case 5:
+                        smallSet_Single = new int[]{4, 3, 1};                        
+                        break;
+                }
+                switch ((int) (Math.random() * 4)) {
+                    case 0:
+                        smallSet_Multiple = new int[]{2, 2, 3};
+                        break;
+                    case 1:
+                        smallSet_Multiple = new int[]{3, 0, 4};
+                        break;
+                    case 2:
+                        smallSet_Multiple = new int[]{1, 3, 2};
+                        break;
+                    case 3:
+                        smallSet_Multiple = new int[]{0, 1, 5};
+                        break;                    
+                }                
+                break;
+        }
+        
+        List<Question> singleList = createPart7byQuestionTypeAndNumber(QuestionType.PART7_SINGLE_PARAGRAPH,
+                smallSet_Single[0], smallSet_Single[1],smallSet_Single[2]);
+        List<Question> multipleList = createPart7byQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH,
+                smallSet_Multiple[0], smallSet_Multiple[1],smallSet_Multiple[2]);
+
+        result.addAll(singleList);
+        result.addAll(multipleList);
+        return result;
+    }
+
+    public List<Question> createPart7byQuestionTypeAndNumber(QuestionType questionType, int numberOfSmallSetType3,
+                                                     int numberOfSmallSetType4, int numberOfSmallSetType5) {
+        List<Question> result = new ArrayList<>();
+        List<Question> duplicateCheckList = new ArrayList<>();
+
+        for (int i = 1; i <= numberOfSmallSetType3; ++i) {
+            List<Question> list = questionRepository.findAllByQuestionTypeAndSmallSetType(questionType, 3);
+            Question question = list.get((int) (Math.random() * list.size()));
+            if (!duplicateCheckList.contains(question)) {
+                duplicateCheckList.add(question);
+            }
+            result.addAll(questionRepository.findAllBySmallSetId(question.getSmallSetId()));
+        }
+
+        for (int i = 1; i <= numberOfSmallSetType4; ++i) {
+            List<Question> list = questionRepository.findAllByQuestionTypeAndSmallSetType(questionType, 4);
+            Question question = list.get((int) (Math.random() * list.size()));
+            if (!duplicateCheckList.contains(question)) {
+                duplicateCheckList.add(question);
+            }
+            result.addAll(questionRepository.findAllBySmallSetId(question.getSmallSetId()));
+        }
+
+        for (int i = 1; i <= numberOfSmallSetType5; ++i) {
+            List<Question> list = questionRepository.findAllByQuestionTypeAndSmallSetType(questionType, 5);
+            Question question = list.get((int) (Math.random() * list.size()));
+            if (!duplicateCheckList.contains(question)) {
+                duplicateCheckList.add(question);
+            }
+            result.addAll(questionRepository.findAllBySmallSetId(question.getSmallSetId()));
+        }
         return result;
     }
 
