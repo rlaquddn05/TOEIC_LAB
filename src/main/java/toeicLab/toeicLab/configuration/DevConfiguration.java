@@ -39,11 +39,11 @@ public class DevConfiguration {
     private final int[] tagValues = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
     private final int PART1_NUMBER = 100;
-    private final int PART2_NUMBER = 10;
+    private final int PART2_NUMBER = 100;
     private final int PART3_NUMBER_OF_SMALL_SETS = 100;
     private final int PART4_NUMBER_OF_SMALL_SETS = 100;
     //    private final int PART5_NUMBER= 10;
-    private final int PART6_NUMBER = 100;
+    private final int PART6_NUMBER_OF_SMALL_SETS = 100;
     private final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
     private int smallSetId = 1;
@@ -93,9 +93,10 @@ public class DevConfiguration {
                 lc.setExampleD(aRandomSentence());
                 lc.setAnswer(aRandomSentence() + " " + aRandomSentence() + " " + aRandomSentence());
                 lc.setAnswer("A");
-                lc.setSmallSetId(smallSetId);
+                lc.setSmallSetType(smallSetId);
                 questionRepository.save(lc);
             }
+            smallSetId++;
 
 
         }
@@ -117,6 +118,7 @@ public class DevConfiguration {
                 lc.setSmallSetId(smallSetId);
                 questionRepository.save(lc);
             }
+            smallSetId++;
 
 
         }
@@ -145,17 +147,21 @@ public class DevConfiguration {
 
     @PostConstruct
     public void initPart6() throws IOException {
-        for (int i = 1; i <= PART6_NUMBER; i++) {
-            RC rc = new RC();
-            rc.setQuestionType(QuestionType.PART6);
-            rc.setContent(aRandomParagraph());
-            rc.setExampleA(aRandomSentence());
-            rc.setExampleB(aRandomSentence());
-            rc.setExampleC(aRandomSentence());
-            rc.setExampleD(aRandomSentence());
-            rc.setAnswer("A");
-            rc.setSolution(aRandomSentence() + aRandomSentence() + aRandomSentence() + aRandomSentence());
-            questionRepository.save(rc);
+        for (int i = 1; i <= PART6_NUMBER_OF_SMALL_SETS; i++) {
+            for (int j = 1; j <= 4; j++) {
+                RC rc = new RC();
+                rc.setQuestionType(QuestionType.PART6);
+                rc.setContent(aRandomParagraph());
+                rc.setExampleA(aRandomSentence());
+                rc.setExampleB(aRandomSentence());
+                rc.setExampleC(aRandomSentence());
+                rc.setExampleD(aRandomSentence());
+                rc.setAnswer("A");
+                rc.setSolution(aRandomSentence() + aRandomSentence() + aRandomSentence() + aRandomSentence());
+                rc.setSmallSetId(smallSetId);
+                questionRepository.save(rc);
+            }
+            smallSetId++;
 
         }
     }
