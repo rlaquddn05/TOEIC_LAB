@@ -15,19 +15,16 @@
                 </form>
             </li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/signup}" sec:authorize="!isAuthenticated()">회원가입</a></li>
-<<<<<<< HEAD
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_page}">내정보</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_progress}" >학습현황</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" >스터디그룹</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" >단어장</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_review_note}" >오답노트</a></li>
-=======
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_page}" sec:authorize="isAuthenticated()" th:text="${#authentication?.name}" >내정보</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_progress}" sec:authorize="isAuthenticated()">학습현황</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" sec:authorize="isAuthenticated()">스터디그룹</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" sec:authorize="isAuthenticated()">단어장</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_review_note}" sec:authorize="isAuthenticated()">오답노트</a></li>
->>>>>>> ddb7f79df27165e3c970503e0a24e69ae9bf1a2a
         </ul>
     </nav>
     <br/><br/><br/><br/><br/>
