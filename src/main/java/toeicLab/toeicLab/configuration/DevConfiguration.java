@@ -33,13 +33,16 @@ public class DevConfiguration {
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
     private final int NUMBER_OF_DUMMY_USERS = 500;
+    private final int NUMBER_OF_DUMMY_USERS = 1000;
     private final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
     private final int[] tagValues = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
     private final int PART1_NUMBER = 10;
+    private final int PART1_NUMBER = 100;
     private final int PART2_NUMBER = 10;
+<<<<<<< HEAD
     private final int PART3_NUMBER_OF_SMALL_SETS = 10;
     private final int PART4_NUMBER_OF_SMALL_SETS = 10;
     private final int PART1_NUMBER = 100;
@@ -50,6 +53,11 @@ public class DevConfiguration {
     private final int PART6_NUMBER = 10;
     private final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 10;
     private final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 10;
+=======
+    private final int PART3_NUMBER_OF_SMALL_SETS = 100;
+    private final int PART4_NUMBER_OF_SMALL_SETS = 100;
+    //    private final int PART5_NUMBER= 10;
+>>>>>>> a3c786207db053e1a983f5239366ed58e42fb08e
     private final int PART6_NUMBER = 100;
     private final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
@@ -189,8 +197,10 @@ public class DevConfiguration {
                 rc.setExampleD(aRandomSentence());
                 rc.setAnswer("A");
                 rc.setSmallSetId(smallSetId);
+                questionRepository.save(rc);
             }
             smallSetId++;
+
         }
     }
 
@@ -214,6 +224,7 @@ public class DevConfiguration {
                 rc.setExampleD(aRandomSentence());
                 rc.setAnswer("A");
                 rc.setSmallSetId(smallSetId);
+                questionRepository.save(rc);
             }
             smallSetId++;
         }
@@ -268,6 +279,7 @@ public class DevConfiguration {
     }
 
 //    @PostConstruct
+    @PostConstruct
     public void createTestUsers() {
         Member member = Member.builder()
                 .email("a@a.a")

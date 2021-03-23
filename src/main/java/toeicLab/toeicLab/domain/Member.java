@@ -70,16 +70,10 @@ public class Member {
 
     @OneToMany
     private List<Schedule> schedules = new ArrayList<>();
-<<<<<<< HEAD
 
 
     private String emailCheckToken;
-
-    //TODO passwordEncoder 추가
-=======
     
-
->>>>>>> ddb7f79df27165e3c970503e0a24e69ae9bf1a2a
     @Transactional
     public void encodePassword(PasswordEncoder passwordEncoder){
 

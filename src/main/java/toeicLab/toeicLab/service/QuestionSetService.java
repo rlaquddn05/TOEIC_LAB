@@ -6,6 +6,7 @@ import toeicLab.toeicLab.domain.Question;
 import toeicLab.toeicLab.domain.QuestionSet;
 import toeicLab.toeicLab.domain.QuestionSetType;
 import toeicLab.toeicLab.domain.QuestionType;
+import toeicLab.toeicLab.repository.QuestionSetRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class QuestionSetService {
     private final int [] PART7_SINGLE = {2, 4};// set수, set당 3~5문제
     private final int [] PART7_MULTIPLE = {1, 2};// set수, set당 3~5문제
 
-
+    private final QuestionSetRepository questionSetRepository;
     private final QuestionService questionService;
 
     public QuestionSet createToeicSet(QuestionSetType questionSetType) {
@@ -33,13 +34,15 @@ public class QuestionSetService {
 
         questionList.addAll(questionService.createQuestionList(QuestionType.PART1, PART1[questionSetType.get()]));
         questionList.addAll(questionService.createQuestionList(QuestionType.PART2, PART2[questionSetType.get()]));
-//        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, PART3[questionSetType.get()]));
+        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, PART3[questionSetType.get()]));
 //        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, PART4[questionSetType.get()]));
 
         questionList.addAll(questionService.createQuestionList(QuestionType.PART5, PART5[questionSetType.get()]));
 //        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, PART6[questionSetType.get()]));
 //        questionList.addAll(questionService.createPart7(questionSetType));
         result.setQuestions(questionList);
+
+        questionSetRepository.save(result);
         return result;
     }
 }
