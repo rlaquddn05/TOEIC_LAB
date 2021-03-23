@@ -32,39 +32,27 @@ public class DevConfiguration {
     private final QuestionRepository questionRepository;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private final int NUMBER_OF_DUMMY_USERS = 500;
+
     private final int NUMBER_OF_DUMMY_USERS = 1000;
     private final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
     private final int[] tagValues = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
-    private final int PART1_NUMBER = 10;
-    private final int PART1_NUMBER = 100;
-    private final int PART2_NUMBER = 10;
-<<<<<<< HEAD
-    private final int PART3_NUMBER_OF_SMALL_SETS = 10;
-    private final int PART4_NUMBER_OF_SMALL_SETS = 10;
+
     private final int PART1_NUMBER = 100;
     private final int PART2_NUMBER = 100;
     private final int PART3_NUMBER_OF_SMALL_SETS = 100;
     private final int PART4_NUMBER_OF_SMALL_SETS = 100;
     //    private final int PART5_NUMBER= 10;
-    private final int PART6_NUMBER = 10;
-    private final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 10;
-    private final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 10;
-=======
-    private final int PART3_NUMBER_OF_SMALL_SETS = 100;
-    private final int PART4_NUMBER_OF_SMALL_SETS = 100;
+
+
     //    private final int PART5_NUMBER= 10;
->>>>>>> a3c786207db053e1a983f5239366ed58e42fb08e
     private final int PART6_NUMBER = 100;
     private final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
     private int smallSetId = 1;
 
-
-    @PostConstruct
 //    @PostConstruct
     public void initPart1() throws IOException {
         for (int i = 1; i <= PART1_NUMBER; i++) {
@@ -81,7 +69,7 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
+
 //    @PostConstruct
     public void initPart2() throws IOException {
         for (int i = 1; i <= PART2_NUMBER; i++) {
@@ -97,7 +85,6 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void initPart3() throws IOException {
         for (int i = 1; i <= PART3_NUMBER_OF_SMALL_SETS; i++) {
@@ -119,7 +106,6 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void initPart4() throws IOException {
         for (int i = 1; i <= PART4_NUMBER_OF_SMALL_SETS; i++) {
@@ -141,7 +127,6 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void initPart5() throws IOException {
         Resource resource = new ClassPathResource("part6.CSV");
@@ -163,7 +148,6 @@ public class DevConfiguration {
         questionRepository.saveAll(part5);
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void initPart6() throws IOException {
         for (int i = 1; i <= PART6_NUMBER; i++) {
@@ -181,7 +165,6 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void initPart7_single() throws IOException {
         for (int i = 1; i <= PART7_SINGLE_NUMBER_OF_SMALL_SETS; i++) {
@@ -204,7 +187,6 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void initPart7_multiple() throws IOException {
         for (int i = 1; i <= PART7_MULTIPLE_NUMBER_OF_SMALL_SETS; i++) {
@@ -248,7 +230,6 @@ public class DevConfiguration {
         return paragraph;
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void createDummyUsers() {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
@@ -279,7 +260,6 @@ public class DevConfiguration {
     }
 
 //    @PostConstruct
-    @PostConstruct
     public void createTestUsers() {
         Member member = Member.builder()
                 .email("a@a.a")
@@ -294,7 +274,6 @@ public class DevConfiguration {
         log.info("a@a.a created.");
     }
 
-    @PostConstruct
 //    @PostConstruct
     public void testMatchStudyGroup(){
         studyGroupApplicationService.matchStudyGroups();

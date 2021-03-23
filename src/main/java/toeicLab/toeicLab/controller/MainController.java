@@ -106,7 +106,7 @@ public class MainController {
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute(new SignUpForm());
-        return "/view/signup";
+        return "view/signup";
     }
 
     @PostMapping("/signup")
