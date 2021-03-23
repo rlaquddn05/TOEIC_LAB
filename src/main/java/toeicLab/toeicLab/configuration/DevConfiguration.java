@@ -93,7 +93,7 @@ public class DevConfiguration {
                 lc.setExampleD(aRandomSentence());
                 lc.setAnswer(aRandomSentence() + " " + aRandomSentence() + " " + aRandomSentence());
                 lc.setAnswer("A");
-                lc.setSmallSetType(smallSetId);
+                lc.setSmallSetId(smallSetId);
                 questionRepository.save(lc);
             }
             smallSetId++;
