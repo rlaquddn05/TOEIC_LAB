@@ -15,7 +15,7 @@ public class QuestionSet{
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @ManyToOne //@JoinColumn
     private Member member;

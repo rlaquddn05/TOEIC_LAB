@@ -42,15 +42,10 @@ public class QuestionSetService {
         result.setQuestions(questionList);
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
+        result.setQuestionSetType(questionSetType);
         questionSetRepository.save(result);
         return result;
     }
 
-    private final MemberRepository memberRepository;
-    @PostConstruct
-    public void TestCreateToeicSet(){
-        Member member = memberRepository.findByEmail("a@a.a");
-        createToeicSet(member, QuestionSetType.QUARTER_TOEIC);
-    }
 
 }
