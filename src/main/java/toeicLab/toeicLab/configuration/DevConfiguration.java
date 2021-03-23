@@ -49,7 +49,7 @@ public class DevConfiguration {
     private int smallSetId = 1;
 
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart1() throws IOException {
         for (int i = 1; i <= PART1_NUMBER; i++) {
             LC lc = new LC();
@@ -65,7 +65,7 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart2() throws IOException {
         for (int i = 1; i <= PART2_NUMBER; i++) {
             LC lc = new LC();
@@ -80,7 +80,7 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart3() throws IOException {
         for (int i = 1; i <= PART3_NUMBER_OF_SMALL_SETS; i++) {
             for (int j = 1; j <= 3; j++) {
@@ -102,7 +102,7 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart4() throws IOException {
         for (int i = 1; i <= PART4_NUMBER_OF_SMALL_SETS; i++) {
             for (int j = 1; j <= 3; j++) {
@@ -124,7 +124,7 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart5() throws IOException {
         Resource resource = new ClassPathResource("part6.CSV");
         List<RC> part5 = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
@@ -145,7 +145,7 @@ public class DevConfiguration {
         questionRepository.saveAll(part5);
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart6() throws IOException {
         for (int i = 1; i <= PART6_NUMBER_OF_SMALL_SETS; i++) {
             for (int j = 1; j <= 4; j++) {
@@ -166,7 +166,7 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart7_single() throws IOException {
         for (int i = 1; i <= PART7_SINGLE_NUMBER_OF_SMALL_SETS; i++) {
             int smallSetType = (int) (Math.random() * 3 + 3);
@@ -188,7 +188,7 @@ public class DevConfiguration {
         }
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initPart7_multiple() throws IOException {
         for (int i = 1; i <= PART7_MULTIPLE_NUMBER_OF_SMALL_SETS; i++) {
             int smallSetType = (int) (Math.random() * 3 + 3);
@@ -231,7 +231,7 @@ public class DevConfiguration {
         return paragraph;
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void createDummyUsers() {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
             Member member = Member.builder()
@@ -260,7 +260,7 @@ public class DevConfiguration {
         log.info("DummyUsers created.");
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void createTestUsers() {
         Member member = Member.builder()
                 .email("a@a.a")
