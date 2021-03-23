@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
-import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,15 +33,16 @@ public class QuestionSetService {
         questionList.addAll(questionService.createQuestionList(QuestionType.PART2, PART2[questionSetType.get()]));
         questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, PART3[questionSetType.get()]));
         questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, PART4[questionSetType.get()]));
-
         questionList.addAll(questionService.createQuestionList(QuestionType.PART5, PART5[questionSetType.get()]));
         questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, PART6[questionSetType.get()]));
         questionList.addAll(questionService.createPart7ByQuestionSetType(questionSetType));
+
         result.setQuestions(questionList);
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
         result.setQuestionSetType(questionSetType);
         questionSetRepository.save(result);
+
         return result;
     }
 

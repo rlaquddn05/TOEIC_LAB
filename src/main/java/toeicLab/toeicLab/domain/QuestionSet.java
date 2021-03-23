@@ -17,7 +17,7 @@ public class QuestionSet{
     @GeneratedValue
     private long id;
 
-    @ManyToOne //@JoinColumn
+    @ManyToOne
     private Member member;
 
     @Enumerated
@@ -26,6 +26,7 @@ public class QuestionSet{
     private LocalDateTime createdAt;
 
     @OneToMany
+    @JoinColumn
     private List<Question> questions = new ArrayList<>();
 
     @ElementCollection

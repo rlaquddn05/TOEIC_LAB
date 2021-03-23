@@ -91,6 +91,7 @@ public class DevConfiguration {
                 lc.setAnswer(aRandomSentence() + " " + aRandomSentence() + " " + aRandomSentence());
                 lc.setAnswer("A");
                 lc.setSmallSetId(smallSetId);
+                lc.setSmallSetType(3);
                 questionRepository.save(lc);
             }
             smallSetId++;
@@ -109,6 +110,7 @@ public class DevConfiguration {
                 lc.setExampleB(aRandomSentence());
                 lc.setExampleC(aRandomSentence());
                 lc.setExampleD(aRandomSentence());
+                lc.setSmallSetType(3);
                 lc.setAnswer(aRandomSentence() + " " + aRandomSentence() + " " + aRandomSentence());
                 lc.setAnswer("A");
                 lc.setSmallSetId(smallSetId);
@@ -153,6 +155,7 @@ public class DevConfiguration {
                 rc.setAnswer("A");
                 rc.setSolution(aRandomSentence() + aRandomSentence() + aRandomSentence() + aRandomSentence());
                 rc.setSmallSetId(smallSetId);
+                rc.setSmallSetType(4);
                 questionRepository.save(rc);
             }
             smallSetId++;
@@ -272,7 +275,7 @@ public class DevConfiguration {
     @PostConstruct
     public void TestCreateToeicSet() {
         Member member = memberRepository.findByEmail("a@a.a");
-        questionSetService.createToeicSet(member, QuestionSetType.QUARTER_TOEIC);
+        questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
     }
 
 //    @PostConstruct
