@@ -5,3 +5,15 @@
     width: 530px;
     height: 340px;
 }
+.container h3{
+    text-align: center;
+    padding: 20px;
+}
+.form-check {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+#btn{
+    margin-top: 300px;
+}

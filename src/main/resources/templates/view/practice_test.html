@@ -8,16 +8,17 @@
 
 </th:block>
 <th:block layout:fragment="js">
-
+    <script type="text/javascript" th:src="@{/js/add_question.js}"></script>
 </th:block>
 
 <div layout:fragment="content">
     <div class="container">
+        <div class="py-5">
             <form action="" method="post">
                 <div class="row">
                     <div class="col-3"></div>
                     <div class="py-5 col-6">
-                        <h1>연습문제</h1>
+                        <h1 th:text="">연습문제</h1>
                         <div id="box">
 
                         </div>
@@ -28,7 +29,9 @@
                 <div id="sub-btn">
                     <button type="submit" class="btn btn-primary float-right">연습 문제 풀기</button>
                 </div>
+
             </form>
+        </div>
     </div>
 </div>
 

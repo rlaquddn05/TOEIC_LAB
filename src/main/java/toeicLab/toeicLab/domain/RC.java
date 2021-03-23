@@ -35,7 +35,4 @@ public class RC extends Question{
     @Lob
     private String solution;
 
-    private int smallSetType; // 3,4,5
-
-    private int smallSetId; // smallSet 가장 앞번호
 }

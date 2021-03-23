@@ -27,5 +27,5 @@ public class StudyGroupApplication {
 
     private boolean matching;
 
-    private int value;
+    private long value;
 }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<div th:fragment="question_list(questionList)">
+    <div class="container" th:each="question:${questionList}">
+        <!--part1-->
+        <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART1')}">
+            <div class="row">
+                <div class="col-1"></div>
+                <span class="col-1" th:text="${question.id} + '.'"></span>
+                <img th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img col-8" >
+                <button type="button" class="btn btn-primary col-1" id="btn">듣기</button>
+                <div class="col-1"></div>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="A" id="part1_radio1">
+                <label class="form-check-label" for="part1_radio1" th:text="${question.exampleA}"></label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input  class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="B" id="part1_radio2">
+                <label class="form-check-label" for="part1_radio2" th:text="${question.exampleB}"></label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="C" id="part1_radio3">
+                <label class="form-check-label" for="part1_radio3" th:text="${question.exampleC}"></label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="D" id="part1_radio4">
+                <label class="form-check-label" for="part1_radio4" th:text="${question.exampleD}"></label>
+            </div>
+        </div>
+
+
+        <!--part2-->
+        <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART2')}">
+            <div>
+                <span th:text="${question.id} + '.'"></span>
+                <span th:text="${question.content}"></span>
+                <button type="button" class="btn btn-primary btn-sm">듣기</button>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="A" id="part2_radio1">
+                <label class="form-check-label" for="part2_radio1" th:text="${question.exampleA}"></label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="B" id="part2_radio2">
+                <label class="form-check-label" for="part2_radio2" th:text="${question.exampleB}"></label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="C" id="part2_radio3">
+                <label class="form-check-label" for="part2_radio3" th:text="${question.exampleC}"></label>
+            </div>
+        </div>
+
+        <!--part3-->
+        <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART3')}">
+            <div>
+                <span th:text="${question.id} + '.'"></span>
+                <!--<img th:src="@{/images/place_holder_images/ + ${question.image}}" class="img" >-->
+                <span th:if="${question.image} != null">
+                   <img th:src= "@{/images/place_holder_images/ + ${question.image}}" class="img" ><br/>
+                </span>
+                <span th:text="${question.content}"></span>
+                <button type="button" class="btn btn-primary">듣기</button>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="A" id="part3_radio1">
+                <label class="form-check-label" for="part3_radio1" th:text="${question.exampleA}"></label>
+            </div>
+            <div class="form-check">
+                <input  class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="B" id="part3_radio2">
+                <label class="form-check-label" for="part3_radio2" th:text="${question.exampleB}"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="C" id="part3_radio3">
+                <label class="form-check-label" for="part3_radio3" th:text="${question.exampleC}"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="D" id="part3_radio4">
+                <label class="form-check-label" for="part3_radio4" th:text="${question.exampleD}"></label>
+            </div>
+        </div>
+
+        <!--part4-->
+        <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART4')}">
+            <div>
+                <span th:text="${question.id} + '.'"></span>
+                <span th:if="${question.image} != null">
+                    <img th:src= "@{/images/place_holder_images/ + ${question.image}}" class="img" ><br/>
+                </span>
+                    <span th:text="${question.content}"></span>
+                    <button type="button" class="btn btn-primary">듣기</button>
+            </div>
+            <div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="A" id="part4_radio1">
+                    <label class="form-check-label" for="part4_radio1" th:text="${question.exampleA}"></label>
+                </div>
+                <div class="form-check">
+                    <input  class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="B" id="part4_radio2">
+                    <label class="form-check-label" for="part4_radio2" th:text="${question.exampleB}"></label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="C" id="part4_radio3">
+                    <label class="form-check-label" for="part4_radio3" th:text="${question.exampleC}"></label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="D" id="part4_radio4">
+                    <label class="form-check-label" for="part4_radio4" th:text="${question.exampleD}"></label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</html>

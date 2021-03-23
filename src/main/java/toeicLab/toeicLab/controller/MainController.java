@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,11 @@ import toeicLab.toeicLab.repository.MailRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.service.MailService;
 import toeicLab.toeicLab.service.MemberService;
+import toeicLab.toeicLab.domain.QuestionSet;
+import toeicLab.toeicLab.domain.QuestionSetType;
+import toeicLab.toeicLab.service.MemberService;
+import toeicLab.toeicLab.service.QuestionSetService;
+import toeicLab.toeicLab.user.CurrentUser;
 import toeicLab.toeicLab.user.SignUpForm;
 import toeicLab.toeicLab.user.SignUpValidator;
 
@@ -31,6 +37,7 @@ public class MainController {
     private final MailService mailService;
     private final MailRepository mailRepository;
     private final MemberRepository memberRepository;
+    private final QuestionSetService questionSetService;
 
     @GetMapping("/")
     public String index(){
@@ -265,6 +272,7 @@ public class MainController {
     }
 
     @GetMapping("/result_sheet")
+    @PostMapping("/result_sheet")
     public String resultSheet(){
         return "/view/result_sheet";
     }
@@ -311,7 +319,35 @@ public class MainController {
 
     @GetMapping("/practice_test")
     public String practiceTest(){
+    @GetMapping("/practice_test/{id}")
+    public String practiceTest(@PathVariable String id, Model model){
+        System.out.println(id);
         return "/view/practice_test";
+    }
+
+    @GetMapping("/test/{type}")
+    @Transactional
+    public String test1(@CurrentUser Member member, @PathVariable String type, Model model){
+        QuestionSet list = new QuestionSet();
+        switch (type){
+            case "quarter":
+                list = questionSetService.createToeicSet(QuestionSetType.QUARTER_TOEIC);
+                break;
+
+            case "half":
+                list = questionSetService.createToeicSet(QuestionSetType.HALF_TOEIC);
+                break;
+
+
+            case "full":
+                list = questionSetService.createToeicSet(QuestionSetType.FULL_TOEIC);
+                break;
+            default:
+
+                break;
+        }
+        model.addAttribute("QuestionList", list.getQuestions());
+        return "/view/question/test";
     }
 
 }
