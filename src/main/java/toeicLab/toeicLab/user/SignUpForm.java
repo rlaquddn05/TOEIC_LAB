@@ -2,9 +2,11 @@ package toeicLab.toeicLab.user;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class SignUpForm {
@@ -24,7 +26,7 @@ public class SignUpForm {
     @NotBlank
     private String gender;
 
-    @NotBlank
+    @NotNull
     private int age;
 
     @NotBlank

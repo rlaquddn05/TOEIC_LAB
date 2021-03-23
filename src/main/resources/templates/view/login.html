@@ -25,10 +25,10 @@
                 <form class="needns-validation" th:action="@{/login}" method="post" name="loginForm" novalidate>
                     <div class="row g-3">
                         <div class="col-12">
-                            <label for="user_id" class="form-label">Id</label>
-                            <input type="text" name = "username" class="form-control" id="user_id" aria-describedby="id_help_text" required>
+                            <label for="userId" class="form-label">Id</label>
+                            <input type="text" name = "userId" class="form-control" id="userId" aria-describedby="userId_help_text" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
-                            <small id ="user_id_help_text" class="form-text text-muted">
+                            <small id ="userId_help_text" class="form-text text-muted">
                                 아이디가 기억나지 않으세요? <a href="#" th:href="@{/send_find_id_link}">아이디 찾기 링크 보내기</a>
                             </small>
                         </div>
@@ -40,7 +40,7 @@
                             <input type="password" name="password" class="form-control" id="password" aria-describedby="password_help_text" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id ="password_help_text" class="form-text text-muted">
-                                패스워드가 기억나지 않으세요? <a href="#" th:href="@{/send_reset_password_link}">패스워드 변경 링크 보내기</a>
+                                비밀번호가 기억나지 않으세요? <a href="#" th:href="@{/send_reset_password_link}">비밀번호 변경 링크 보내기</a>
                             </small>
                         </div>
                     </div>

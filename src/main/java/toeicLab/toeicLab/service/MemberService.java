@@ -2,6 +2,7 @@ package toeicLab.toeicLab.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.Address;
 import toeicLab.toeicLab.domain.Member;
 import toeicLab.toeicLab.repository.MemberRepository;
@@ -27,12 +28,51 @@ public class MemberService {
                         .street(signUpForm.getStreet())
                         .build())
                 .build();
-        // 이메일 검증 토큰 생성 -> DB에 저장
-//        member.generateEmailCheckToken();
-//        member.encodePassword(passwordEncoder);
-        memberRepository.save(member); /// 이 부분!!!
+
+        memberRepository.save(member);
         return member;
     }
 
 
+    public void sendResetPasswordEmail(String userId, String email) {
+        Member member = memberRepository.findByEmail(userId);
+        boolean emailCheck = member.getEmail().equals(email);
+        if(member == null){
+            throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
+        }
+        if(!emailCheck){
+            throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
+        }
+        member.getEmail();
+        // member의 이메일로 비밀번호 키 보내기
+
+
+    }
+
+    // 저장된 토큰과 같은 값인지 확인
+    public boolean checkEmailToken(String email, String emailCheckToken) {
+        if(email == null || emailCheckToken == null){
+            return false;
+        }
+        Member member = memberRepository.findByEmail(email);
+        if(member == null){
+            return false;
+        }
+        return emailCheckToken.equals(member.getEmailCheckToken());
+    }
+
+    @Transactional
+    public void resetPassword(String email, String password) {
+        Member member = memberRepository.findByEmail(email);
+        member.setPassword(password);
+    }
+
+
+    public void sendFindIdByEmail(String email) {
+        Member member = memberRepository.findByEmail(email);
+        if(member == null){
+            throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
+        }
+        return;
+    }
 }
