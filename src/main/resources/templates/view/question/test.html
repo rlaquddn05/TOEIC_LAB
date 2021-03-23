@@ -9,32 +9,35 @@
 </th:block>
 
 <div layout:fragment="content">
-    <div class="container">
-        <ul class="nav nav-tabs" >
-        <!--<ul class="nav nav-tabs" th:each="question:${questionList}">-->
-            <!--<li class="nav-item" th:if="${question.getQuestionType().contains('PART1')}">-->
-            <li class="nav-item" >
-                <a class="nav-link active" data-toggle="tab" href="#lc">LC</a>
-            </li>
-            <!--<li class="nav-item" th:if="${question.getQuestionType().toString().equals('PART5')}">
-                <a class="nav-link active" data-toggle="tab" href="#rc">RC</a>
-            </li>
-            <li class="nav-item" th:text="">
-                <a class="nav-link active" data-toggle="tab" href="#spk">RC</a>
-            </li>-->
-        </ul>
-        <div class="tab-content">
+        <div class="container">
             <h3>Quarter 모의시험</h3>
-            <div class="tab-pane fade show active" id="lc">
-                <th:block th:insert="fragments/question_LC_fragments :: question_list(${QuestionList})"/>
+            <ul class="nav nav-tabs" >
+                <li class="nav-item" >
+                    <a class="nav-link active" data-toggle="tab" href="#lc">LC</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#rc">RC</a>
+                </li>
+                <!--            <li class="nav-item" th:text="">-->
+                <!--                <a class="nav-link active" data-toggle="tab" href="#spk">RC</a>-->
+                <!--            </li>-->
+            </ul>
+            <form th:action="@{/result_sheet}" th:method="post">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="lc">
+                    <th:block th:insert="fragments/question_LC_fragments :: question_list(${QuestionList})"/>
+                </div>
+                <div class="tab-pane fade" id="rc">
+                    <th:block th:insert="fragments/question_RC_fragments :: question_list(${QuestionList})"/>
+                </div>
+                <!-- <div class="tab-pane fade" id="spk">
+                     <th:block th:insert="fragments/question_SPK_fragments :: question_list(${QuestionList})"/>
+                 </div>-->
             </div>
-            <!--<div class="tab-pane fade" id="rc">
-                <th:block th:insert="fragments/question_RC_fragments :: question_list(${QuestionList})"/>
-            </div>-->
-           <!-- <div class="tab-pane fade" id="spk">
-                <th:block th:insert="fragments/question_SPK_fragments :: question_list(${QuestionList})"/>
-            </div>-->
+                <button type="submit"> 제출</button>
+            </form>
         </div>
+
+
     </div>
-</div>
 </html>

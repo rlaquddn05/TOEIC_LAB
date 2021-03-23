@@ -17,19 +17,15 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Raleway", sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-/*#main .navbar{
-  padding: 60px;
-  background: aqua;
-}*/
 
 #header {
-  background: #db5c5c;
+  background: #ffffff;
   transition: all 0.5s;
   padding: 0;
 }
@@ -42,7 +38,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-family: "Poppins", sans-serif;
+  font-family: "Gugi", sans-serif;
 }
 
 #header .logo a {
@@ -56,10 +52,20 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
-#header .navbar {
+#header #navbar {
   padding: 10px;
-  background: #db5c5c;
+  background: #ffffff;
+  box-shadow: 0px 0px 20px rgba(12, 137, 161, 0.25);
 
+}
+#header #navbar .nav-link{
+  padding: 10px;
+  font-family: "Gugi", sans-serif;
+  font-size: 15px;
+}
+
+#btn-logout:hover{
+  color: #5fcf80;
 }
 
 .navbar ul {
@@ -79,8 +85,8 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-between;
   padding: 10px 0 10px 10px;
-  font-family: "Poppins", sans-serif;
-  font-size: 15px;
+  font-family: "Gugi", sans-serif;
+  font-size: 18px;
   font-weight: 500;
   color: #37423b;
   white-space: nowrap;
@@ -92,6 +98,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 0;
   margin-left: 5px;
 }
+
 
 .navbar a:hover, .navbar .active, .navbar li:hover > a {
   color: #5fcf80;

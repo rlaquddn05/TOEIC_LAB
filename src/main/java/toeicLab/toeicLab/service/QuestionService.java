@@ -24,7 +24,12 @@ public class QuestionService {
         List<Question> result = new ArrayList<>();
 
         for (int i=1; i<=numberOfQuestions; ++i){
-           result.add(allQuestionList.get((int)(Math.random()*allQuestionList.size())));
+            int ran = ((int)(Math.random()*allQuestionList.size()));
+            if (result.contains(allQuestionList.get(ran))){
+                --i;
+                continue;
+            }
+            result.add(allQuestionList.get(ran));
         }
 
         return result;
@@ -38,8 +43,9 @@ public class QuestionService {
             Question question = allQuestionList.get((int)(Math.random()*allQuestionList.size()));
             if (!smallSetHead.contains(question)){
                 smallSetHead.add(question);
-                result.addAll(questionRepository.findAllBySmallSetId(smallSetHead.get(i).getSmallSetId()));
+
             }
+            result.addAll(questionRepository.findAllBySmallSetId(smallSetHead.get(i).getSmallSetId()));
         }
         return result;
     }

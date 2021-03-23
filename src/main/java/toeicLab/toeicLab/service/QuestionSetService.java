@@ -8,6 +8,7 @@ import toeicLab.toeicLab.domain.QuestionSetType;
 import toeicLab.toeicLab.domain.QuestionType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,12 +33,13 @@ public class QuestionSetService {
 
         questionList.addAll(questionService.createQuestionList(QuestionType.PART1, PART1[questionSetType.get()]));
         questionList.addAll(questionService.createQuestionList(QuestionType.PART2, PART2[questionSetType.get()]));
-        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, PART3[questionSetType.get()]));
-        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, PART4[questionSetType.get()]));
+//        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, PART3[questionSetType.get()]));
+//        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, PART4[questionSetType.get()]));
 
         questionList.addAll(questionService.createQuestionList(QuestionType.PART5, PART5[questionSetType.get()]));
-        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, PART6[questionSetType.get()]));
-        questionList.addAll(questionService.createPart7(questionSetType));
+//        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, PART6[questionSetType.get()]));
+//        questionList.addAll(questionService.createPart7(questionSetType));
+        result.setQuestions(questionList);
         return result;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.Member;
 import toeicLab.toeicLab.domain.QuestionSet;
+import toeicLab.toeicLab.domain.QuestionSetType;
 import toeicLab.toeicLab.service.MemberService;
 import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.user.CurrentUser;
@@ -148,7 +149,7 @@ public class MainController {
         return "/view/apply_studygroup";
     }
 
-    @GetMapping("/result_sheet")
+    @PostMapping("/result_sheet")
     public String resultSheet(){
         return "/view/result_sheet";
     }
@@ -205,16 +206,16 @@ public class MainController {
         QuestionSet list = new QuestionSet();
         switch (type){
             case "quarter":
-//                list = questionSetService.createQuarterToeic();
+                list = questionSetService.createToeicSet(QuestionSetType.QUARTER_TOEIC);
                 break;
 
             case "half":
-
+                list = questionSetService.createToeicSet(QuestionSetType.HALF_TOEIC);
                 break;
 
 
             case "full":
-
+                list = questionSetService.createToeicSet(QuestionSetType.FULL_TOEIC);
                 break;
             default:
 
