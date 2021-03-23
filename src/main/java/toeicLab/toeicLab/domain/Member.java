@@ -72,6 +72,7 @@ public class Member {
     private List<Schedule> schedules = new ArrayList<>();
 <<<<<<< HEAD
 
+
     private String emailCheckToken;
 
     //TODO passwordEncoder 추가

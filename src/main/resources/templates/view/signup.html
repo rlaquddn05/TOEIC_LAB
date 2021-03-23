@@ -214,6 +214,7 @@
                 type: 'GET',
                 url: '/checkUserId',
                 data: 'userId="userId"',
+                data: 'userId=' + $("#userId").val(),
                 dataType: 'json',
                 success: function (result){
                     $(".modal-body").html(result.message);
