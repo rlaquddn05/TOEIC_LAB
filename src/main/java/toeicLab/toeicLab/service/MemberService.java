@@ -34,7 +34,7 @@ public class MemberService implements UserDetailsService {
                         .street(signUpForm.getStreet())
                         .build())
                 .build();
-
+        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
         return member;
     }
