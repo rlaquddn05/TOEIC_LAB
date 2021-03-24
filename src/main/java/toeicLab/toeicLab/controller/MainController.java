@@ -123,38 +123,42 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/email")
-    public String sendEmailCheckToken(@RequestParam("email") String email, Model model) {
+    @GetMapping("/signup/email")
+    public String sendEmailCheckToken(@RequestParam("email") String email) {
         MailDto mailDto = new MailDto();
         mailDto.setEmail(email);
-        mailDto.setTitle("회원님의 이메일 인증번호입니다.");
+        mailDto.setEmailCheckToken(mailDto.generateEmailCheckToken());
 
-        mailService.mailSend(mailDto);
-        MailDto checkMailDto = mailRepository.findByEmail(email);
-        model.addAttribute("checkMailDto", checkMailDto);
+        MailDto saveMail = mailService.mailSend(mailDto);
+        mailRepository.save(saveMail);
+
         return "redirect:/view/signup";
     }
 
-    @GetMapping("/checkTokens")
+    @GetMapping("/signup/checkTokens")
     @ResponseBody
-    public String checkTokens(@RequestParam("token") String token, @RequestParam("inputToken") String inputToken) {
-        JsonObject jsonObject = new JsonObject();
+    public String checkTokens(@RequestParam("email") String email, @RequestParam("certification_number") String certification_number) {
+        log.info(certification_number);
 
+        JsonObject jsonObject = new JsonObject();
+        MailDto getTokenMail = mailRepository.findByEmail(email);
+        log.info(getTokenMail.getEmail());
         boolean result = false;
 
-        result = token.equals(inputToken);
+        result = getTokenMail.getEmailCheckToken().equals(certification_number);
 
         if (result) {
             jsonObject.addProperty("message", "이메일 인증 성공");
         } else {
-            jsonObject.addProperty("message", "이메일 인증 실패");
+            jsonObject.addProperty("message", "이메일 인증번호가 일치하지 않습니다.");
         }
         return jsonObject.toString();
     }
 
-    @GetMapping("/checkUserId")
+    @GetMapping("/signup/checkUserId")
     @ResponseBody
     public String checkUserId(@RequestParam("userId") String userId) {
+
         JsonObject jsonObject = new JsonObject();
 
         boolean result = false;
@@ -169,7 +173,7 @@ public class MainController {
         return jsonObject.toString();
     }
 
-    @GetMapping("/checkNickname")
+    @GetMapping("/signup/checkNickname")
     @ResponseBody
     public String checkNickname(@RequestParam("nickname") String nickname) {
         JsonObject jsonObject = new JsonObject();
@@ -186,7 +190,7 @@ public class MainController {
         return jsonObject.toString();
     }
 
-    @GetMapping("/checkPasswords")
+    @GetMapping("/signup/checkPasswords")
     @ResponseBody
     public String checkPasswords(@RequestParam("password") String password, @RequestParam("check_password") String check_password) {
         JsonObject jsonObject = new JsonObject();

@@ -20,8 +20,6 @@ public class MailDto {
 
     private String email;
 
-    private String title;
-
     private String emailCheckToken;
 
     public String generateEmailCheckToken() {

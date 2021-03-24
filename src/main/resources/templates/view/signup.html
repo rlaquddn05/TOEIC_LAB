@@ -10,6 +10,7 @@
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </th:block>
 
 
@@ -32,7 +33,7 @@
                                    name="userId" id="userId"
                                    aria-describedby="userId_help_text"
                                    value="userId">
-                                <div class="invalid-feedback">필수 사항입니다.</div>
+                            <div class="invalid-feedback">필수 사항입니다.</div>
                                 <button id="user_id_button" class="btn btn-dark" type="button">중복확인</button>
                             </div>
 
@@ -123,7 +124,6 @@
                                        name="certification_number" id="certification_number"
                                        aria-describedby="certification_number_help_text"
                                        placeholder="인증번호입력" required>
-<!--                                <input type="hidden" name="correctToken" th:text="${checkMailDto.emailCheckToken}">-->
                                 <button type="button" id="check_certification_number_button" class="btn btn-dark">확인</button>
                             </div>
                         </div>
@@ -205,87 +205,78 @@
         </div>
     </div>
 
-    <script th:inline="javascript">
-        $(document).ready(function (){
-            $("#user_id_button").click(function (){
-                $(".modal-body").html("뭐지");
-                $("#emailButton1").modal('show');
-
-                // $.ajax({
-                //     type: 'GET',
-                //     url: '/checkUserId',
-                //     data: 'userId=' + $("#userId").val(),
-                //     dataType: 'json',
-                //     success: function (result){
-                //         $(".modal-body").html(result.message);
-                //         $("#emailButton1").modal();
-                //     }
-            //     });
-            // });
-            //
-            //
-            // $("#check_password_button").click(function (){
-            //     $.ajax({
-            //         type: 'GET',
-            //         url: '/checkPasswords',
-            //         data: '{password:password, check_password:check_password}',
-            //         dataType: 'json',
-            //         success: function (result){
-            //             $(".modal-body").html(result.message);
-            //             $("#emailButton1").modal();
-            //         }
-            //     });
-            // });
-            //
-            //
-            // $("#nickname_button").click(function (){
-            //     $.ajax({
-            //         type: 'GET',
-            //         url: '/checkNickname',
-            //         data: 'nickname=유저닉네임',
-            //         dataType: 'json',
-            //         success: function (result){
-            //             $(".modal-body").html(result.message);
-            //             $("#emailButton1").modal();
-            //         }
-            //     });
-            // });
-            //
-            //
-            // $("#email_button").click(function (){
-            //     $.ajax({
-            //         type: 'GET',
-            //         url: '/email',
-            //         data: 'email=이메일',
-            //         dataType: 'json',
-            //         success: function () {
-            //             $(".modal-body").html('이메일을 확인하세요.');
-            //             $("#emailButton1").modal();
-            //         }
-            //     });
-            // });
-            //
-            //
-            // $("#check_certification_number_button").click(function () {
-            //     $.ajax({
-            //         type: 'GET',
-            //         url: '/checkTokens',
-            //         data: '{token=[[${checkMailDto.emailCheckToken}]], inputToken=certification_number}',
-            //         dataType: 'json',
-            //         success: function (result) {
-            //             $(".modal-body").html(result.message);
-            //             $("#emailButton1").modal();
-            //         }
-            //     });
-            //
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#user_id_button").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/signup/checkUserId',
+                data: 'userId=' + $("#userId").val(),
+                dataType: 'json',
+                success: function (result){
+                    $(".modal-body").html(result.message);
+                    $("#emailButton1").modal();
+                }
             });
-
         });
 
-    </script>
+        $("#check_password_button").click(function (){
+            $.ajax({
+                type: 'GET',
+                url: '/signup/checkPasswords',
+                data: 'password=' + $("#password").val() + '&check_password=' + $("#check_password").val(),
+                dataType: 'json',
+                success: function (result){
+                    $(".modal-body").html(result.message);
+                    $("#emailButton1").modal();
+                }
+            });
+        });
+
+        $("#nickname_button").click(function (){
+            $.ajax({
+                type: 'GET',
+                url: '/signup/checkNickname',
+                data: 'nickname=' + $("#nickname").val(),
+                dataType: 'json',
+                success: function (result){
+                    $(".modal-body").html(result.message);
+                    $("#emailButton1").modal();
+                }
+            });
+        });
+
+        $("#email_button").click(function (){
+            $.ajax({
+                type: 'GET',
+                url: '/signup/email',
+                data: 'email=' + $("#email").val(),
+                dataType: 'json',
+                success: function () {
+                    $(".modal-body").html('이메일을 확인하세요.');
+                    $("#emailButton1").modal();
+                }
+            });
+        });
+
+        $("#check_certification_number_button").click(function (){
+            $.ajax({
+                type: 'GET',
+                url: '/signup/checkTokens',
+                data: 'email=' + $("#email").val() + '&certification_number=' + $("#certification_number").val(),
+                dataType: 'json',
+                success: function (result){
+                    $(".modal-body").html(result.message);
+                    $("#emailButton1").modal();
+                }
+            });
+        });
+
+
+    });
+
+</script>
 
 </div>
-
-
 
 </html>
