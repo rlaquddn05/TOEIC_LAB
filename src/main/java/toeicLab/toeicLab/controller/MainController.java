@@ -16,7 +16,6 @@ import toeicLab.toeicLab.service.MailService;
 import toeicLab.toeicLab.service.MemberService;
 import toeicLab.toeicLab.domain.QuestionSet;
 import toeicLab.toeicLab.domain.QuestionSetType;
-import toeicLab.toeicLab.service.MemberService;
 import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.user.CurrentUser;
 import toeicLab.toeicLab.user.SignUpForm;
@@ -332,19 +331,18 @@ public class MainController {
             QuestionSet list = new QuestionSet();
             switch (type) {
                 case "quarter":
-                    list = questionSetService.createToeicSet(QuestionSetType.QUARTER_TOEIC);
+                    list = questionSetService.createToeicSet(member, QuestionSetType.QUARTER_TOEIC);
                     break;
 
                 case "half":
-                    list = questionSetService.createToeicSet(QuestionSetType.HALF_TOEIC);
+                    list = questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
                     break;
-
 
                 case "full":
-                    list = questionSetService.createToeicSet(QuestionSetType.FULL_TOEIC);
+                    list = questionSetService.createToeicSet(member, QuestionSetType.FULL_TOEIC);
                     break;
-                default:
 
+                default:
                     break;
             }
             model.addAttribute("QuestionList", list.getQuestions());

@@ -2,13 +2,13 @@ package toeicLab.toeicLab.domain;
 
 public enum QuestionSetType {
 
-    QUARTER_TOEIC(1),
-    HALF_TOEIC(2),
-    FULL_TOEIC(3),
-    HALF_SPEAKING(4),
-    FULL_SPEAKING(5),
-    MEETING(6),
-    LEVEL_TEST(7);
+    QUARTER_TOEIC(0),
+    HALF_TOEIC(1),
+    FULL_TOEIC(2),
+    HALF_SPEAKING(3),
+    FULL_SPEAKING(4),
+    MEETING(5),
+    LEVEL_TEST(6);
 
     int primary;
 

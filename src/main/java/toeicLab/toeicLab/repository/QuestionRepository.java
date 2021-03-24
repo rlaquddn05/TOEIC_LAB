@@ -9,7 +9,10 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    List<Question> findAllByQuestionType(QuestionType part1);
+    List<Question> findAllByQuestionType(QuestionType questionType);
 
     List<Question> findAllBySmallSetId(int smallSetId);
+
+    List<Question> findAllByQuestionTypeAndSmallSetType(QuestionType questionType, int smallSetType);
+
 }
