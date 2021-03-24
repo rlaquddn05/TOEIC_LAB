@@ -8,31 +8,92 @@
     <link rel="stylesheet" th:href="@{/css/sheet/sheet.css}">
 </th:block>
 
-<div layout:fragment="content">
+<div layout:fragment="content" >
         <div class="container">
-            <h3>Quarter 모의시험</h3>
-            <ul class="nav nav-tabs" >
-                <li class="nav-item" >
-                    <a class="nav-link active" data-toggle="tab" href="#lc">LC</a>
-                </li>
+            <h3 th:text="${type} + ' 모의시험'"></h3>
+            <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#rc">RC</a>
+                    <a class="nav-link active" data-toggle="tab" href="#p1">part1</a>
                 </li>
-                <!--            <li class="nav-item" th:text="">-->
-                <!--                <a class="nav-link active" data-toggle="tab" href="#spk">RC</a>-->
-                <!--            </li>-->
+                <li class="nav-item" >
+                    <a class="nav-link " data-toggle="tab" href="#p2">part2</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link " data-toggle="tab" href="#p3">part3</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link " data-toggle="tab" href="#p4">part4</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link " data-toggle="tab" href="#p5">part5</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link " data-toggle="tab" href="#p6">part6</a>
+                </li>
             </ul>
             <form th:action="@{/result_sheet}" th:method="post">
             <div class="tab-content">
-                <div class="tab-pane fade show active" id="lc">
-                    <th:block th:insert="fragments/question_LC_fragments :: question_list(${QuestionList})"/>
+                <div class="tab-pane fade show active" id="p1">
+                    <div class="banner">
+                        <p>LISTENING TEST<br/>
+                            In the Listening test, you will be asked to demonstrate how well you understand spoken English.<br/>
+                            The entire Listening test will last approximately 45 minutes. there are four parts, and directions are given for each part.<br/>
+                            you must mark your answers on the separate answer sheet. Do not write your answers in your test book.
+                        </p>
+                        <p>
+                            PART1 <br/>
+                            Directions: For each question in this part, you will hear four statements about a picture in your test book.<br/>
+                            When you hear the statements, you must select the one statement that best describes what you see in the picture.<br/>
+                            Then find the number of the question on your answer sheet and mark your answer. <br/>
+                            The statements will not be printed in your test book and will be spoken only one time.
+                        </p>
+                    </div>
+                    <th:block th:insert="fragments/question_LC1_fragments :: question_list(${questionList})"/>
                 </div>
-                <div class="tab-pane fade" id="rc">
-                    <th:block th:insert="fragments/question_RC_fragments :: question_list(${QuestionList})"/>
+                <div class="tab-pane fade" id="p2">
+                    <div class="banner">
+                        <p>
+                            PART2<br/>
+                            Directions: You will hear a question or statement and three responses spoken in English.<br/>
+                            They will not be printed in your test book and will be spoken only one time.<br/>
+                            Select the best response to the question or statement and mark the letter (A), (B), or (C) on you answer sheet.
+                        </p>
+                    </div>
+                    <th:block th:insert="fragments/question_LC2_fragments :: question_list(${questionList})"/>
                 </div>
-                <!-- <div class="tab-pane fade" id="spk">
-                     <th:block th:insert="fragments/question_SPK_fragments :: question_list(${QuestionList})"/>
-                 </div>-->
+                <div class="tab-pane fade" id="p3">
+                    <div class="banner">
+                        <p>
+                            PART3<br/>
+                            Directions: You will hear some conversation between two or more people. <br/>
+                            You will be asked to answer three questions about what the speaker say in each conversation. <br/>
+                            Select the best response to each question and mark the letter (A), (B), (C), or (D) on your answer sheet. <br/>
+                            The conversations will not be printed in your test book and will be spoken only one time.
+                        </p>
+                    </div>
+                    <th:block th:insert="fragments/question_LC3_fragments :: question_list(${questionList})"/>
+                </div>
+                <div class="tab-pane fade" id="p4">
+                    <div class="banner">
+                        <p>
+                            PART4<br/>
+                            Directions: You will hear some talks given by a single speaker.<br/>
+                            You will be asked to answer three questions about what the speaker says in each talk.<br/>
+                            Select the best response to each question and mark the letter (A), (B), (C) or (D) on your answer sheet.<br/>
+                            the talk will not be printed in your test book and will be spoken only one time.
+                        </p>
+                    </div>
+                    <th:block th:insert="fragments/question_LC4_fragments :: question_list(${questionList})"/>
+                </div>
+                <div class="tab-pane fade" id="p5">
+                    <th:block th:insert="fragments/question_RC5_fragments :: question_list(${questionList})"/>
+                </div>
+                <div class="tab-pane fade" id="p6">
+                    <th:block th:insert="fragments/question_RC6_fragments :: question_list(${questionList})"/>
+                </div>
+                <div class="tab-pane fade" id="p7">
+                    <th:block th:insert="fragments/question_RC7_fragments :: question_list(${questionList})"/>
+                </div>
             </div>
                 <button type="submit"> 제출</button>
             </form>
