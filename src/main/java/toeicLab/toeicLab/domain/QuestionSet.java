@@ -26,7 +26,6 @@ public class QuestionSet{
     private LocalDateTime createdAt;
 
     @OneToMany
-    @JoinColumn
     private List<Question> questions = new ArrayList<>();
 
     @ElementCollection

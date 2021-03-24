@@ -30,6 +30,7 @@ public class DevConfiguration {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
+    private final QuestionSetService questionSetService;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
     private static final int NUMBER_OF_DUMMY_USERS = 1000;
@@ -269,8 +270,6 @@ public class DevConfiguration {
     public void testMatchStudyGroup() {
         studyGroupApplicationService.matchStudyGroups();
     }
-
-    private final QuestionSetService questionSetService;
 
     @PostConstruct
     public void TestCreateToeicSet() {
