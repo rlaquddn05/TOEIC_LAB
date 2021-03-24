@@ -11,108 +11,51 @@
 
 
 <div layout:fragment="content">
+
+</div>
+<div layout:fragment="content">
     <div class="container">
         <form action="" method="post">
             <h1>LC-SHEET</h1>
-            <!--LC Part1 -->
-            <div class="py-5 text-center">
-                <div>
-                    <!--이미지 경로 불러오던지 문제 text 불러오면 됩니다.-->
-                    <img th:src="@{/images/example/pic1.jpg}" class="img">
-                    <button type="button" class="btn btn-primary">듣기</button>
+
+            <ul class="nav nav-tabs">
+                <li th:if="${part1List != null}" class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#p1">part1</a>
+                </li>
+                <li th:if="${part2List != null}" class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#p2">part2</a>
+                </li>
+                <li th:if="${part3List != null}" class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#p3">part3</a>
+                </li>
+                <li th:if="${part4List != null}" class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#p4">part4</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                <div th:if="${part1List != null}" class="tab-pane fade show active" id="p1">
+                    <th:block th:insert="fragments/question_LC_fragments :: question_list(${part1List})"/>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:name="p1_answer" th:value="A" id="part1_radio1">
-                    <label class="form-check-label" for="part1_radio1">A</label>
+
+                <div th:if="${part2List != null}" th:classappend="${part1List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p2">
+                    <th:block th:insert="fragments/question_LC_fragments :: question_list(${part2List})"/>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input  class="form-check-input" type="radio" th:name="p1_answer" th:value="B" id="part1_radio2">
-                    <label class="form-check-label" for="part1_radio2">B</label>
+
+                <div th:if="${part3List != null}" th:classappend="${part1List == null && part2List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p3">
+                    <th:block th:insert="fragments/question_LC_fragments :: question_list(${part3List})"/>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:name="p1_answer" th:value="C" id="part1_radio3">
-                    <label class="form-check-label" for="part1_radio3">C</label>
+
+                <div th:if="${part4List != null}" th:classappend="${part1List == null && part2List == null && part3List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p4">
+                    <th:block th:insert="fragments/question_LC_fragments :: question_list(${part4List})"/>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:name="p1_answer" th:value="D" id="part1_radio4">
-                    <label class="form-check-label" for="part1_radio4">D</label>
-                </div>
+
             </div>
 
 
-            <!--LC Part2-->
-            <div class="py-5 text-center">
-                <div>
-                    <!--이미지 경로 불러오던지 문제 text 불러오면 됩니다.-->
-                    <button type="button" class="btn btn-primary btn-lg">듣기</button>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:name="p2_answer" th:value="A" id="part2_radio1">
-                    <label class="form-check-label" for="part2_radio1">A</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:name="p2_answer" th:value="B" id="part2_radio2">
-                    <label class="form-check-label" for="part2_radio2">B</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" th:name="p2_answer" th:value="C" id="part2_radio3">
-                    <label class="form-check-label" for="part2_radio3">C</label>
-                </div>
-            </div>
-            <!--LC Part3 **하나의 듣기에 문제가 3개씩 있는데....-->
-            <div class="py-5 text-center">
-                <!--여기도 만약에 `듣기` 가 같은 url 이면 아래 div 를 스킵하는 쪽으로 만드는게 좋겠습니다.-->
-                <!--문제는 3-1, 3-2, 3-3 의 문제를 구현해야 한다.-->
-                <div>
-                    <!--이미지가 없는게 많지만 만약있다면 쓰기-->
-                    <img th:src="@{/images/example/pic1.jpg}" class="img">
-                    <button type="button" class="btn btn-primary">듣기</button>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" th:name="p3_answer" th:value="A" id="part3_radio1">
-                    <label class="form-check-label" for="part3_radio1">A</label>
-                </div>
-                <div class="form-check">
-                    <input  class="form-check-input" type="radio" th:name="p3_answer" th:value="B" id="part3_radio2">
-                    <label class="form-check-label" for="part3_radio2">B</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" th:name="p3_answer" th:value="C" id="part3_radio3">
-                    <label class="form-check-label" for="part3_radio3">C</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" th:name="p3_answer" th:value="D" id="part3_radio4">
-                    <label class="form-check-label" for="part3_radio4">D</label>
-                </div>
-            </div>
 
-            <!--LC Part4 **하나의 듣기에 문제가 3개씩 있는데....-->
-            <!--문제는 4-1, 4-2, 4-3 의 문제를 구현해야 한다.-->
-            <div class="py-5 text-center">
-                <div>
-                    <!--이미지가 없는게 많지만 만약있다면 쓰기-->
-                    <img th:src="@{/images/example/pic1.jpg}" class="img">
-                    <button type="button" class="btn btn-primary">듣기</button>
-                </div>
-                <div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" th:name="p4_answer" th:value="A" id="part4_radio1">
-                        <label class="form-check-label" for="part4_radio1">A</label>
-                    </div>
-                    <div class="form-check">
-                        <input  class="form-check-input" type="radio" th:name="p4_answer" th:value="B" id="part4_radio2">
-                        <label class="form-check-label" for="part4_radio2">B</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" th:name="p4_answer" th:value="C" id="part4_radio3">
-                        <label class="form-check-label" for="part4_radio3">C</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" th:name="p4_answer" th:value="D" id="part4_radio4">
-                        <label class="form-check-label" for="part4_radio4">D</label>
-                    </div>
-                </div>
-            </div>
+
             <!--풀다 말았을때 저장 기능이랑 제출-->
             <div id="submit_btn">
                 <button type="submit" class="btn btn-primary" >저장</button>

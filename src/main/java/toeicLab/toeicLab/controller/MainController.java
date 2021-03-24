@@ -16,12 +16,15 @@ import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
 import toeicLab.toeicLab.service.MailService;
 import toeicLab.toeicLab.service.MemberService;
+import toeicLab.toeicLab.service.QuestionService;
 import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.user.CurrentUser;
 import toeicLab.toeicLab.user.SignUpForm;
 import toeicLab.toeicLab.user.SignUpValidator;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,6 +40,7 @@ public class MainController {
     private final MemberRepository memberRepository;
     private final QuestionSetService questionSetService;
     private final QuestionSetRepository questionSetRepository;
+    private final QuestionService questionService;
 
     @GetMapping("/")
     public String index() {
@@ -324,20 +328,66 @@ public class MainController {
     }
 
 
-        @GetMapping("/practice_test/{id}")
-        public String practiceTest (@PathVariable String id, Model model){
-            if(id.equals("rc")){
-                model.addAttribute("practice", "rc");
+    @GetMapping("/practice_select/{id}")
+    public String practiceTest(@PathVariable String id, Model model){
+        if(id.equals("rc")){
+            model.addAttribute("practice", "rc");
+        }
+        if(id.equals("lc")){
+            model.addAttribute("practice", "lc");
+        }
+        if(id.equals("spk")){
+            model.addAttribute("practice", "spk");
+        }
+        return "/view/practice_select";
+    }
+
+    @RequestMapping("/practice/{id}")
+    @Transactional
+    public String test(@CurrentUser Member member, @PathVariable String id, HttpServletRequest request, Model model){
+
+        QuestionSet questionSet = new QuestionSet();
+        questionSet.setMember(member);
+        questionSet.setCreatedAt(LocalDateTime.now());
+        questionSet.setTimer(null);
+
+        if(("lc").equals(id)){
+            int part1 = Integer.parseInt(request.getParameter("PART1"));
+            int part2 = Integer.parseInt(request.getParameter("PART2"));
+            int part3 = Integer.parseInt(request.getParameter("PART3"));
+            int part4 = Integer.parseInt(request.getParameter("PART4"));
+
+            if(part1 > 0) {
+                model.addAttribute("part1List", questionService.createQuestionList(QuestionType.PART1, part1));
             }
-            if(id.equals("lc")){
-                model.addAttribute("practice", "lc");
+            if(part2 > 0) {
+                model.addAttribute("part2List", questionService.createQuestionList(QuestionType.PART2, part2));
             }
-            if(id.equals("spk")){
-                model.addAttribute("practice", "spk");
+            if(part3 > 0) {
+                model.addAttribute("part3List", questionService.createQuestionList(QuestionType.PART3, part3));
             }
-            return "/view/practice_test";
+            if(part4 > 0) {model.addAttribute("part4List", questionService.createQuestionList(QuestionType.PART4, part4));}
+
+            return "/view/lc_sheet";
         }
 
+
+        else if (("rc").equals(id)){
+            System.out.println("part5 : " + request.getParameter("PART5"));
+            System.out.println("part6 : " + request.getParameter("PART6"));
+            System.out.println("part7 : " + request.getParameter("PART7"));
+
+            return "/view/rc_sheet";
+        }
+
+        else {
+            System.out.println("partspk : " + request.getParameter("PARTspk"));
+
+            return "/view/spk_sheet";
+        }
+
+
+    }
 
         @GetMapping("/test/{type}")
         @Transactional
