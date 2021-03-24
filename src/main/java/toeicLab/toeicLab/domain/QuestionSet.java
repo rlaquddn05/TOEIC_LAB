@@ -25,7 +25,7 @@ public class QuestionSet{
 
     private LocalDateTime createdAt;
 
-    @OneToMany
+    @ManyToMany
     private List<Question> questions = new ArrayList<>();
 
     @ElementCollection

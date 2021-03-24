@@ -113,7 +113,6 @@ public class MainController {
 
     @PostMapping("/signup")
     public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
-        log.info("하...");
         if (errors.hasErrors()) {
             log.info("유효성 에러 발생!");
             return "/view/signup";
@@ -287,6 +286,10 @@ public class MainController {
         return "/view/apply_studygroup";
     }
 
+    @PostMapping("/apply_studygroup")
+    public String SubmitStudyGroupApplication(@CurrentUser Member member, Model model){
+        return "/view/index";
+    }
 
     @PostMapping("/result_sheet")
     public String resultSheet(@CurrentUser Member member, QuestionSet questionSet) {
