@@ -12,6 +12,7 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
+import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,7 @@ public class DevConfiguration {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
+    private final QuestionSetService questionSetService;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
     private final int NUMBER_OF_DUMMY_USERS = 1000;
@@ -231,7 +233,7 @@ public class DevConfiguration {
         return paragraph;
     }
 
-        @PostConstruct
+//        @PostConstruct
     public void createDummyUsers() {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
             Member member = Member.builder()
@@ -263,6 +265,7 @@ public class DevConfiguration {
         @PostConstruct
     public void createTestUsers() {
         Member member = Member.builder()
+                .userId("hello")
                 .email("a@a.a")
                 .password(passwordEncoder.encode("1234"))
                 .memberType(MemberType.USER)
@@ -275,8 +278,10 @@ public class DevConfiguration {
         log.info("a@a.a created.");
     }
 
-    @PostConstruct
-    public void testMatchStudyGroup(){
+
+//    @PostConstruct
+    public void testMatchStudyGroup() {
         studyGroupApplicationService.matchStudyGroups();
     }
+
 }
