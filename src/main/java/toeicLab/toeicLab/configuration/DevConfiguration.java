@@ -231,7 +231,7 @@ public class DevConfiguration {
         return paragraph;
     }
 
-    //    @PostConstruct
+        @PostConstruct
     public void createDummyUsers() {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
             Member member = Member.builder()
@@ -260,7 +260,7 @@ public class DevConfiguration {
         log.info("DummyUsers created.");
     }
 
-    //    @PostConstruct
+        @PostConstruct
     public void createTestUsers() {
         Member member = Member.builder()
                 .email("a@a.a")
