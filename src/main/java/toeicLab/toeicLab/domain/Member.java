@@ -30,7 +30,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private GenderType genderType;
 
-    private String gender;
+//    private String gender;
 
     @Enumerated(EnumType.STRING)
     private MemberType memberType;

@@ -123,6 +123,7 @@ public class MainController {
     }
 
     @GetMapping("/signup/email")
+    @ResponseBody
     public String sendEmailCheckToken(@RequestParam("email") String email) {
         MailDto mailDto = new MailDto();
         mailDto.setEmail(email);
@@ -131,7 +132,17 @@ public class MainController {
         MailDto saveMail = mailService.mailSend(mailDto);
         mailRepository.save(saveMail);
 
-        return "redirect:/view/signup";
+        JsonObject jsonObject = new JsonObject();
+
+        boolean result = false;
+        result = saveMail != null;
+
+        if (result) {
+            jsonObject.addProperty("message", "이메일을 확인하세요.");
+        } else {
+            jsonObject.addProperty("message", "올바른 이메일형식이 아닙니다.");
+        }
+        return jsonObject.toString();
     }
 
     @GetMapping("/signup/checkTokens")

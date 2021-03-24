@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.Address;
+import toeicLab.toeicLab.domain.GenderType;
 import toeicLab.toeicLab.domain.Member;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.user.MemberUser;
@@ -24,7 +25,6 @@ public class MemberService implements UserDetailsService {
                 .userId(signUpForm.getUserId())
                 .password(signUpForm.getPassword())
                 .nickname(signUpForm.getNickname())
-                .gender(signUpForm.getGender())
                 .age(signUpForm.getAge())
                 .email(signUpForm.getEmail())
                 .contact(signUpForm.getContact())
@@ -34,6 +34,13 @@ public class MemberService implements UserDetailsService {
                         .street(signUpForm.getStreet())
                         .build())
                 .build();
+
+        if(signUpForm.getGender().equals("male")){
+            member.setGenderType(GenderType.MALE);
+        }else {
+            member.setGenderType(GenderType.FEMALE);
+        }
+
         member.encodePassword(passwordEncoder);
         memberRepository.save(member);
         return member;
