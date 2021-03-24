@@ -30,6 +30,9 @@
                 <li class="nav-item" >
                     <a class="nav-link " data-toggle="tab" href="#p6">part6</a>
                 </li>
+                <li class="nav-item" >
+                    <a class="nav-link " data-toggle="tab" href="#p7">part7</a>
+                </li>
             </ul>
             <form th:action="@{/result_sheet}" th:method="post">
             <div class="tab-content">
@@ -92,7 +95,8 @@
                     <th:block th:insert="fragments/question_RC6_fragments :: question_list(${questionList})"/>
                 </div>
                 <div class="tab-pane fade" id="p7">
-                    <th:block th:insert="fragments/question_RC7_fragments :: question_list(${questionList})"/>
+                    <th:block th:insert="fragments/question_RC7_1_fragments :: question_list(${questionList})"/>
+                    <th:block th:insert="fragments/question_RC7_2_fragments :: question_list(${questionList})"/>
                 </div>
             </div>
                 <button type="submit"> 제출</button>

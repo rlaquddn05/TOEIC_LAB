@@ -33,7 +33,7 @@ public class DevConfiguration {
     private final QuestionSetService questionSetService;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private static final int NUMBER_OF_DUMMY_USERS = 1000;
+    private static final int NUMBER_OF_DUMMY_USERS = 1;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private static final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
@@ -271,7 +271,7 @@ public class DevConfiguration {
         studyGroupApplicationService.matchStudyGroups();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void TestCreateToeicSet() {
         Member member = memberRepository.findByEmail("a@a.a");
         questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
@@ -289,7 +289,7 @@ public class DevConfiguration {
         initPart7_multiple();
     }
 
-//    @PostConstruct
+ //   @PostConstruct
     public void  initDummyUsers(){
         createDummyUsers();
         createTestUsers();

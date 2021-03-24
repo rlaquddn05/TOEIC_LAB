@@ -6,33 +6,6 @@
 
 <div th:fragment="question_list(questionList)">
     <div class="container" th:each="question:${questionList}">
-        <!--PART7_SINGLE_PARAGRAPH-->
-        <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART7_SINGLE_PARAGRAPH')}">
-            <div>
-                <span th:text="${question.id} + '.'"></span>
-                <img th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img" >
-                <p>
-                <span th:text="${question.content}"></span>
-                </p>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="A" id="part7_sa">
-                <label class="form-check-label" for="part7_sa" th:text="${question.exampleA}"></label>
-            </div><br/>
-            <div class="form-check">
-                <input  class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="B" id="part7_sb">
-                <label class="form-check-label" for="part7_sb" th:text="${question.exampleB}"></label>
-            </div><br/>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="C" id="part7_sc">
-                <label class="form-check-label" for="part7_sc" th:text="${question.exampleC}"></label>
-            </div><br/>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="D" id="part7_sd">
-                <label class="form-check-label" for="part7_sd" th:text="${question.exampleD}"></label>
-            </div>
-        </div>
-
         <!--PART7_MULTIPLE_PARAGRAPH-->
         <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART7_MULTIPLE_PARAGRAPH')}">
             <div>
