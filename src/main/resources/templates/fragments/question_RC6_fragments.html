@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<div th:fragment="question_list(questionList)">
+    <div class="container" th:each="question:${questionList}">
+        <!--part6-->
+        <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART6')}">
+            <div>
+                <span th:text="${question.id} + '.'"></span>
+                <span th:text="${question.content}"></span>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="A" id="part6_a">
+                <label class="form-check-label" for="part6_a" th:text="${question.exampleA}"></label>
+            </div><br/>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="B" id="part6_b">
+                <label class="form-check-label" for="part6_b" th:text="${question.exampleB}"></label>
+            </div><br/>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="C" id="part6_c">
+                <label class="form-check-label" for="part6_c" th:text="${question.exampleC}"></label>
+            </div><br/>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="D" id="part6_d">
+                <label class="form-check-label" for="part6_d" th:text="${question.exampleD}"></label>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

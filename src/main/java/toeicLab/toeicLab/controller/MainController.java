@@ -8,20 +8,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import toeicLab.toeicLab.domain.MailDto;
-import toeicLab.toeicLab.domain.Member;
+import org.w3c.dom.stylesheets.LinkStyle;
+import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MailRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
+import toeicLab.toeicLab.repository.QuestionRepository;
+import toeicLab.toeicLab.repository.QuestionSetRepository;
 import toeicLab.toeicLab.service.MailService;
 import toeicLab.toeicLab.service.MemberService;
-import toeicLab.toeicLab.domain.QuestionSet;
-import toeicLab.toeicLab.domain.QuestionSetType;
 import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.user.CurrentUser;
 import toeicLab.toeicLab.user.SignUpForm;
 import toeicLab.toeicLab.user.SignUpValidator;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Properties;
 
 @Controller
 @Slf4j
@@ -34,6 +36,7 @@ public class MainController {
     private final MailRepository mailRepository;
     private final MemberRepository memberRepository;
     private final QuestionSetService questionSetService;
+    private final QuestionSetRepository questionSetRepository;
 
     @GetMapping("/")
     public String index() {
@@ -218,7 +221,9 @@ public class MainController {
     }
 
     @GetMapping("/my_page")
-    public String myPage() {
+    public String myPage(@CurrentUser Member member, Model model) {
+        Member user = memberRepository.findByEmail(member.getEmail());
+        model.addAttribute("userDto", user);
         return "/view/my_page";
     }
 
@@ -282,9 +287,11 @@ public class MainController {
         return "/view/apply_studygroup";
     }
 
-    @GetMapping("/result_sheet")
+
     @PostMapping("/result_sheet")
-    public String resultSheet() {
+    public String resultSheet(@CurrentUser Member member, QuestionSet questionSet) {
+
+
         return "/view/result_sheet";
     }
 
@@ -331,7 +338,15 @@ public class MainController {
 
         @GetMapping("/practice_test/{id}")
         public String practiceTest (@PathVariable String id, Model model){
-            System.out.println(id);
+            if(id.equals("rc")){
+                model.addAttribute("practice", "rc");
+            }
+            if(id.equals("lc")){
+                model.addAttribute("practice", "lc");
+            }
+            if(id.equals("spk")){
+                model.addAttribute("practice", "spk");
+            }
             return "/view/practice_test";
         }
 
@@ -341,22 +356,24 @@ public class MainController {
         public String test1 (@CurrentUser Member member, @PathVariable String type, Model model){
             QuestionSet list = new QuestionSet();
             switch (type) {
-                case "quarter":
+                case "Quarter":
                     list = questionSetService.createToeicSet(member, QuestionSetType.QUARTER_TOEIC);
                     break;
 
-                case "half":
+                case "Half":
                     list = questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
                     break;
 
-                case "full":
+                case "Full":
                     list = questionSetService.createToeicSet(member, QuestionSetType.FULL_TOEIC);
                     break;
 
                 default:
                     break;
             }
-            model.addAttribute("QuestionList", list.getQuestions());
+            questionSetRepository.save(list);
+            model.addAttribute("questionList", list.getQuestions());
+            model.addAttribute("type", type);
             return "/view/question/test";
         }
 

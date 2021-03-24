@@ -3,6 +3,9 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout" th:with="title='my_page'">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/member/myPage.css}">
+</th:block>
 <div layout:fragment="content">
     <div class="container">
         <main>
@@ -12,7 +15,7 @@
             </div>
 
             <div class="row g-10">
-
+            <div class="col-1"></div>
                 <form name = "updateForm" class="needs-validation" novalidate>
                     <div class="row g-3">
                         <div class="col-12">
@@ -20,7 +23,7 @@
                             <input type="text" class="form-control"
                                    name="user_id" id="user_id"
                                    aria-describedby="user_id_help_text"
-                                   value="user_id" readonly="readonly">
+                                   th:value="${userDto.getEmail()}" readonly="readonly">
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="username_help_text"
                                    class="form-text text-muted">
@@ -35,7 +38,7 @@
                             <input type="password" class="form-control"
                                    name="password" id="password"
                                    aria-describedby="password_help_text"
-                                   value="password" required>
+                                   th:value="${userDto.getPassword()}" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="password_help_text"
                                    class="form-text text-muted">
@@ -50,7 +53,7 @@
                             <input type="text" class="form-control"
                                    name="nickname" id="nickname"
                                    aria-describedby="nickname_help_text"
-                                   value="nickname" required>
+                                   th:value="${userDto.getNickname()}" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="nickname_help_text"
                                    class="form-text text-muted">
@@ -64,7 +67,7 @@
                             <label for="gender" class="form-label">성별</label>
                             <input type="text" class="form-control"
                                    name="gender" id="gender"
-                                   aria-describedby="gender_help_text" value="gender"
+                                   aria-describedby="gender_help_text"  th:value="${userDto.getGenderType()}"
                                    required readonly="readonly">
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="gender_help_text"
@@ -80,7 +83,7 @@
                             <input type="text" class="form-control"
                                    name="age" id="age"
                                    aria-describedby="age_help_text"
-                                   value="age" required>
+                                   th:value="${userDto.getAge()}" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="age_help_text"
                                    class="form-text text-muted">
@@ -94,7 +97,7 @@
                             <label for="contact" class="form-label">전화번호</label>
                             <input type="tel" class="form-control"
                                    name="contact" id="contact"
-                                   aria-describedby="contact_help_text" value="contact"
+                                   aria-describedby="contact_help_text"  th:value="${userDto.getContact()}"
                                    required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="contact_help_text"
@@ -108,19 +111,19 @@
                         <div class="col-2">
                             <label for="zipcode" class="form-label">우편번호</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="zipcode" readonly>
+                                <input type="text" class="form-control" id="zipcode" th:value="${userDto.getAddress().getZipcode()}" readonly>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="city"  class="form-label">기본주소</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="city" readonly>
+                                <input type="text" class="form-control" id="city" th:value="${userDto.getAddress().getCity()}" readonly>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="street" class="form-label">상세주소</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="street">
+                                <input type="text" class="form-control" id="street" th:value="${userDto.getAddress().getStreet()}">
                             </div>
                         </div>
                         <div class="col-2">
@@ -132,12 +135,13 @@
                     <hr class="col-12 my-4">
 
                     <div class="btn-group">
-                        <button type="button" class="btn btn-dark">정보수정</button>
-                        <button type="button" class="btn btn-dark">뒤로가기</button>
-                        <button type="button" class="btn btn-dark">탈퇴하기</button>
+                        <button type="button" class="btn btn-dark group-btn">정보수정</button>
+                        <button type="button" class="btn btn-dark group-btn">뒤로가기</button>
+                        <button type="button" class="btn btn-dark group-btn">탈퇴하기</button>
                     </div>
 
                 </form>
+                <div class="col-1"></div>
             </div>
 
         </main>

@@ -41,7 +41,7 @@ public class QuestionSetService {
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
         result.setQuestionSetType(questionSetType);
-        questionSetRepository.save(result);
+
 
         return result;
     }

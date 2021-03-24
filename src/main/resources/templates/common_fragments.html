@@ -15,7 +15,7 @@
                 </form>
             </li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/signup}" sec:authorize="!isAuthenticated()">회원가입</a></li>
-            <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_page}" sec:authorize="isAuthenticated()" th:text="${#authentication?.name}" >내정보</a></li>
+            <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_page}" sec:authorize="isAuthenticated()" th:text="${#authentication?.name}+'님'" >내정보</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_progress}" sec:authorize="isAuthenticated()">학습현황</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" sec:authorize="isAuthenticated()">스터디그룹</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" sec:authorize="isAuthenticated()">단어장</a></li>
@@ -29,8 +29,8 @@
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/select_test}">모의시험</a></li>
             <li class="nav-item dropdown"><a href="#"><span>연습 문제</span><i class="fas fa-chevron-down"></i></a>
                 <ul>
-                    <li class="dropdown-item"><a class="nav-link" href="#" th:href="@{/practice_test/{id}(id=${'rc'})}">RC 연습문제</a></li>
                     <li class="dropdown-item"><a class="nav-link" href="#" th:href="@{/practice_test/{id}(id=${'lc'})}">LC 연습문제</a></li>
+                    <li class="dropdown-item"><a class="nav-link" href="#" th:href="@{/practice_test/{id}(id=${'rc'})}">RC 연습문제</a></li>
                     <li class="dropdown-item"><a class="nav-link" href="#" th:href="@{/practice_test/{id}(id=${'spk'})}">SPK 연습문제</a></li>
                 </ul>
             </li>
