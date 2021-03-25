@@ -167,4 +167,19 @@ public class QuestionService {
         return result;
     }
 
+    public List<Question> createPracticeSingle(QuestionType questionType, int num) {
+        List<Question> result = new ArrayList<>();
+
+        for (int i = 1; i <= num; ++i) {
+            List<Question> list = questionRepository.findAllByQuestionType(questionType);
+            Question question = list.get((int) (Math.random() * list.size()));
+            if (result.contains(question)) {
+                --i;
+            }
+            result.addAll(questionRepository.findAllBySmallSetId(question.getSmallSetId()));
+        }
+
+        return result;
+    }
+
 }

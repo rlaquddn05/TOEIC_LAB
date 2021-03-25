@@ -8,7 +8,8 @@ public enum QuestionSetType {
     HALF_SPEAKING(3),
     FULL_SPEAKING(4),
     MEETING(5),
-    LEVEL_TEST(6);
+    LEVEL_TEST(6),
+    PRACTICE(7);
 
     int primary;
 
