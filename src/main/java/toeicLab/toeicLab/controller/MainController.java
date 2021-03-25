@@ -8,11 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MailRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
-import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
 import toeicLab.toeicLab.service.MailService;
 import toeicLab.toeicLab.service.MemberService;
@@ -317,7 +315,7 @@ public class MainController {
 
     @GetMapping("/lc_sheet")
     public String lcSheet() {
-        return "/view/lc_sheet";
+        return "practice_sheet";
     }
 
     @GetMapping("/spk_sheet")
@@ -415,63 +413,49 @@ public class MainController {
 
     @GetMapping("/practice_select/{id}")
     public String practiceTest(@PathVariable String id, Model model){
-        if(id.equals("rc")){
-            model.addAttribute("practice", "rc");
-        }
-        if(id.equals("lc")){
-            model.addAttribute("practice", "lc");
-        }
-        if(id.equals("spk")){
-            model.addAttribute("practice", "spk");
-        }
+        if(id.equals("rc")) model.addAttribute("practice", "rc");
+        if(id.equals("lc")) model.addAttribute("practice", "lc");
+        if(id.equals("spk")) model.addAttribute("practice", "spk");
         return "/view/practice_select";
     }
 
     @RequestMapping("/practice/{id}")
     @Transactional
     public String test(@CurrentUser Member member, @PathVariable String id, HttpServletRequest request, Model model){
-
-        QuestionSet questionSet = new QuestionSet();
-        questionSet.setMember(member);
-        questionSet.setCreatedAt(LocalDateTime.now());
-        questionSet.setTimer(null);
-
+        QuestionSet list;
         if(("lc").equals(id)){
-            int part1 = Integer.parseInt(request.getParameter("PART1"));
-            int part2 = Integer.parseInt(request.getParameter("PART2"));
-            int part3 = Integer.parseInt(request.getParameter("PART3"));
-            int part4 = Integer.parseInt(request.getParameter("PART4"));
-
-            if(part1 > 0) {
-                model.addAttribute("part1List", questionService.createQuestionList(QuestionType.PART1, part1));
-            }
-            if(part2 > 0) {
-                model.addAttribute("part2List", questionService.createQuestionList(QuestionType.PART2, part2));
-            }
-            if(part3 > 0) {
-                model.addAttribute("part3List", questionService.createQuestionList(QuestionType.PART3, part3));
-            }
-            if(part4 > 0) {model.addAttribute("part4List", questionService.createQuestionList(QuestionType.PART4, part4));}
-
-            return "/view/lc_sheet";
+            int p1 = Integer.parseInt(request.getParameter("PART1"));
+            int p2 = Integer.parseInt(request.getParameter("PART2"));
+            int p3 = Integer.parseInt(request.getParameter("PART3"));
+            int p4 = Integer.parseInt(request.getParameter("PART4"));
+            if(p1 > 0) model.addAttribute("part1List", true);
+            if(p2 > 0) model.addAttribute("part2List", true);
+            if(p3 > 0) model.addAttribute("part3List", true);
+            if(p4 > 0) model.addAttribute("part4List", true);
+            list = questionSetService.createPracticeLC(member, p1, p2, p3, p4);
+            questionSetRepository.save(list);
+            model.addAttribute("questionList", list.getQuestions());
+            model.addAttribute("questionSet", list);
+            return "/view/practice_sheet";
         }
-
-
         else if (("rc").equals(id)){
-            System.out.println("part5 : " + request.getParameter("PART5"));
-            System.out.println("part6 : " + request.getParameter("PART6"));
-            System.out.println("part7 : " + request.getParameter("PART7"));
-
-            return "/view/rc_sheet";
+            int p5 = Integer.parseInt(request.getParameter("PART5"));
+            int p6 = Integer.parseInt(request.getParameter("PART6"));
+            int p7s = Integer.parseInt(request.getParameter("PART7-single"));
+            int p7m = Integer.parseInt(request.getParameter("PART7-multiple"));
+            if(p5 > 0) model.addAttribute("part5List", true);
+            if(p6 > 0) model.addAttribute("part6List", true);
+            if(p7s > 0) model.addAttribute("part7sList", true);
+            if(p7m > 0) model.addAttribute("part7mList", true);
+            list = questionSetService.createPracticeRC(member, p5, p6, p7s, p7m);
+            questionSetRepository.save(list);
+            model.addAttribute("questionList", list.getQuestions());
+            return "/view/practice_sheet";
         }
-
         else {
             System.out.println("partspk : " + request.getParameter("PARTspk"));
-
             return "/view/spk_sheet";
         }
-
-
     }
 
         @GetMapping("/test/{type}")
