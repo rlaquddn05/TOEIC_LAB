@@ -61,7 +61,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/my_studygroup_list",
                         "/practice_test/**",
                         "/signup/**",
-                        "/reset/**")
+                        "/reset/**",
+                        "/notify_password")
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")

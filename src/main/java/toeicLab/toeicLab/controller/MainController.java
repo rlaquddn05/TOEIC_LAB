@@ -72,14 +72,16 @@ public class MainController {
             mailRepository.save(resetPasswordEmail);
 
             model.addAttribute("resetPasswordEmail", resetPasswordEmail);
+            log.info("이메일보내기 성공");
 
 
         } catch (IllegalArgumentException e) {
             model.addAttribute("error_code", "password.reset.failed");
             return "/view/notify_password";
         }
-
+        log.info("뷰페이지 보내줘어");
         model.addAttribute("result_code", "password.reset.send");
+        log.info("뷰페이지에 result_code담기성공");
         return "/view/notify_password";
     }
 
@@ -105,7 +107,7 @@ public class MainController {
 
 
 
-    @GetMapping("/notify_password")
+    @GetMapping("/view/notify_password")
     public String notifyPasswordView(){
         return "/view/notify_password";
     }
@@ -120,7 +122,7 @@ public class MainController {
 //      public String resetPasswordView(){
 //        return "/view/reset_password";
 //      }
-    @GetMapping("reset_password")
+    @GetMapping("/reset_password")
     public String resetPasswordView() {
         return "/view/reset_password";
     }
