@@ -9,18 +9,18 @@
 </th:block>
 
 
-<div layout:fragment="content">
+<div layout:fragment="studyGroupList">
     <div class="container">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#lc">스터디1</a>
+                <a th:each="studyGroup:${studyGroupList}" class="nav-link active" data-toggle="tab" href="#lc">스터디1</a>
             </li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane fade show active" id="lc"><!--id 에 문제아이디 주기-->
                 <div class="py-5 row">
                     <div class="col-7">
-                        <h2>구성원 (닉네임) 연락수단? </h2>
+                        <h2 th:text="${member1.id}"></h2>
                     </div>
                     <div class="col-5">
                         <button type="button" onclick="" class="btn btn-primary">스터디 일정 만들기</button>
@@ -31,8 +31,9 @@
                         <!--스터디 그룹 삭제 아이콘-->
                     </div>
                     <div class="col-12">
-                        <h2>구성원 (닉네임) 연락수단? </h2>
+                        <h2 th:text=""></h2>
                     </div>
+
                 </div>
 
                 <div class="py-5">
