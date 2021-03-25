@@ -434,7 +434,7 @@ public class MainController {
             questionSetRepository.save(list);
             model.addAttribute("questionList", list.getQuestions());
             model.addAttribute("questionSet", list);
-            return "/view/lc_sheet";
+            return "/view/practice_sheet";
         }
         else if (("rc").equals(id)){
             int p5 = Integer.parseInt(request.getParameter("PART5"));
@@ -448,7 +448,7 @@ public class MainController {
             list = questionSetService.createPracticeRC(member, p5, p6, p7s, p7m);
             questionSetRepository.save(list);
             model.addAttribute("questionList", list.getQuestions());
-            return "/view/lc_sheet";
+            return "/view/practice_sheet";
         }
         else {
             System.out.println("partspk : " + request.getParameter("PARTspk"));
