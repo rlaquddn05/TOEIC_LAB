@@ -448,6 +448,7 @@ public class MainController {
             list = questionSetService.createPracticeRC(member, p5, p6, p7s, p7m);
             questionSetRepository.save(list);
             model.addAttribute("questionList", list.getQuestions());
+            model.addAttribute("questionSet", list);
             return "/view/practice_sheet";
         }
         else {
