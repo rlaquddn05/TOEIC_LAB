@@ -253,6 +253,7 @@ public class DevConfiguration {
 
     public void createTestUsers() {
         Member member = Member.builder()
+                .userId("testuser")
                 .email("a@a.a")
                 .password(passwordEncoder.encode("1234"))
                 .memberType(MemberType.USER)
