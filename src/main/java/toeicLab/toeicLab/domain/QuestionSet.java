@@ -29,7 +29,7 @@ public class QuestionSet{
     private List<Question> questions = new ArrayList<>();
 
     @ElementCollection
-    private List<String> submittedAnswers = new ArrayList<>();
+    private Map<Integer, String> submittedAnswers = new HashMap<>();
 
     @OneToMany(mappedBy = "questionSet")
     private List<UserRecording> userRecordings = new ArrayList<>();
