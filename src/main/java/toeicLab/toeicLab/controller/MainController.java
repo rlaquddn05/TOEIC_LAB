@@ -25,8 +25,7 @@ import toeicLab.toeicLab.user.SignUpValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -340,7 +339,32 @@ public class MainController {
     }
 
     @PostMapping("/result_sheet")
-    public String resultSheet(@CurrentUser Member member, QuestionSet questionSet) {
+    public String resultSheet(HttpServletRequest request) {
+        QuestionSet questionSet = null;
+        String [] str = {"correct", "wrong", "none"};
+        List<String> checkAnswer = new ArrayList<>();
+        Enumeration en = request.getParameterNames();
+        String param;
+        String value;
+        Map<Integer, String> map = new HashMap<>();
+        while (en.hasMoreElements()){
+            param = (String)en.nextElement();
+            value = request.getParameter(param);
+            if(param.equals("_csrf")){
+                continue;
+            }
+            if(param.equals("questionSetId")){
+                questionSet = questionSetRepository.getOne(Long.parseLong(value));
+                continue;
+            }
+            map.put(Integer.parseInt(param), value);
+
+            System.out.println(param + "-" +value);
+        }
+        assert questionSet != null;
+        questionSet.setSubmittedAnswers(map);
+        questionSetRepository.save(questionSet);
+        /*============================================================================*/
 
 
         return "/view/result_sheet";
@@ -469,6 +493,7 @@ public class MainController {
                     break;
             }
             questionSetRepository.save(list);
+            model.addAttribute("questionSet", list);
             model.addAttribute("questionList", list.getQuestions());
             model.addAttribute("type", type);
             return "/view/question/test";

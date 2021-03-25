@@ -18,21 +18,22 @@
                 <button type="button" class="btn btn-primary">듣기</button>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="A" id="part3_radio1">
+                <input class="form-check-input" type="radio" th:name="${question.id}" th:value="A" id="part3_radio1">
                 <label class="form-check-label" for="part3_radio1" th:text="${question.exampleA}"></label>
             </div>
             <div class="form-check">
-                <input  class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="B" id="part3_radio2">
+                <input  class="form-check-input" type="radio" th:name="${question.id}" th:value="B" id="part3_radio2">
                 <label class="form-check-label" for="part3_radio2" th:text="${question.exampleB}"></label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="C" id="part3_radio3">
+                <input class="form-check-input" type="radio" th:name="${question.id}" th:value="C" id="part3_radio3">
                 <label class="form-check-label" for="part3_radio3" th:text="${question.exampleC}"></label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" th:name="${question.id}+'_answer'" th:value="D" id="part3_radio4">
+                <input class="form-check-input" type="radio" th:name="${question.id}" th:value="D" id="part3_radio4">
                 <label class="form-check-label" for="part3_radio4" th:text="${question.exampleD}"></label>
             </div>
+            <input class="form-check-input" type="radio" th:name="${question.id}" th:value="'null'" id="part1_radio5" checked style="opacity: 0;">
         </div>
     </div>
 </div>
