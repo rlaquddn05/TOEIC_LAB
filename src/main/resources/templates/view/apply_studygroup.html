@@ -6,13 +6,6 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-<th:block layout:fragment="css">
-
-</th:block>
-<th:block layout:fragment="js">
-    <script type="text/javascript" th:src="@{/js/check_all.js}"></script>
-</th:block>
-
 <div layout:fragment="content">
     <div th:class="container">
 
@@ -21,9 +14,7 @@
             <p class="lead">신청서를 작성하고 제출 버튼을 클릭해주세요</p>
         </div>
 
-        <!--        <div style="border: #444444 solid 1px; padding: 10px;">-->
-
-        <form th:action="@{/signup}" method="post" name="applyForm">
+        <form th:action="@{/apply_studygroup}" method="post" name="applyForm">
 
             <div style="border: #37423b solid 1px; padding: 10px; OVERFLOW-Y:auto; width:100%; height:150px; margin-bottom: 10px;">
                 <h4>스터디 안내사항</h4>
@@ -40,10 +31,8 @@
             </div>
 
             <div class="form-check">
-                <input type="checkbox" th:value="true" class="form-check-input" id="agreement">
+                <input type="checkbox" th:value="true" class="form-check-input" id="agreement" name="agreement">
                 <label class="form-check-label" for="agreement">동의합니다.</label>
-                <div class="invalid-feedback">약관에 동의하셔야 합니다.
-                </div>
             </div>
 
             <hr class="my-2">
@@ -53,19 +42,15 @@
             </div>
             <div class="row">
                 <div class="col-1">
-                    <input type="checkbox" id="checkAll" class="chk">
-                    <label>전체</label>
-                </div>
-                <div class="col-1">
-                    <input type="checkbox" name="check[]" class="chk" value="ten">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).AGE_10S}">
                     <label>10대</label>
                 </div>
                 <div class="col-1">
-                    <input type="checkbox" name="check[]" class="chk" value="twenty">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).AGE_20S}">
                     <label>20대</label>
                 </div>
                 <div class="col-1">
-                    <input type="checkbox" name="check[]" class="chk" value="thirty">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).AGE_30S}">
                     <label>30대</label>
                 </div>
             </div>
@@ -77,20 +62,50 @@
             </div>
             <div class="row">
                 <div class="col-1">
-                    <input type="checkbox" id="up">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).LEVEL_ADVANCED}">
                     <label>상</label>
                 </div>
                 <div class="col-1">
-                    <input type="checkbox" id="middle">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).LEVEL_INTERMEDIATE}">
                     <label>중</label>
                 </div>
                 <div class="col-1">
-                    <input type="checkbox" id="down">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).LEVEL_BEGINNER}">
                     <label>하</label>
                 </div>
             </div>
 
             <hr class="my-2">
+
+            <div style="margin-top: 10px; margin-bottom: 10px">
+                <h4>희망성별(복수응답가능)</h4>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).MALE}">
+                    <label>남</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).FEMALE}">
+                    <label>여</label>
+                </div>
+            </div>
+
+            <hr class="my-2">
+
+            <div style="margin-top: 10px; margin-bottom: 10px">
+                <h4>스터디 희망 요일(복수응답가능)</h4>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).WEEKDAY}">
+                    <label>주중</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" name="tag" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).WEEKEND}">
+                    <label>주말</label>
+                </div>
+            </div>
 
             <button class="w-100 btn btn-dark btn-lg" type="submit">신청서 제출하기</button>
         </form>

@@ -20,7 +20,8 @@ public class StudyGroupApplication {
     @OneToOne
     private Member member;
 
-    @ElementCollection
+    @ElementCollection(targetClass = StudyGroupApplicationTag.class)
+    @Enumerated(EnumType.STRING)
     private List<StudyGroupApplicationTag> tags;
 
     private LocalDateTime submitTime;

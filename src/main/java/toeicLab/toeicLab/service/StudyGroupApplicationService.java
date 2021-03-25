@@ -193,4 +193,9 @@ public class StudyGroupApplicationService {
         }
         return result;
     }
+
+    public void submitStudyGroupApplication(){
+
+    }
+
 }
