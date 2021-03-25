@@ -21,7 +21,19 @@ public class MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailDto.getEmail());
         message.setFrom(MailService.FROM_ADDRESS);
-        message.setSubject("(ToeicLab)회원님의 이메일 인증번호입니다.");
+        message.setSubject("[ToeicLab]회원님의 이메일 인증번호입니다.");
+        message.setText(mailDto.getEmailCheckToken());
+
+        System.out.println("emailCheckToken = " + mailDto.getEmailCheckToken());
+        mailSender.send(message);
+        return mailDto;
+    }
+
+    public MailDto resetPasswordMailSend(MailDto mailDto) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mailDto.getEmail());
+        message.setFrom(MailService.FROM_ADDRESS);
+        message.setSubject("[ToeicLab]회원님의 비밀번호 초기화 인증번호입니다.");
         message.setText(mailDto.getEmailCheckToken());
 
         System.out.println("emailCheckToken = " + mailDto.getEmailCheckToken());

@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import toeicLab.toeicLab.service.MemberService;
@@ -19,6 +23,8 @@ import javax.sql.DataSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final DataSource dataSource;
+
+    private final MemberService memberService;
 
     @Bean // 로그인 유지 (persistence_logins) 레파지토리 빈으로 등록
     public PersistentTokenRepository tokenRepository(){
@@ -54,13 +60,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/spk_answer_sheet",
                         "/my_studygroup_list",
                         "/practice_test/**",
-                        "/signup/**")
+                        "/signup/**",
+                        "/reset/**")
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")
                 .permitAll()
 
                 .anyRequest().authenticated();
+
+        // 로그인 유지 기능 추가
+        http.rememberMe()
+                .userDetailsService(memberService);
 
         // 로그아웃 기능 추가
         http.logout()

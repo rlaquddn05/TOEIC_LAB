@@ -7,4 +7,5 @@ import toeicLab.toeicLab.domain.Member;
 @Repository
 public interface MailRepository extends JpaRepository<MailDto, Long> {
     MailDto findByEmail(String email);
+    MailDto findByEmailCheckToken(String emailCheckToken);
 }

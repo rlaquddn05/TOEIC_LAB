@@ -39,7 +39,10 @@ public class MainController {
     private final QuestionSetRepository questionSetRepository;
 
     @GetMapping("/")
-    public String index() {
+    public String index(@CurrentUser Member member, Model model) {
+        if (member != null) {
+            model.addAttribute(member);
+        }
         return "/view/index";
     }
 
@@ -56,32 +59,70 @@ public class MainController {
     @PostMapping("/send_reset_password_link")
     public String sendResetPassword(String userId, String email, Model model) {
         try {
-            memberService.sendResetPasswordEmail(userId, email);
+            Member checkedMember = memberService.sendResetPasswordEmail(userId, email);
+            model.addAttribute("checkedMember", checkedMember);
+            MailDto mailDto = new MailDto();
+            mailDto.setEmail(checkedMember.getEmail());
+            mailDto.setEmailCheckToken(mailDto.generateEmailCheckToken());
+
+            MailDto resetPasswordEmail = mailService.resetPasswordMailSend(mailDto);
+            mailRepository.save(resetPasswordEmail);
+
+            model.addAttribute("resetPasswordEmail", resetPasswordEmail);
+
+
         } catch (IllegalArgumentException e) {
             model.addAttribute("error_code", "password.reset.failed");
             return "/view/notify_password";
         }
-        model.addAttribute("email", email);
+
         model.addAttribute("result_code", "password.reset.send");
         return "/view/notify_password";
     }
 
-    @GetMapping("reset_password")
-    public String resetPasswordView(String email, String emailCheckToken, Model model) {
-        boolean result = memberService.checkEmailToken(email, emailCheckToken);
+    @GetMapping("/reset/checkTokens")
+    @ResponseBody
+    public String resetCheckTokens(@RequestParam("resetPasswordEmailToken") String resetPasswordEmailToken,
+                                   @RequestParam("resetPasswordEmail") String resetPasswordEmail){
+
+        JsonObject jsonObject = new JsonObject();
+        MailDto getResetPasswordTokenMail = mailRepository.findByEmail(resetPasswordEmail);
+        log.info(getResetPasswordTokenMail.getEmail());
+        boolean result = false;
+
+        result = getResetPasswordTokenMail.getEmailCheckToken().equals(resetPasswordEmailToken);
 
         if (result) {
-            model.addAttribute("result", true);
+            jsonObject.addProperty("message", "비밀번호 초기화 인증 성공");
         } else {
-            model.addAttribute("result", false);
+            jsonObject.addProperty("message", "비밀번호 초기화 인증번호가 일치하지 않습니다.");
         }
+        return jsonObject.toString();
+    }
 
-        model.addAttribute("email", email);
 
+
+    @GetMapping("/notify_password")
+    public String notifyPasswordView(){
+        return "/view/notify_password";
+    }
+
+    @PostMapping("/notify_password")
+    public String goResetPassword(@RequestParam("resetPasswordEmailToken")String resetPasswordEmailToken, Model model){
+        MailDto mailByEmailCheckToken = mailRepository.findByEmailCheckToken(resetPasswordEmailToken);
+        model.addAttribute("email", mailByEmailCheckToken.getEmail());
+        return "/view/reset_password";
+    }
+//      @GetMapping("/reset_password")
+//      public String resetPasswordView(){
+//        return "/view/reset_password";
+//      }
+    @GetMapping("reset_password")
+    public String resetPasswordView() {
         return "/view/reset_password";
     }
 
-    @PostMapping("reset_password")
+    @PostMapping("/reset_password")
     public String resetPassword(String email, String password, Model model) {
         memberService.resetPassword(email, password);
         model.addAttribute("result_code", "password.reset.success");
@@ -119,7 +160,10 @@ public class MainController {
         }
         signUpValidator.validate(signUpForm, errors);
         log.info("유효성 검사 끝!");
-        memberService.createNewMember(signUpForm);
+
+        Member member = memberService.createNewMember(signUpForm);
+
+        memberService.autologin(member); // 해당 멤버를 자동 로그인 해주기
 
         return "redirect:/";
     }

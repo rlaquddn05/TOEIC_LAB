@@ -30,8 +30,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private GenderType genderType;
 
-//    private String gender;
-
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
@@ -77,7 +75,6 @@ public class Member {
 
     @Transactional
     public void encodePassword(PasswordEncoder passwordEncoder){
-
         password = passwordEncoder.encode(password);
     }
 
