@@ -12,17 +12,11 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MailRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
-import toeicLab.toeicLab.service.MailService;
-import toeicLab.toeicLab.service.MemberService;
-import toeicLab.toeicLab.service.QuestionService;
-import toeicLab.toeicLab.service.QuestionSetService;
-import toeicLab.toeicLab.user.CurrentUser;
-import toeicLab.toeicLab.user.SignUpForm;
-import toeicLab.toeicLab.user.SignUpValidator;
+import toeicLab.toeicLab.service.*;
+import toeicLab.toeicLab.user.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -37,7 +31,8 @@ public class MainController {
     private final MemberRepository memberRepository;
     private final QuestionSetService questionSetService;
     private final QuestionSetRepository questionSetRepository;
-    private final QuestionService questionService;
+    private final StudyGroupApplicationValidator studyGroupApplicationValidator;
+    private final StudyGroupApplicationService studyGroupApplicationService;
 
     @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
@@ -114,7 +109,7 @@ public class MainController {
         model.addAttribute("email", mailByEmailCheckToken.getEmail());
         return "/view/reset_password";
     }
-//      @GetMapping("/reset_password")
+    //      @GetMapping("/reset_password")
 //      public String resetPasswordView(){
 //        return "/view/reset_password";
 //      }
@@ -327,13 +322,22 @@ public class MainController {
     }
 
     @GetMapping("/apply_studygroup")
-    public String applyStudygroup() {
+    public String applyStudyGroup(Model model) {
+        model.addAttribute(new StudyGroupApplicationForm());
         return "/view/apply_studygroup";
     }
 
     @PostMapping("/apply_studygroup")
-    public String SubmitStudyGroupApplication(@CurrentUser Member member, Model model){
-        return "/view/index";
+    public String SubmitStudyGroupApplication(@CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors){
+        studyGroupApplicationValidator.validate(studyGroupApplicationForm, errors);
+        if (errors.hasErrors()) {
+            log.info("유효성 에러 발생!");
+            return "/view/apply_studygroup";
+        }
+        log.info("유효성 검사 끝!");
+
+        studyGroupApplicationService.createNewStudyGroupApplication(studyGroupApplicationForm, member);
+        return "redirect:/";
     }
 
     @PostMapping("/result_sheet")
@@ -362,8 +366,6 @@ public class MainController {
         assert questionSet != null;
         questionSet.setSubmittedAnswers(map);
         questionSetRepository.save(questionSet);
-        /*============================================================================*/
-
 
         return "/view/result_sheet";
     }
@@ -457,31 +459,31 @@ public class MainController {
         }
     }
 
-        @GetMapping("/test/{type}")
-        @Transactional
-        public String test1 (@CurrentUser Member member, @PathVariable String type, Model model){
-            QuestionSet list = new QuestionSet();
-            switch (type) {
-                case "Quarter":
-                    list = questionSetService.createToeicSet(member, QuestionSetType.QUARTER_TOEIC);
-                    break;
+    @GetMapping("/test/{type}")
+    @Transactional
+    public String test1 (@CurrentUser Member member, @PathVariable String type, Model model){
+        QuestionSet list = new QuestionSet();
+        switch (type) {
+            case "Quarter":
+                list = questionSetService.createToeicSet(member, QuestionSetType.QUARTER_TOEIC);
+                break;
 
-                case "Half":
-                    list = questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
-                    break;
+            case "Half":
+                list = questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
+                break;
 
-                case "Full":
-                    list = questionSetService.createToeicSet(member, QuestionSetType.FULL_TOEIC);
-                    break;
+            case "Full":
+                list = questionSetService.createToeicSet(member, QuestionSetType.FULL_TOEIC);
+                break;
 
-                default:
-                    break;
-            }
-            questionSetRepository.save(list);
-            model.addAttribute("questionSet", list);
-            model.addAttribute("questionList", list.getQuestions());
-            model.addAttribute("type", type);
-            return "/view/question/test";
+            default:
+                break;
         }
-
+        questionSetRepository.save(list);
+        model.addAttribute("questionSet", list);
+        model.addAttribute("questionList", list.getQuestions());
+        model.addAttribute("type", type);
+        return "/view/question/test";
     }
+
+}

@@ -32,6 +32,7 @@ public class DevConfiguration {
     private final QuestionRepository questionRepository;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
+    private final QuestionSetService questionSetService;
     private static final int NUMBER_OF_DUMMY_USERS = 1;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
@@ -253,7 +254,7 @@ public class DevConfiguration {
 
     public void createTestUsers() {
         Member member = Member.builder()
-                .userId("testuser")
+                .userId("testUser")
                 .email("a@a.a")
                 .password(passwordEncoder.encode("1234"))
                 .memberType(MemberType.USER)
@@ -266,20 +267,19 @@ public class DevConfiguration {
         log.info("a@a.a created.");
     }
 
-    //    @PostConstruct
+//    @PostConstruct
     public void testMatchStudyGroup() {
         studyGroupApplicationService.matchStudyGroups();
     }
 
-    private final QuestionSetService questionSetService;
 
-    //    @PostConstruct
-//    public void TestCreateToeicSet() {
-//        Member member = memberRepository.findByEmail("a@a.a");
-//        questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
-//    }
+//    @PostConstruct
+    public void TestCreateToeicSet() {
+        Member member = memberRepository.findByEmail("a@a.a");
+        questionSetService.createToeicSet(member, QuestionSetType.HALF_TOEIC);
+    }
 
-    //    @PostConstruct
+//    @PostConstruct
     public void initQuestions() throws IOException {
         initPart1();
         initPart2();
@@ -291,8 +291,8 @@ public class DevConfiguration {
         initPart7_multiple();
     }
 
-    //    @PostConstruct
-    public void  initDummyUsers(){
+    @PostConstruct
+    public void initDummyUsers() {
         createDummyUsers();
         createTestUsers();
     }

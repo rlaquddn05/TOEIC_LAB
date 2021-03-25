@@ -66,7 +66,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")
                 .permitAll()
-
                 .anyRequest().authenticated();
 
         // 로그인 유지 기능 추가
