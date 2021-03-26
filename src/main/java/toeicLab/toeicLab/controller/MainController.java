@@ -3,6 +3,7 @@ package toeicLab.toeicLab.controller;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MailRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
+import toeicLab.toeicLab.repository.StudyGroupRepository;
 import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.*;
 
@@ -33,6 +35,7 @@ public class MainController {
     private final QuestionSetRepository questionSetRepository;
     private final StudyGroupApplicationValidator studyGroupApplicationValidator;
     private final StudyGroupApplicationService studyGroupApplicationService;
+    private final StudyGroupRepository studyGroupRepository;
 
     @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
@@ -263,28 +266,43 @@ public class MainController {
     public String myPage(@CurrentUser Member member, Model model) {
         Member user = memberRepository.findByEmail(member.getEmail());
         model.addAttribute("userDto", user);
+        model.addAttribute("member", member);
         return "/view/my_page";
     }
 
     @GetMapping("/my_progress")
-    public String myProgress() {
+    public String myProgress(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/my_progress";
     }
 
     @GetMapping("/my_studygroup_detail/{id}")
     public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
+        Long longId = Long.parseLong(id);
+        StudyGroup thisStudyGroup = studyGroupRepository.getOne(longId);
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", Long.parseLong(id));
+        model.addAttribute("thisStudyGroup", thisStudyGroup);
+
+        model.addAttribute("member1",thisStudyGroup.getMembers().get(0));
+        model.addAttribute("member2",thisStudyGroup.getMembers().get(1));
+        model.addAttribute("member3",thisStudyGroup.getMembers().get(2));
+        model.addAttribute("member4",thisStudyGroup.getMembers().get(3));
+
+        model.addAttribute("meetings",thisStudyGroup.getMeetings());
+
         return "/view/my_studygroup_detail";
     }
 
     @GetMapping("/create_meeting")
-    public String createMeeting() {
+    public String createMeeting(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/create_meeting";
     }
 
     @GetMapping("/my_vocabulary_list")
-    public String myVocabularyList() {
+    public String myVocabularyList(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/my_vocabulary_list";
     }
 
@@ -294,38 +312,45 @@ public class MainController {
     }
 
     @GetMapping("/select_test")
-    public String selectTest() {
+    public String selectTest(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/select_test";
     }
 
     @GetMapping("/rc_sheet")
-    public String rcSheet() {
+    public String rcSheet(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/rc_sheet";
     }
 
     @GetMapping("/lc_sheet")
-    public String lcSheet() {
+    public String lcSheet(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "practice_sheet";
     }
 
     @GetMapping("/spk_sheet")
-    public String spkSheet() {
+    public String spkSheet(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/spk_sheet";
     }
 
     @GetMapping("/spk_confirm_answer")
-    public String spkConfirmAnswer() {
+    public String spkConfirmAnswer(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/spk_confirm_answer";
     }
 
     @GetMapping("/apply_studygroup")
-    public String applyStudyGroup(Model model) {
+    public String applyStudyGroup(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         model.addAttribute(new StudyGroupApplicationForm());
         return "/view/apply_studygroup";
     }
 
     @PostMapping("/apply_studygroup")
-    public String SubmitStudyGroupApplication(@CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors){
+    public String SubmitStudyGroupApplication(Model model, @CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors){
+        model.addAttribute("member", member);
         studyGroupApplicationValidator.validate(studyGroupApplicationForm, errors);
         if (errors.hasErrors()) {
             log.info("유효성 에러 발생!");
@@ -338,7 +363,8 @@ public class MainController {
     }
 
     @PostMapping("/result_sheet")
-    public String resultSheet(HttpServletRequest request) {
+    public String resultSheet(@CurrentUser Member member, Model model, HttpServletRequest request) {
+        model.addAttribute("member", member);
         QuestionSet questionSet = null;
         String [] str = {"correct", "wrong", "none"};
         List<String> checkAnswer = new ArrayList<>();
@@ -368,27 +394,32 @@ public class MainController {
     }
 
     @GetMapping("/my_review_note")
-    public String myReviewNote() {
+    public String myReviewNote(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/my_review_note";
     }
 
     @GetMapping("/rc_answer_sheet")
-    public String rcAnswerSheet() {
+    public String rcAnswerSheet(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/rc_answer_sheet";
     }
 
     @GetMapping("/lc_answer_sheet")
-    public String lcAnswerSheet() {
+    public String lcAnswerSheet(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/lc_answer_sheet";
     }
 
     @GetMapping("/spk_answer_sheet")
-    public String spkAnswerSheet() {
+    public String spkAnswerSheet(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/spk_answer_sheet";
     }
 
     @GetMapping("/vocabulary_test")
-    public String vocabularyTest() {
+    public String vocabularyTest(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/vocabulary_test";
     }
 
@@ -403,22 +434,25 @@ public class MainController {
     }
 
     @GetMapping("/schedule")
-    public String schedule() {
+    public String schedule(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
         return "/view/schedule";
     }
 
 
     @GetMapping("/practice_select/{id}")
-    public String practiceTest(@PathVariable String id, Model model){
+    public String practiceTest(@CurrentUser Member member, @PathVariable String id, Model model){
         if(id.equals("rc")) model.addAttribute("practice", "rc");
         if(id.equals("lc")) model.addAttribute("practice", "lc");
         if(id.equals("spk")) model.addAttribute("practice", "spk");
+        model.addAttribute("member", member);
         return "/view/practice_select";
     }
 
     @RequestMapping("/practice/{id}")
     @Transactional
     public String test(@CurrentUser Member member, @PathVariable String id, HttpServletRequest request, Model model){
+        model.addAttribute("member", member);
         QuestionSet list;
         if(("lc").equals(id)){
             int p1 = Integer.parseInt(request.getParameter("PART1"));
@@ -480,6 +514,7 @@ public class MainController {
         model.addAttribute("questionSet", list);
         model.addAttribute("questionList", list.getQuestions());
         model.addAttribute("type", type);
+        model.addAttribute("member", member);
         return "/view/question/test";
     }
 
