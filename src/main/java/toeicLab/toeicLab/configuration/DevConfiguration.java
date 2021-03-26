@@ -33,7 +33,7 @@ public class DevConfiguration {
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
     private final QuestionSetService questionSetService;
-    private static final int NUMBER_OF_DUMMY_USERS = 1;
+    private static final int NUMBER_OF_DUMMY_USERS = 500;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private static final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
@@ -228,6 +228,7 @@ public class DevConfiguration {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
             Member member = Member.builder()
                     .email("dummy" + i + "@a.a")
+                    .userId("testUser" + i)
                     .password(passwordEncoder.encode("1234"))
                     .memberType(MemberType.USER)
                     .levelType(levelTypes[(int) (Math.random() * 3)])
@@ -291,7 +292,7 @@ public class DevConfiguration {
         initPart7_multiple();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initDummyUsers() {
         createDummyUsers();
         createTestUsers();

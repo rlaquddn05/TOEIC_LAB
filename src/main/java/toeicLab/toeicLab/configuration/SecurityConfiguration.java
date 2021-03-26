@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/my_page",
                         "/spk_answer_sheet",
                         "/my_studygroup_list",
+                        "/my_studygroup_detail",
                         "/practice_test/**",
                         "/signup/**",
                         "/reset/**")

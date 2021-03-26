@@ -271,10 +271,11 @@ public class MainController {
         return "/view/my_progress";
     }
 
-    @GetMapping("/my_studygroup_list")
-    public String myStudyGroupList(@CurrentUser Member member, Model model) {
-        model.addAttribute(member);
-        return "/view/my_studygroup_list";
+    @GetMapping("/my_studygroup_detail/{id}")
+    public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
+        model.addAttribute("member", member);
+        model.addAttribute("studyGroupId", Long.parseLong(id));
+        return "/view/my_studygroup_detail";
     }
 
     @GetMapping("/create_meeting")
