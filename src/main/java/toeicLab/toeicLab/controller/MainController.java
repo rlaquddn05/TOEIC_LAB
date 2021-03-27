@@ -22,7 +22,6 @@ import toeicLab.toeicLab.user.SignUpValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -58,7 +57,7 @@ public class MainController {
     }
 
     @PostMapping("/send_reset_password_link")
-    public String sendResetPassword(String userId, String email, Model model) {
+    public String sendResetPassword(@RequestParam("userId")String userId, @RequestParam("email")String email, Model model) {
         try {
             Member checkedMember = memberService.sendResetPasswordEmail(userId, email);
             model.addAttribute("checkedMember", checkedMember);
@@ -66,28 +65,37 @@ public class MainController {
             mailDto.setEmail(checkedMember.getEmail());
             mailDto.setEmailCheckToken(mailDto.generateEmailCheckToken());
 
-            MailDto resetPasswordEmail = mailService.resetPasswordMailSend(mailDto);
-            mailRepository.save(resetPasswordEmail);
+            mailService.resetPasswordMailSend(mailDto);
+            MailDto existedMail = mailRepository.findByEmail(email);
+            existedMail.setEmailCheckToken(mailDto.getEmailCheckToken());
+            mailRepository.save(existedMail);
 
-            model.addAttribute("resetPasswordEmail", resetPasswordEmail);
+            model.addAttribute("resetPasswordEmail", mailDto);
             log.info("이메일보내기 성공");
 
-
         } catch (IllegalArgumentException e) {
+            log.info("실패");
             model.addAttribute("error_code", "password.reset.failed");
             return "/view/notify_password";
         }
         log.info("뷰페이지 보내줘어");
         model.addAttribute("result_code", "password.reset.send");
-        log.info("뷰페이지에 result_code담기성공");
+        log.info("뷰페이지에 result_code 담기성공");
         return "/view/notify_password";
+    }
+
+    @PostMapping("/notify_password")
+    public String goResetPassword(@RequestParam("token")String resetPasswordEmailToken, Model model){
+        MailDto mailByEmailCheckToken = mailRepository.findByEmailCheckToken(resetPasswordEmailToken);
+        model.addAttribute("email", mailByEmailCheckToken.getEmail());
+        return "/view/reset_password";
     }
 
     @GetMapping("/reset/checkTokens")
     @ResponseBody
-    public String resetCheckTokens(@RequestParam("resetPasswordEmailToken") String resetPasswordEmailToken,
-                                   @RequestParam("resetPasswordEmail") String resetPasswordEmail){
-
+    public String resetCheckTokens(@RequestParam("resetPasswordEmail") String resetPasswordEmail,
+                                   @RequestParam("token") String resetPasswordEmailToken){
+        log.info("비밀번호 초기화 인증키 판단");
         JsonObject jsonObject = new JsonObject();
         MailDto getResetPasswordTokenMail = mailRepository.findByEmail(resetPasswordEmail);
         log.info(getResetPasswordTokenMail.getEmail());
@@ -103,31 +111,10 @@ public class MainController {
         return jsonObject.toString();
     }
 
-
-
-    @GetMapping("/view/notify_password")
-    public String notifyPasswordView(){
-        return "/view/notify_password";
-    }
-
-    @PostMapping("/notify_password")
-    public String goResetPassword(@RequestParam("resetPasswordEmailToken")String resetPasswordEmailToken, Model model){
-        MailDto mailByEmailCheckToken = mailRepository.findByEmailCheckToken(resetPasswordEmailToken);
-        model.addAttribute("email", mailByEmailCheckToken.getEmail());
-        return "/view/reset_password";
-    }
-//      @GetMapping("/reset_password")
-//      public String resetPasswordView(){
-//        return "/view/reset_password";
-//      }
-    @GetMapping("/reset_password")
-    public String resetPasswordView() {
-        return "/view/reset_password";
-    }
-
     @PostMapping("/reset_password")
-    public String resetPassword(String email, String password, Model model) {
+    public String resetPassword(@RequestParam("email")String email, @RequestParam("password")String password, Model model) {
         memberService.resetPassword(email, password);
+        log.info("비밀번호 수정 완료");
         model.addAttribute("result_code", "password.reset.success");
         return "/view/notify_password";
     }
@@ -140,10 +127,11 @@ public class MainController {
     @PostMapping("/send_find_id_link")
     public String sendFindId(String email, Model model) {
         try {
-            memberService.sendFindIdByEmail(email);
+            Member findIdMember = memberService.sendFindIdByEmail(email);
+            model.addAttribute("findIdMember", findIdMember);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error_code", "find.id.failed");
-            return "/view_find_id";
+            return "/view/find_id";
         }
         model.addAttribute("success_code", "find.id.success");
         return "/view/find_id";

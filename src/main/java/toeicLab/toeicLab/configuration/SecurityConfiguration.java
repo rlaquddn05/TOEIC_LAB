@@ -61,8 +61,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/my_studygroup_list",
                         "/practice_test/**",
                         "/signup/**",
-                        "/reset/**",
-                        "/notify_password")
+                        "/reset/checkTokens",
+                        "/notify_password",
+                        "/reset_password",
+                        "/notify_password2")
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")
@@ -71,8 +73,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         // 로그인 유지 기능 추가
-        http.rememberMe()
-                .userDetailsService(memberService);
+//        http.rememberMe()
+//                .userDetailsService(memberService);
 
         // 로그아웃 기능 추가
         http.logout()

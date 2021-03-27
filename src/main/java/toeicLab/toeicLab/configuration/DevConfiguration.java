@@ -250,10 +250,10 @@ public class DevConfiguration {
         }
         log.info("DummyUsers created.");
     }
-
+    @PostConstruct
     public void createTestUsers() {
         Member member = Member.builder()
-                .userId("testuser")
+                .userId("testUser")
                 .email("a@a.a")
                 .password(passwordEncoder.encode("1234"))
                 .memberType(MemberType.USER)

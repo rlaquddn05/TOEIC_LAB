@@ -29,7 +29,7 @@ public class MailService {
         return mailDto;
     }
 
-    public MailDto resetPasswordMailSend(MailDto mailDto) {
+    public void resetPasswordMailSend(MailDto mailDto) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailDto.getEmail());
         message.setFrom(MailService.FROM_ADDRESS);
@@ -38,7 +38,7 @@ public class MailService {
 
         System.out.println("emailCheckToken = " + mailDto.getEmailCheckToken());
         mailSender.send(message);
-        return mailDto;
+        return;
     }
 
 }

@@ -6,7 +6,7 @@
 <div layout:fragment="content">
     <div class="py-5 text-center">
 
-        <div th:if="${error_code != null}">
+        <div th:if="${error_code == 'find.id.failed'}">
             <p class="lead">ToeicLab 아이디 찾기</p>
             <h2>
                 존재하지 않는 아이디입니다.
@@ -16,7 +16,7 @@
             <p class="lead">ToeicLab 아이디 찾기</p>
             <h2>
 <!--                아이디 넘겨받기-->
-                회원님의 아이디는[<span th:text="${email}"></span>]입니다.
+                회원님의 아이디는[<span th:text="${findIdMember.userId}"></span>]입니다.
             </h2>
             <small id ="reset_password" class="form-text text-muted">
                 <a href="#" th:href="@{/login}">로그인 하러가기</a>

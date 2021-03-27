@@ -87,43 +87,33 @@ public class MemberService implements UserDetailsService {
 
     public Member sendResetPasswordEmail(String userId, String email) {
         Member member = memberRepository.findByUserId(userId);
-        boolean emailCheck = member.getEmail().equals(email);
+
         if(member == null){
             throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
         }
+
+        boolean emailCheck = member.getEmail().equals(email);
+
         if(!emailCheck){
-            throw new IllegalArgumentException("이메일이 일치하지 않습니다.");
+            throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
         }
+
         return member;
-        // member의 이메일로 비밀번호 키 보내기
-
-
     }
 
-    // 저장된 토큰과 같은 값인지 확인
-    public boolean checkEmailToken(String email, String emailCheckToken) {
-        if(email == null || emailCheckToken == null){
-            return false;
-        }
-        Member member = memberRepository.findByEmail(email);
-        if(member == null){
-            return false;
-        }
-        return emailCheckToken.equals(member.getEmailCheckToken());
-    }
-
-    @Transactional
     public void resetPassword(String email, String password) {
         Member member = memberRepository.findByEmail(email);
         member.setPassword(password);
+        member.encodePassword(passwordEncoder);
+        memberRepository.save(member);
     }
 
 
-    public void sendFindIdByEmail(String email) {
+    public Member sendFindIdByEmail(String email) {
         Member member = memberRepository.findByEmail(email);
         if(member == null){
             throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
         }
-        return;
+        return member;
     }
 }
