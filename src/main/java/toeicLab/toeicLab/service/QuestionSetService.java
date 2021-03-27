@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -79,6 +80,7 @@ public class QuestionSetService {
         return result;
     }
 
+<<<<<<< HEAD
     public void createMeeting(StudyGroup studyGroup, String date){
         QuestionSet meetingQuestionSet = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
@@ -119,5 +121,10 @@ public class QuestionSetService {
             meetingQuestionSet.setMember(m);
             questionSetRepository.save(meetingQuestionSet);
         }
+=======
+    public QuestionSet findQuestionSet(Long setId) {
+        Optional<QuestionSet> optional= questionSetRepository.findById(setId);
+        return optional.orElse(null);
+>>>>>>> ac9b1f316d6c75f9c6b9ecab76838de5f0c58b1f
     }
 }

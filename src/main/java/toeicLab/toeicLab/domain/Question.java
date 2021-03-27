@@ -22,4 +22,6 @@ public class Question {
 
     private int smallSetId;
 
+    private String answer;
+
 }

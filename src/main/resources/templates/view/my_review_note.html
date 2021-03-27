@@ -1,190 +1,158 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout" th:with="title='ReviewNote'">
 
 <th:block layout:fragment="css">
-
+    <link rel="stylesheet" th:href="@{/css/sheet/sheet.css}">
 </th:block>
 
-
 <div layout:fragment="content">
-    <div th:class="container">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li th:if="${part1List != null}" class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#p1">part1</a>
+            </li>
+            <li th:if="${part2List != null}" class="nav-item">
+                <a th:classappend="${part1List == null} ? 'nav-link active' : 'nav-link'" data-toggle="tab" href="#p2">part2</a>
+            </li>
+            <li th:if="${part3List != null}" class="nav-item">
+                <a th:classappend="${part1List == null && part2List == null} ? 'nav-link active' : 'nav-link'" data-toggle="tab" href="#p3">part3</a>
+            </li>
+            <li th:if="${part4List != null}" class="nav-item">
+                <a th:classappend="${part1List == null && part2List == null && part3List == null} ? 'nav-link active' : 'nav-link'" data-toggle="tab" href="#p4">part4</a>
+            </li>
+            <li th:if="${part5List != null}" class="nav-item">
+                <a th:classappend="${part1List == null && part2List == null && part3List == null && part4List == null} ? 'nav-link active' : 'nav-link'" data-toggle="tab" href="#p5">part5</a>
+            </li>
+            <li th:if="${part6List != null}" class="nav-item">
+                <a th:classappend="${part1List == null && part2List == null && part3List == null && part4List == null &&
+                     part5List == null} ? 'nav-link active' : 'nav-link'" data-toggle="tab" href="#p6">part6</a>
+            </li>
+            <li th:if="${part7sList != null}" class="nav-item">
+                <a th:classappend="${part1List == null && part2List == null && part3List == null && part4List == null &&
+                     part5List == null && part6List == null} ? 'nav-link active' : 'nav-link'" data-toggle="tab" href="#p7s">part7s</a>
+            </li>
+            <li th:if="${part7mList != null}" class="nav-item">
+                <a th:classappend="${part1List == null && part2List == null && part3List == null && part4List == null &&
+                     part5List == null && part6List == null && part7sList == null} ? 'nav-link active' : 'nav-link'" data-toggle="tab" href="#p7m">part7m</a>
+            </li>
+        </ul>
 
+        <div class="tab-content">
 
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <!--                    <p>Tab</p>-->
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#lc">LC</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#rc">RC</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#speaking">SPEAKING</a>
-                        </li>
-                    </ul>
-                    <!--                    <p>Tab-Content</p>-->
-                    <div class="tab-content">
-                        <!--                        <p>Tab-LC</p>-->
-                        <div class="tab-pane fade show active" id="lc">
-                            <div class="row" style="border: #444444 solid 1px; padding: 10px;">
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block">Part</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-3">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#LC-Q">문제보기</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#LC-A">해답보기</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block">오답노트 빼기</button>
-                                    </div>
-                                </div>
-                                <div id="LC-Q" class="collapse" style="padding: 10px 30px;">
-                                    <div class="text">
-                                        This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.
-                                    </div>
-                                    <div>
-                                        <br>
-                                        <label>(A)</label>
-                                        <br>
-                                        <label>(B)</label>
-                                        <br>
-                                        <label>(C)</label>
-                                        <br>
-                                        <label>(D)</label>
-                                    </div>
-                                    <div>
-                                        <button type="button" class="col-1 btn btn-outline-primary btn-block" style="float: right">PLAY</button>
-                                        <br/>
-                                        <br/>
-                                        <hr/>
-                                    </div>
-                                </div>
+            <div th:if="${part1List != null}" class="tab-pane fade show active" id="p1">
+                <div class="banner">
+                    <p>
+                        Directions: For each question in this part, you will hear four statements about a picture in your test book.<br/>
+                        When you hear the statements, you must select the one statement that best describes what you see in the picture.<br/>
+                        Then find the number of the question on your answer sheet and mark your answer. <br/>
+                        The statements will not be printed in your test book and will be spoken only one time.
+                    <hr/>
+                    </p>
 
-                                <div id="LC-A" class="collapse" style="padding: 0px 30px;">
-                                    <div>
-                                        <br>
-                                        <label>The Answer is </label>
-                                    </div>
-                                    This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.
-                                </div>
-                            </div>
+                </div>
+                <div class="container" th:each="question:${questionList}">
+                    <!--part1-->
+                    <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART1')}">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <img th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img col-8" >
+                            <button type="button" class="btn btn-primary col-1" id="btn">듣기</button>
                         </div>
-                        <!--                        <p>Tab-RC</p>-->
-                        <div class="tab-pane fade" id="rc">
-                            <div class="row" style="border: #444444 solid 1px; padding: 10px;">
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block">Part</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-3">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#RC-Q">문제보기</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#RC-A">해답보기</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block">오답노트 빼기</button>
-                                    </div>
-                                </div>
-                                <div id="RC-Q" class="collapse" style="padding: 10px 30px;">
-                                    Following the resignation of Mr. Scott, the board of directors carried out an ------- search to find a new CFO.Following the resignation of Mr. Scott, the board of directors carried out an ------- search to find a new CFO.Following the resignation of Mr. Scott, the board of directors carried out an ------- search to find a new CFO.
-                                    <div>
-                                        <br>
-                                        <label>(A)</label>
-                                        <br>
-                                        <label>(B)</label>
-                                        <br>
-                                        <label>(C)</label>
-                                        <br>
-                                        <label>(D)</label>
-                                    </div>
-                                    <hr/>
-                                </div>
-                                <div id="RC-A" class="collapse" style="padding: 0px 30px;">
-                                    <div>
-                                        <br>
-                                        <label>The Answer is </label>
-                                    </div>
-                                    해답 해답 해답 해답
-                                </div>
-                            </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:name="${question.id}" th:value="A" id="part1_radio1">
+                            <label class="form-check-label" for="part1_radio1" th:text="${question.exampleA}"></label>
                         </div>
-                        <!--                        <p>Tab-SPEAKING</p>-->
-                        <div class="tab-pane fade" id="speaking">
-                            <div class="row" style="border: #444444 solid 1px; padding: 10px;">
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block">Part</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-3">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#SPEAK-Q">문제보기</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block" data-toggle="collapse" data-target="#SPEAK-A">해답보기</button>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-2">
-                                    <div class="select">
-                                        <button type="button" class="btn btn-outline-primary btn-block">오답노트 빼기</button>
-                                    </div>
-                                </div>
-                                <div id="SPEAK-Q" class="collapse" style="padding: 10px 30px;">
-                                    <div class="text">
-                                        This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.This is LC.
-                                    </div>
-                                    <div>
-                                        <button type="button" class="col-1 btn btn-outline-primary btn-block" style="float: right">PLAY</button>
-                                        <br/>
-                                        <br/>
-                                        <hr/>
-                                    </div>
-                                </div>
+                        <div class="form-check form-check-inline">
+                            <input  class="form-check-input" type="radio" th:name="${question.id}" th:value="B" id="part1_radio2">
+                            <label class="form-check-label" for="part1_radio2" th:text="${question.exampleB}"></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:name="${question.id}" th:value="C" id="part1_radio3">
+                            <label class="form-check-label" for="part1_radio3" th:text="${question.exampleC}"></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:name="${question.id}" th:value="D" id="part1_radio4">
+                            <label class="form-check-label" for="part1_radio4" th:text="${question.exampleD}"></label>
+                        </div>
+                        <input class="form-check-input" type="radio" th:name="${question.id}" th:value="'null'" id="part1_radio5" checked style="opacity: 0;">
 
-                                <div id="SPEAK-A" class="collapse" style="padding: 0px 30px;">
-                                    This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.This is LC Answer.
-                                </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-2">
+                                <a href="#name" class="btn btn-info" data-toggle="collapse">정답 보기</a>
                             </div>
+                            <div class="col-1"></div>
+                            <div id="name" class="collapse" th:text="${question.answer}">test</div>
                         </div>
+
                     </div>
                 </div>
             </div>
+
+            <div th:if="${part2List != null}" th:classappend="${part1List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p2">
+                <div class="banner">
+                    <p>
+                        PART2<br/>
+                        Directions: You will hear a question or statement and three responses spoken in English.<br/>
+                        They will not be printed in your test book and will be spoken only one time.<br/>
+                        Select the best response to the question or statement and mark the letter (A), (B), or (C) on you answer sheet.
+                    </p>
+                </div>
+                <th:block th:insert="fragments/question_LC2_fragments :: question_list(${questionList})"/>
+            </div>
+
+            <div th:if="${part3List != null}" th:classappend="${part1List == null && part2List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p3">
+                <div class="banner">
+                    <p>
+                        PART3<br/>
+                        Directions: You will hear some conversation between two or more people. <br/>
+                        You will be asked to answer three questions about what the speaker say in each conversation. <br/>
+                        Select the best response to each question and mark the letter (A), (B), (C), or (D) on your answer sheet. <br/>
+                        The conversations will not be printed in your test book and will be spoken only one time.
+                    </p>
+                </div>
+                <th:block th:insert="fragments/question_LC3_fragments :: question_list(${questionList})"/>
+            </div>
+
+            <div th:if="${part4List != null}" th:classappend="${part1List == null && part2List == null && part3List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p4">
+                <div class="banner">
+                    <p>
+                        PART4<br/>
+                        Directions: You will hear some talks given by a single speaker.<br/>
+                        You will be asked to answer three questions about what the speaker says in each talk.<br/>
+                        Select the best response to each question and mark the letter (A), (B), (C) or (D) on your answer sheet.<br/>
+                        the talk will not be printed in your test book and will be spoken only one time.
+                    </p>
+                </div>
+                <th:block th:insert="fragments/question_LC4_fragments :: question_list(${questionList})"/>
+            </div>
+
+            <div th:if="${part5List != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
+                 part4List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p5">
+                <th:block th:insert="fragments/question_RC5_fragments :: question_list(${questionList})"/>
+            </div>
+
+            <div th:if="${part6List != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
+                 part4List == null && part5List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p6">
+                <th:block th:insert="fragments/question_RC6_fragments :: question_list(${questionList})"/>
+            </div>
+
+            <div th:if="${part7sList != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
+                 part4List == null && part5List == null && part6List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p7s">
+                <th:block th:insert="fragments/question_RC7_1_fragments :: question_list(${questionList})"/>
+            </div>
+
+            <div th:if="${part7mList != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
+                 part4List == null && part5List == null && part6List == null && part7sList == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p7m">
+                <th:block th:insert="fragments/question_RC7_2_fragments :: question_list(${questionList})"/>
+            </div>
+
         </div>
 
+
     </div>
-</div>
 </div>
 </html>

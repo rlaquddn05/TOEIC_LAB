@@ -1,0 +1,93 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='Result!'">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/sheet/sheet.css}">
+</th:block>
+
+<div layout:fragment="content">
+    <div class="container">
+        <div class="py-5">
+            <div>
+                <p th:if="${question.content != null}" th:text="${question.content}"></p>
+                <span th:if="${question.image} != null">
+                    <img th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img" ><br/>
+                </span>
+            </div>
+            <div th:if="${question.getQuestionType().toString().equals('PART1') || question.getQuestionType().toString().equals('PART2') || question.getQuestionType().toString().equals('PART5')}">
+                <span th:text="${question.exampleA}"></span>
+                <span th:text="${question.exampleB}"></span>
+                <span th:text="${question.exampleC}"></span>
+                <span th:text="${question.exampleD}"></span>
+                <span th:text="'선택한 답: '"></span>
+            </div>
+            <div th:if="${question.getQuestionType().toString().equals('PART3') || question.getQuestionType().toString().equals('PART4') || question.getQuestionType().toString().equals('PART6') || question.getQuestionType().toString().equals('PART7_MULTIPLE_PARAGRAPH') || question.getQuestionType().toString().equals('PART7_SINGLE_PARAGRAPH')}">
+                <p th:text="${question.exampleA}"></p>
+                <p th:text="${question.exampleB}"></p>
+                <p th:text="${question.exampleC}"></p>
+                <p th:text="${question.exampleD}"></p>
+            </div>
+            <div>
+                <p th:text="${question.solution}"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-2"  >
+                <button th:if="${question.getQuestionType().toString().equals('PART1') || question.getQuestionType().toString().equals('PART2') || question.getQuestionType().toString().equals('PART3') || question.getQuestionType().toString().equals('PART4')}" class="btn btn-primary">다시듣기</button>
+            </div>
+            <div class="col-2">
+                <button id="addReview" class="btn btn-primary"> 오답노트 추가</button>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-primary">목록으로</button>
+            </div>
+        </div>
+
+        <!--------------------------------Modal------------------------------------>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">My Store</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            $(document).ready(function (){
+                $("#addReview").click(function (){
+                    $.ajax({
+                        type: 'GET',
+                        url: '/add_review_note',
+                        data: 'id=[[${question.id}]]',
+                        dataType: 'json',
+                        success: function (result){
+                            $('.modal-body').html(result.message);
+                            $('#exampleModalCenter').modal('show');
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+    </div>
+</div>
+
+
+
+</html>

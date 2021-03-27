@@ -21,8 +21,6 @@ public class RC extends Question{
     @Lob
     private String content3;
 
-    private String answer;
-
     private String exampleA;
 
     private String exampleB;
