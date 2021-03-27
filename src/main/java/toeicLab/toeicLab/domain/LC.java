@@ -12,8 +12,6 @@ public class LC extends Question {
 
     private String content;
 
-    private String answer;
-
     private String exampleA;
 
     private String exampleB;

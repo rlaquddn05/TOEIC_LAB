@@ -252,7 +252,7 @@ public class DevConfiguration {
         }
         log.info("DummyUsers created.");
     }
-    @PostConstruct
+
     public void createTestUsers() {
         Member member = Member.builder()
                 .userId("testUser")

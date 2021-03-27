@@ -9,6 +9,7 @@ import toeicLab.toeicLab.repository.QuestionSetRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -72,5 +73,10 @@ public class QuestionSetService {
         result.setMember(member);
         result.setQuestionSetType(QuestionSetType.PRACTICE);
         return result;
+    }
+
+    public QuestionSet findQuestionSet(Long setId) {
+        Optional<QuestionSet> optional= questionSetRepository.findById(setId);
+        return optional.orElse(null);
     }
 }

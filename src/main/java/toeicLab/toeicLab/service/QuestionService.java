@@ -8,6 +8,7 @@ import toeicLab.toeicLab.repository.QuestionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -180,6 +181,37 @@ public class QuestionService {
         }
 
         return result;
+    }
+    public void checkTypeList(QuestionSet questionSet, List<String> str) {
+        for (Question q : questionSet.getQuestions()){
+            for(int i = 0; i < questionSet.getQuestions().size(); ++i){
+                if(q.getQuestionType().toString().equals("PART"+(i+1))){
+                    if(!str.contains("PART"+(i+1))){
+                        str.add("PART"+(i+1));
+                    } else {
+                        continue;
+                    }
+                }
+                if (q.getQuestionType().toString().equals("PART7_SINGLE_PARAGRAPH")){
+                    if(!str.contains("PART7_SINGLE_PARAGRAPH")){
+                        str.add("PART7_SINGLE_PARAGRAPH");
+                    } else {
+                        continue;
+                    }
+                }
+                if (q.getQuestionType().toString().equals("PART7_MULTIPLE_PARAGRAPH")){
+                    if(!str.contains("PART7_MULTIPLE_PARAGRAPH")){
+                        str.add("PART7_MULTIPLE_PARAGRAPH");
+                    }
+                }
+            }
+        }
+        str.remove("PART7");
+    }
+
+    public Question findQuestion(Long id) {
+        Optional<Question> optional= questionRepository.findById(id);
+        return optional.orElse(null);
     }
 
 }

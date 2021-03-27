@@ -11,13 +11,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toeicLab.toeicLab.domain.Address;
-import toeicLab.toeicLab.domain.GenderType;
-import toeicLab.toeicLab.domain.Member;
-import toeicLab.toeicLab.domain.MemberType;
+import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
+import toeicLab.toeicLab.repository.QuestionRepository;
+import toeicLab.toeicLab.repository.ReviewNoteRepository;
 import toeicLab.toeicLab.user.MemberUser;
 import toeicLab.toeicLab.user.SignUpForm;
+
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -25,6 +27,8 @@ public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ReviewNoteRepository reviewNoteRepository;
+    private final QuestionRepository questionRepository;
 
     public Member createNewMember(SignUpForm signUpForm) {
         Member member = Member.builder()
@@ -115,5 +119,29 @@ public class MemberService implements UserDetailsService {
             throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
         }
         return member;
+    }
+
+    @Transactional
+    public boolean addReviewNote(Member member, Long questionId) {
+        Question question = questionRepository.getOne(questionId);
+        ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
+        if (reviewNote == null){
+            reviewNote = new ReviewNote();
+            reviewNote.setMember(member);
+        }
+        List<Question> list = reviewNote.getQuestions();
+
+        if(list.contains(question)){
+            list.remove(question);
+            reviewNote.setQuestions(list);
+            reviewNoteRepository.save(reviewNote);
+            return false;
+        } else {
+
+            list.add(question);
+            reviewNote.setQuestions(list);
+            reviewNoteRepository.save(reviewNote);
+            return true;
+        }
     }
 }

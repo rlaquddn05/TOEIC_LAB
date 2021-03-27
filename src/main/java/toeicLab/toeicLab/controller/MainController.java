@@ -3,7 +3,6 @@ package toeicLab.toeicLab.controller;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -36,6 +35,7 @@ public class MainController {
     private final StudyGroupApplicationValidator studyGroupApplicationValidator;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupRepository studyGroupRepository;
+    private final QuestionService questionService;
 
     @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
@@ -368,15 +368,15 @@ public class MainController {
     }
 
     @PostMapping("/result_sheet")
-    public String resultSheet(@CurrentUser Member member, Model model, HttpServletRequest request) {
-        model.addAttribute("member", member);
+    public String resultSheet(@CurrentUser Member member, HttpServletRequest request, Model model) {
+
         QuestionSet questionSet = null;
-        String [] str = {"correct", "wrong", "none"};
-        List<String> checkAnswer = new ArrayList<>();
+        Map <Long, String> map = new HashMap<>();
+
         Enumeration en = request.getParameterNames();
         String param;
         String value;
-        Map<Integer, String> map = new HashMap<>();
+        long setIdValue = 0;
         while (en.hasMoreElements()){
             param = (String)en.nextElement();
             value = request.getParameter(param);
@@ -385,15 +385,30 @@ public class MainController {
             }
             if(param.equals("questionSetId")){
                 questionSet = questionSetRepository.getOne(Long.parseLong(value));
+                setIdValue = Long.parseLong(value);
                 continue;
             }
-            map.put(Integer.parseInt(param), value);
-
-            System.out.println(param + "-" +value);
+            map.put(Long.parseLong(param), value);
         }
+        /*===============================================*/
+        System.out.println(map);
         assert questionSet != null;
         questionSet.setSubmittedAnswers(map);
         questionSetRepository.save(questionSet);
+        questionSet = questionSetRepository.getOne(setIdValue);
+
+
+        /*=================================PART 걸러내기===============================*/
+        List <String> str = new ArrayList<>();
+        questionService.checkTypeList(questionSet, str);
+        System.out.println(str);
+        /*============================================================================*/
+
+        model.addAttribute("questionType", str);
+        model.addAttribute("questionList", questionSet.getQuestions());
+        model.addAttribute("questionSet", questionSet);
+        model.addAttribute("userAnswer", questionSet.getSubmittedAnswers());
+        model.addAttribute("member", member);
 
         return "/view/result_sheet";
     }
@@ -413,7 +428,7 @@ public class MainController {
     @GetMapping("/lc_answer_sheet")
     public String lcAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "/view/lc_answer_sheet";
+        return "detail";
     }
 
     @GetMapping("/spk_answer_sheet")
@@ -522,5 +537,46 @@ public class MainController {
         model.addAttribute("member", member);
         return "/view/question/test";
     }
+
+    @GetMapping("/detail/{id}")
+    public String lcAnswerSheet(@CurrentUser Member member, @PathVariable Long id, Model model) {
+        log.info("id: " + id);
+//        log.info("setId: " + setId);
+        Question question= questionService.findQuestion(id);
+//        QuestionSet questionSet = questionSetService.findQuestionSet(setId);
+        if(member!=null){
+            member = memberRepository.findByEmail(member.getEmail());
+        }
+
+
+
+//        model.addAttribute("questionSet", questionSet);
+        model.addAttribute("question", question);
+        model.addAttribute("member", member);
+
+        return "/view/detail";
+    }
+
+    @GetMapping("/add_review_note")
+    @ResponseBody
+    public String AddReviewNote(@CurrentUser Member member, @RequestParam("id") Long itemId){
+        JsonObject jsonObject = new JsonObject();
+        boolean result = false;
+
+        try {
+            result = memberService.addReviewNote(member, itemId);
+            if(result) {
+                jsonObject.addProperty("message", "오답노트추가");
+            }
+            else {
+                jsonObject.addProperty("message", "오답노트삭제");
+            }
+
+        } catch (IllegalArgumentException e){
+            jsonObject.addProperty("message", "잘못된정보");
+        }
+        return jsonObject.toString();
+    }
+
 
 }
