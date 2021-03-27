@@ -167,7 +167,7 @@ public class QuestionService {
         return result;
     }
 
-    public List<Question> createPracticeSingle(QuestionType questionType, int num) {
+    public List<Question> createQuestionByQuestionTypeAndNumber(QuestionType questionType, int num) {
         List<Question> result = new ArrayList<>();
 
         for (int i = 1; i <= num; ++i) {
@@ -181,5 +181,7 @@ public class QuestionService {
 
         return result;
     }
+
+
 
 }

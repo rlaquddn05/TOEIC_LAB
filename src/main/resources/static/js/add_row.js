@@ -16,22 +16,22 @@ $(document).ready(function(){
 
 function add_LC_RC_Row(){
 
-    var html ='<select class="form-line-select" th:name="select-form1">\
+    var html ='<select class="form-line-select" th:name="select-form1" name="">\
             <option selected>선택</option>\
-            <option value="LC">LC</option>\
-            <option value="RC">RC</option></select>\
+            <option th:value="LC">LC</option>\
+            <option th:value="RC">RC</option></select>\
             <select class="form-line-select" th:name="select-form2">\
             <option selected>PART 선택</option>\
-            <option value="PART1">PART1</option>\
-            <option value="PART2">PART2</option>\
-            <option value="PART3">PART3</option>\
-            <option value="PART4">PART4</option></select>\
+            <option th:value="PART1">PART1</option>\
+            <option th:value="PART2">PART2</option>\
+            <option th:value="PART3">PART3</option>\
+            <option th:value="PART4">PART4</option></select>\
             <select class="form-line-select" th:name="select-form3">\
             <option selected>문항선택</option>\
-            <option value="5">5</option>\
-            <option value="10">10</option>\
-            <option value="15">15</option>\
-            <option value="20">20</option></select>\
+            <option th:value="5">5</option>\
+            <option th:value="10">10</option>\
+            <option th:value="15">15</option>\
+            <option th:value="20">20</option></select>\
             <button type="button" class="btn far fa-trash-alt btn-LC-RC-Remove"></button><br>';
 
     $("#RC-LC-box").append(html);

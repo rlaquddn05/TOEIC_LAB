@@ -1,12 +1,16 @@
 package toeicLab.toeicLab.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
+import toeicLab.toeicLab.repository.MeetingRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class QuestionSetService {
 
     private final QuestionSetRepository questionSetRepository;
     private final QuestionService questionService;
+    private final MeetingRepository meetingRepository;
 
     public QuestionSet createToeicSet(Member member, QuestionSetType questionSetType) {
         QuestionSet result = new QuestionSet();
@@ -65,12 +70,54 @@ public class QuestionSetService {
         List<Question> questionList = new ArrayList<>();
         if(p5 > 0) questionList.addAll(questionService.createQuestionList(QuestionType.PART5, p5));
         if(p6 > 0) questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, p6));
-        if(p7s > 0) questionList.addAll(questionService.createPracticeSingle(QuestionType.PART7_SINGLE_PARAGRAPH, p7s));
-        if(p7m > 0) questionList.addAll(questionService.createPracticeSingle(QuestionType.PART7_MULTIPLE_PARAGRAPH, p7m));
+        if(p7s > 0) questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_SINGLE_PARAGRAPH, p7s));
+        if(p7m > 0) questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH, p7m));
         result.setQuestions(questionList);
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
         result.setQuestionSetType(QuestionSetType.PRACTICE);
         return result;
+    }
+
+    public void createMeeting(StudyGroup studyGroup, String date){
+        QuestionSet meetingQuestionSet = new QuestionSet();
+        List<Question> questionList = new ArrayList<>();
+
+        int part1 = 0;
+        int part2 = 0;
+        int part3 = 0;
+        int part4 = 0;
+        int part5 = 0;
+        int part6 = 0;
+        int part7_Single = 0;
+        int part7_Multiple = 0;
+
+        questionList.addAll(questionService.createQuestionList(QuestionType.PART1, part1));
+        questionList.addAll(questionService.createQuestionList(QuestionType.PART2, part2));
+        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, part3));
+        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, part4));
+        questionList.addAll(questionService.createQuestionList(QuestionType.PART5, part5));
+        questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, part6));
+        questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_SINGLE_PARAGRAPH, part7_Single));
+        questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH, part7_Multiple));
+
+        meetingQuestionSet.setQuestions(questionList);
+        meetingQuestionSet.setCreatedAt(LocalDateTime.now());
+        meetingQuestionSet.setQuestionSetType(QuestionSetType.MEETING);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateTime = LocalDate.parse(date, formatter);
+
+        Meeting meeting = Meeting.builder()
+                .studyGroup(studyGroup)
+                .date(dateTime.atStartOfDay())
+                .build();
+        meetingRepository.save(meeting);
+
+
+        for (Member m: studyGroup.getMembers()){
+            meetingQuestionSet.setMember(m);
+            questionSetRepository.save(meetingQuestionSet);
+        }
     }
 }

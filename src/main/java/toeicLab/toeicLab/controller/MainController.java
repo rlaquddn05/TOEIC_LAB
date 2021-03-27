@@ -300,9 +300,17 @@ public class MainController {
     }
 
     @GetMapping("/create_meeting")
-    public String createMeeting(@CurrentUser Member member, Model model) {
+    public String createMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup) {
         model.addAttribute("member", member);
+        model.addAttribute("thisStudyGroup", thisStudyGroup);
         return "/view/create_meeting";
+    }
+
+    @PostMapping("/create_meeting")
+    public String submitCreateMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup, String date){
+        model.addAttribute("member", member);
+         questionSetService.createMeeting(thisStudyGroup, date);
+        return "redirect:/";
     }
 
     @GetMapping("/my_vocabulary_list")

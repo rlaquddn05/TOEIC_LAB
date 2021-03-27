@@ -15,9 +15,9 @@
 <div layout:fragment="content">
     <div class="container">
         <div id="create-meeting">
-            <form action="" method="post">
+            <form th:action="@{/create_meeting}" method="post">
                 <div id="time" th:id="time">
-                    <h4>일시: <input type="date" ></h4>
+                    <h4>일시: <input type="date" name="date"></h4>
                 </div>
                 <div id="top" class="row">
                     <div class="col-md-1"></div>
@@ -50,6 +50,7 @@
                 <div id="sub-btn">
                     <button type="submit" class="btn btn-primary float-right">스터디 생성하기</button>
                 </div>
+                <input type="hidden" name="thisStudyGroup" th:value="${thisStudyGroup}">
             </form>
         </div>
     </div>

@@ -16,7 +16,10 @@
                     <h2 th:text="${member1.getUserId()}+'(조장)'"></h2>
                 </div>
                 <div class="col-5">
-                    <button type="button" onclick="" class="btn btn-primary">스터디 일정 만들기</button>
+                    <button type="button" onclick="" class="btn btn-primary">
+                        <a th:href="@{/create_meeting}">스터디 일정 만들기</a>
+                    </button>
+
                     <select class="form-line-select" name="" id="">
                         <option selected>조장 변경</option>
                         <option value="">조원 이름</option>
@@ -43,7 +46,7 @@
                 </div>
             </div>
         </div>
-
+        <input type="hidden" th:value="${thisStudyGroup}">
     </div>
 </div>
 </html>
