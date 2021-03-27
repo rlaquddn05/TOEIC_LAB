@@ -299,6 +299,13 @@ public class MainController {
         return "/view/my_studygroup_detail";
     }
 
+    @PostMapping("/my_studygroup_detail/{id}")
+    public String myStudyGroupDetailPost(@CurrentUser Member member, @PathVariable String id, Model model) {
+        model.addAttribute("questionSetId", id);
+
+        return "redirect:/my_studygroup_detail/{id}";
+    }
+
     @GetMapping("/create_meeting")
     public String createMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup) {
         model.addAttribute("member", member);
