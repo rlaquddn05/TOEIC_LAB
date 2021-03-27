@@ -184,29 +184,60 @@ public class QuestionService {
     }
     public void checkTypeList(QuestionSet questionSet, List<String> str) {
         for (Question q : questionSet.getQuestions()){
-            for(int i = 0; i < questionSet.getQuestions().size(); ++i){
-                if(q.getQuestionType().toString().equals("PART"+(i+1))){
-                    if(!str.contains("PART"+(i+1))){
-                        str.add("PART"+(i+1));
-                    } else {
-                        continue;
-                    }
+            if(q.getQuestionType().toString().equals("PART1")){
+                if(!str.contains("PART1")){
+                    str.add("PART1");
+                } else {
+                    continue;
                 }
-                if (q.getQuestionType().toString().equals("PART7_SINGLE_PARAGRAPH")){
-                    if(!str.contains("PART7_SINGLE_PARAGRAPH")){
-                        str.add("PART7_SINGLE_PARAGRAPH");
-                    } else {
-                        continue;
-                    }
+            }
+            if(q.getQuestionType().toString().equals("PART2")){
+                if(!str.contains("PART2")){
+                    str.add("PART2");
+                } else {
+                    continue;
                 }
-                if (q.getQuestionType().toString().equals("PART7_MULTIPLE_PARAGRAPH")){
-                    if(!str.contains("PART7_MULTIPLE_PARAGRAPH")){
-                        str.add("PART7_MULTIPLE_PARAGRAPH");
-                    }
+            }
+            if(q.getQuestionType().toString().equals("PART3")){
+                if(!str.contains("PART3")){
+                    str.add("PART3");
+                } else {
+                    continue;
+                }
+            }
+            if(q.getQuestionType().toString().equals("PART4")){
+                if(!str.contains("PART4")){
+                    str.add("PART4");
+                } else {
+                    continue;
+                }
+            }
+            if(q.getQuestionType().toString().equals("PART5")){
+                if(!str.contains("PART5")){
+                    str.add("PART5");
+                } else {
+                    continue;
+                }
+            }if(q.getQuestionType().toString().equals("PART6")){
+                if(!str.contains("PART6")){
+                    str.add("PART6");
+                } else {
+                    continue;
+                }
+            }
+            if (q.getQuestionType().toString().equals("PART7_SINGLE_PARAGRAPH")){
+                if(!str.contains("PART7_SINGLE_PARAGRAPH")){
+                    str.add("PART7_SINGLE_PARAGRAPH");
+                } else {
+                    continue;
+                }
+            }
+            if (q.getQuestionType().toString().equals("PART7_MULTIPLE_PARAGRAPH")){
+                if(!str.contains("PART7_MULTIPLE_PARAGRAPH")){
+                    str.add("PART7_MULTIPLE_PARAGRAPH");
                 }
             }
         }
-        str.remove("PART7");
     }
 
     public Question findQuestion(Long id) {
