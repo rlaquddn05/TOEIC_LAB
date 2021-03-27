@@ -52,7 +52,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<QuestionSet> questionSetList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "members")
+    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER )
     private List<StudyGroup> studyGroupList = new ArrayList<>();
 
     @OneToOne(mappedBy = "member")

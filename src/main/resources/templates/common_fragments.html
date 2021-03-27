@@ -17,7 +17,12 @@
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/signup}" sec:authorize="!isAuthenticated()">회원가입</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_page}" sec:authorize="isAuthenticated()" th:text="${#authentication?.name}+'님'" >내정보</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_progress}" sec:authorize="isAuthenticated()">학습현황</a></li>
-            <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" sec:authorize="isAuthenticated()">스터디그룹</a></li>
+            <li class="nav-item dropdown" sec:authorize="isAuthenticated()"><a href="#"><span>내 스터디그룹</span><i class="fas fa-chevron-down"></i></a>
+                <ul>
+                    <li class="dropdown-item" th:each="std:${member.getStudyGroupList()}" ><a class="nav-link" href="#" th:text="${std.id}" th:href="@{/my_studygroup_detail/{id}(id=${std.id})}">스터디 목록</a></li>
+                </ul>
+            </li>
+
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/}" sec:authorize="isAuthenticated()">단어장</a></li>
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_review_note}" sec:authorize="isAuthenticated()">오답노트</a></li>
         </ul>
@@ -45,7 +50,4 @@
 <div th:fragment="footer" id="footer" class="jumbotron text-center bg-dark banner" style="margin-bottom: 0">
     <p style="color: floralwhite">&copy;2021. TOEIC. All Right Reserved.</p><!--국제 표기법-->
 </div>
-
-
-
 </html>

@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/my_page",
                         "/spk_answer_sheet",
                         "/my_studygroup_list",
+                        "/my_studygroup_detail",
                         "/practice_test/**",
                         "/signup/**",
                         "/reset/checkTokens",
@@ -69,7 +70,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")
                 .permitAll()
-
                 .anyRequest().authenticated();
 
         // 로그인 유지 기능 추가

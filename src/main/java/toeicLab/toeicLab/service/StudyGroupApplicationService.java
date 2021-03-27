@@ -9,9 +9,12 @@ import toeicLab.toeicLab.domain.StudyGroupApplication;
 import toeicLab.toeicLab.domain.StudyGroupApplicationTag;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
 import toeicLab.toeicLab.repository.StudyGroupRepository;
+import toeicLab.toeicLab.user.StudyGroupApplicationForm;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -62,7 +65,7 @@ public class StudyGroupApplicationService {
         return result;
     }
 
-    private int gcd(int a, int b) {
+    public int gcd(int a, int b) {
         BigInteger b1 = BigInteger.valueOf(a);
         BigInteger b2 = BigInteger.valueOf(b);
         BigInteger gcd = b1.gcd(b2);
@@ -194,8 +197,20 @@ public class StudyGroupApplicationService {
         return result;
     }
 
-    public void submitStudyGroupApplication(){
+    public void createNewStudyGroupApplication(StudyGroupApplicationForm studyGroupApplicationForm, Member member) {
+        int value=1;
+        for (StudyGroupApplicationTag t : studyGroupApplicationForm.getTags()){
+            value *= t.get();
+        }
 
+        StudyGroupApplication studyGroupApplication = StudyGroupApplication.builder()
+                .member(member)
+                .value(value)
+                .matching(false)
+                .submitTime(LocalDateTime.now())
+                .tags(Arrays.asList(studyGroupApplicationForm.getTags().clone()))
+                .build();
+
+        studyGroupApplicationRepository.save(studyGroupApplication);
     }
-
 }
