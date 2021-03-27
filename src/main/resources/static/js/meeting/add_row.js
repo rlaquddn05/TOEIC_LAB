@@ -34,7 +34,7 @@ function partChange1(){
 
     var select = ["PART 선택"];
     var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7S", "PART7M"];
+    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form1_1").val();
 
@@ -132,7 +132,7 @@ function partChange2(){
 
     var select = ["PART 선택"];
     var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7S", "PART7M"];
+    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form2_1").val();
 
@@ -236,7 +236,7 @@ function partChange3(){
 
     var select = ["PART 선택"];
     var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7S", "PART7M"];
+    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form3_1").val();
 
@@ -341,7 +341,7 @@ function partChange4(){
 
     var select = ["PART 선택"];
     var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7S", "PART7M"];
+    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form4_1").val();
 
@@ -446,7 +446,7 @@ function partChange5(){
 
     var select = ["PART 선택"];
     var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7S", "PART7M"];
+    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form5_1").val();
 
@@ -550,7 +550,7 @@ function partChange6(){
 
     var select = ["PART 선택"];
     var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7S", "PART7M"];
+    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form6_1").val();
 
@@ -660,7 +660,7 @@ function partChange7(){
 
     var select = ["PART 선택"];
     var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7S", "PART7M"];
+    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form7_1").val();
 
