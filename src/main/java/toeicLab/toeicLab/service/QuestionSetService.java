@@ -139,59 +139,33 @@ public class QuestionSetService {
 
     }
 
-    public int[] selectFormToArray(String[] select_form1, String[] select_form2, String[] select_form3,
-                                   String[] select_form4, String[] select_form5, String[] select_form6,
-                                   String[] select_form7) {
-
+    public int[] selectFormToArray(String[] select_form) {
 
         int[] result = new int[8];
-        List<String> all = new ArrayList<>();
-        if (select_form1!=null) {
-            all = Arrays.asList(select_form1);
-        }
-        if (select_form2!=null) {
-            all.addAll(Arrays.asList(select_form2));
-        }
-        if (select_form3!=null) {
-            all.addAll(Arrays.asList(select_form3));
-        }
-        if (select_form4!=null) {
-            all.addAll(Arrays.asList(select_form4));
-        }
-        if (select_form5!=null) {
-            all.addAll(Arrays.asList(select_form5));
-        }
-        if (select_form6!=null) {
-            all.addAll(Arrays.asList(select_form6));
-        }
-        if (select_form7!=null) {
-            all.addAll(Arrays.asList(select_form7));
-        }
 
-
-        for (int i = 1; i < all.size(); i = i + 3) {
-            switch (all.get(i)){
+        for (int i = 1; i < select_form.length; i = i + 3) {
+            switch (select_form[i]){
                 case "PART1" :
-                    result[0] = Integer.parseInt(all.get(i+1));
+                    result[0] = Integer.parseInt(select_form[i+1]);
                     break;
                 case "PART2" :
-                    result[1] = Integer.parseInt(all.get(i+1));
+                    result[1] = Integer.parseInt(select_form[i+1]);
                     break;
                 case "PART3" :
-                    result[2] = Integer.parseInt(all.get(i+1));
+                    result[2] = Integer.parseInt(select_form[i+1]);
                     break;
                 case "PART4" :
-                    result[3] = Integer.parseInt(all.get(i+1));
+                    result[3] = Integer.parseInt(select_form[i+1]);
                     break;
                 case "PART5" :
-                    result[4] = Integer.parseInt(all.get(i+1));
+                    result[4] = Integer.parseInt(select_form[i+1]);
                     break;
                 case "PART6" :
-                    result[5] = Integer.parseInt(all.get(i+1));
+                    result[5] = Integer.parseInt(select_form[i+1]);
                     break;
                 case "PART7" :
-                    result[6] = (int)(Math.random() * Integer.parseInt(all.get(i+1)));
-                    result[7] = Integer.parseInt(all.get(i+1))-result[6];
+                    result[6] = (int)(Math.random() * Integer.parseInt(select_form[i+1]));
+                    result[7] = Integer.parseInt(select_form[i+1])-result[6];
                     break;
                 default:
                     break;

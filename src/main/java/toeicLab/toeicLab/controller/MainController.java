@@ -301,12 +301,9 @@ public class MainController {
 
     @PostMapping("/my_studygroup_detail/{id}")
     public String myStudyGroupDetailPost(@CurrentUser Member member, @PathVariable String id, Model model, String date,
-                                         String[] select_form1, String[] select_form2,
-                                         String[] select_form3, String[] select_form4,
-                                         String[] select_form5, String[] select_form6,
-                                         String[] select_form7) {
+                                         String[] select_form) {
 
-        int[] numberOfQuestions = questionSetService.selectFormToArray(select_form1, select_form2, select_form3,select_form4,select_form5,select_form6,select_form7);
+        int[] numberOfQuestions = questionSetService.selectFormToArray(select_form);
 
         StudyGroup thisStudyGroup = studyGroupRepository.findById(Long.parseLong(id));
         model.addAttribute("questionSetId", id);
