@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MeetingRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
+import toeicLab.toeicLab.repository.StudyGroupRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,16 +22,17 @@ import java.util.Optional;
 @Transactional
 public class QuestionSetService {
 
-    private final int [] PART1 = {3, 6, 6};
-    private final int [] PART2 = {4, 8, 25};
-    private final int [] PART3 = {3, 6, 13}; // set수, set당 3문제
-    private final int [] PART4 = {3, 6, 10}; // set수, set당 3문제
-    private final int [] PART5 = {4, 8, 30};
-    private final int [] PART6 = {2, 4, 4}; // set수, set당 4문제
+    private final int[] PART1 = {3, 6, 6};
+    private final int[] PART2 = {4, 8, 25};
+    private final int[] PART3 = {3, 6, 13}; // set수, set당 3문제
+    private final int[] PART4 = {3, 6, 10}; // set수, set당 3문제
+    private final int[] PART5 = {4, 8, 30};
+    private final int[] PART6 = {2, 4, 4}; // set수, set당 4문제
 
     private final QuestionSetRepository questionSetRepository;
     private final QuestionService questionService;
     private final MeetingRepository meetingRepository;
+    private final StudyGroupRepository studyGroupRepository;
 
     public QuestionSet createToeicSet(Member member, QuestionSetType questionSetType) {
         QuestionSet result = new QuestionSet();
@@ -55,10 +58,10 @@ public class QuestionSetService {
     public QuestionSet createPracticeLC(Member member, int p1, int p2, int p3, int p4) {
         QuestionSet result = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
-        if(p1 > 0) questionList.addAll(questionService.createQuestionList(QuestionType.PART1, p1));
-        if(p2 > 0) questionList.addAll(questionService.createQuestionList(QuestionType.PART2, p2));
-        if(p3 > 0) questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, p3));
-        if(p4 > 0) questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, p4));
+        if (p1 > 0) questionList.addAll(questionService.createQuestionList(QuestionType.PART1, p1));
+        if (p2 > 0) questionList.addAll(questionService.createQuestionList(QuestionType.PART2, p2));
+        if (p3 > 0) questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART3, p3));
+        if (p4 > 0) questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART4, p4));
         result.setQuestions(questionList);
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
@@ -69,10 +72,12 @@ public class QuestionSetService {
     public QuestionSet createPracticeRC(Member member, int p5, int p6, int p7s, int p7m) {
         QuestionSet result = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
-        if(p5 > 0) questionList.addAll(questionService.createQuestionList(QuestionType.PART5, p5));
-        if(p6 > 0) questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, p6));
-        if(p7s > 0) questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_SINGLE_PARAGRAPH, p7s));
-        if(p7m > 0) questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH, p7m));
+        if (p5 > 0) questionList.addAll(questionService.createQuestionList(QuestionType.PART5, p5));
+        if (p6 > 0) questionList.addAll(questionService.createQuestionListWithSmallSet(QuestionType.PART6, p6));
+        if (p7s > 0)
+            questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_SINGLE_PARAGRAPH, p7s));
+        if (p7m > 0)
+            questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH, p7m));
         result.setQuestions(questionList);
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
@@ -80,19 +85,19 @@ public class QuestionSetService {
         return result;
     }
 
-<<<<<<< HEAD
-    public void createMeeting(StudyGroup studyGroup, String date){
+    public void createMeeting(StudyGroup studyGroup, int[] numberOfQuestions, String date) {
         QuestionSet meetingQuestionSet = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
 
-        int part1 = 0;
-        int part2 = 0;
-        int part3 = 0;
-        int part4 = 0;
-        int part5 = 0;
-        int part6 = 0;
-        int part7_Single = 0;
-        int part7_Multiple = 0;
+        int part1 = numberOfQuestions[0];
+        int part2 = numberOfQuestions[1];
+        int part3 = numberOfQuestions[2];
+        int part4 = numberOfQuestions[3];
+        int part5 = numberOfQuestions[4];
+        int part6 = numberOfQuestions[5];
+        int part7_Single = numberOfQuestions[6];
+        int part7_Multiple = numberOfQuestions[7];
+
 
         questionList.addAll(questionService.createQuestionList(QuestionType.PART1, part1));
         questionList.addAll(questionService.createQuestionList(QuestionType.PART2, part2));
@@ -110,21 +115,89 @@ public class QuestionSetService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dateTime = LocalDate.parse(date, formatter);
 
+        studyGroup = studyGroupRepository.findById(studyGroup.getId()).orElse(null);
+        int count = 0;
+        if (studyGroup.getMeetings() != null) {
+            count = studyGroup.getMeetings().size() + 1;
+        }
+
+        questionSetRepository.save(meetingQuestionSet);
+
         Meeting meeting = Meeting.builder()
+                .count(count)
                 .studyGroup(studyGroup)
                 .date(dateTime.atStartOfDay())
+                .questionSet(meetingQuestionSet)
                 .build();
         meetingRepository.save(meeting);
 
+    }
 
-        for (Member m: studyGroup.getMembers()){
-            meetingQuestionSet.setMember(m);
-            questionSetRepository.save(meetingQuestionSet);
-        }
-=======
     public QuestionSet findQuestionSet(Long setId) {
-        Optional<QuestionSet> optional= questionSetRepository.findById(setId);
+        Optional<QuestionSet> optional = questionSetRepository.findById(setId);
         return optional.orElse(null);
->>>>>>> ac9b1f316d6c75f9c6b9ecab76838de5f0c58b1f
+
+    }
+
+    public int[] selectFormToArray(String[] select_form1, String[] select_form2, String[] select_form3,
+                                   String[] select_form4, String[] select_form5, String[] select_form6,
+                                   String[] select_form7) {
+
+
+        int[] result = new int[8];
+        List<String> all = new ArrayList<>();
+        if (select_form1!=null) {
+            all = Arrays.asList(select_form1);
+        }
+        if (select_form2!=null) {
+            all.addAll(Arrays.asList(select_form2));
+        }
+        if (select_form3!=null) {
+            all.addAll(Arrays.asList(select_form3));
+        }
+        if (select_form4!=null) {
+            all.addAll(Arrays.asList(select_form4));
+        }
+        if (select_form5!=null) {
+            all.addAll(Arrays.asList(select_form5));
+        }
+        if (select_form6!=null) {
+            all.addAll(Arrays.asList(select_form6));
+        }
+        if (select_form7!=null) {
+            all.addAll(Arrays.asList(select_form7));
+        }
+
+
+        for (int i = 1; i < all.size(); i = i + 3) {
+            switch (all.get(i)){
+                case "PART1" :
+                    result[0] = Integer.parseInt(all.get(i+1));
+                    break;
+                case "PART2" :
+                    result[1] = Integer.parseInt(all.get(i+1));
+                    break;
+                case "PART3" :
+                    result[2] = Integer.parseInt(all.get(i+1));
+                    break;
+                case "PART4" :
+                    result[3] = Integer.parseInt(all.get(i+1));
+                    break;
+                case "PART5" :
+                    result[4] = Integer.parseInt(all.get(i+1));
+                    break;
+                case "PART6" :
+                    result[5] = Integer.parseInt(all.get(i+1));
+                    break;
+                case "PART7" :
+                    result[6] = (int)(Math.random() * Integer.parseInt(all.get(i+1)));
+                    result[7] = Integer.parseInt(all.get(i+1))-result[6];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result;
     }
 }

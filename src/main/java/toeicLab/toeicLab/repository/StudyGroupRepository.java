@@ -6,5 +6,5 @@ import toeicLab.toeicLab.domain.StudyGroup;
 
 @Repository
 public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {
-
+    StudyGroup findById(long id);
 }

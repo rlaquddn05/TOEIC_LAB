@@ -300,25 +300,34 @@ public class MainController {
     }
 
     @PostMapping("/my_studygroup_detail/{id}")
-    public String myStudyGroupDetailPost(@CurrentUser Member member, @PathVariable String id, Model model) {
-        model.addAttribute("questionSetId", id);
+    public String myStudyGroupDetailPost(@CurrentUser Member member, @PathVariable String id, Model model, String date,
+                                         String[] select_form1, String[] select_form2,
+                                         String[] select_form3, String[] select_form4,
+                                         String[] select_form5, String[] select_form6,
+                                         String[] select_form7) {
 
+        int[] numberOfQuestions = questionSetService.selectFormToArray(select_form1, select_form2, select_form3,select_form4,select_form5,select_form6,select_form7);
+
+        StudyGroup thisStudyGroup = studyGroupRepository.findById(Long.parseLong(id));
+        model.addAttribute("questionSetId", id);
+        model.addAttribute("member", member);
+        questionSetService.createMeeting(thisStudyGroup, numberOfQuestions, date);
         return "redirect:/my_studygroup_detail/{id}";
     }
 
-    @GetMapping("/create_meeting")
-    public String createMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup) {
+    @GetMapping("/create_meeting/{id}")
+    public String createMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {
         model.addAttribute("member", member);
-        model.addAttribute("thisStudyGroup", thisStudyGroup);
+        model.addAttribute("studyGroupId", id);
         return "/view/create_meeting";
     }
 
-    @PostMapping("/create_meeting")
-    public String submitCreateMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup, String date){
-        model.addAttribute("member", member);
-         questionSetService.createMeeting(thisStudyGroup, date);
-        return "redirect:/";
-    }
+//    @PostMapping("/create_meeting/{id}")
+//    public String submitCreateMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup, String date){
+//        model.addAttribute("member", member);
+//
+//        return "redirect:/";
+//    }
 
     @GetMapping("/my_vocabulary_list")
     public String myVocabularyList(@CurrentUser Member member, Model model) {
