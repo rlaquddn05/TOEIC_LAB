@@ -5,7 +5,6 @@ $(document).ready(function (){
     });
 });
 
-
 $(document).ready(function (){
     $("#btn-p-1").click(function(){
         $("#RC-LC-box1").find("label, select, option").show();
@@ -14,27 +13,16 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-p-1").click(function(){
-        $("#btn-p-2").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-1").click(function(){
-        $("#btn-m-2").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-1").click(function(){
+        $("#btn-p-2, #btn-m-2").show();
         $("#btn-p-1").hide();
     });
 });
 
-function partChange1(){
+var select = ["PART 선택"];
+var LC_part = ["PART1", "PART2", "PART3", "PART4"];
+var RC_part = ["PART5", "PART6", "PART7"];
 
-    var select = ["PART 선택"];
-    var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7"];
+function partChange1(){
 
     var selectPart = $("#form1_1").val();
 
@@ -74,25 +62,8 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-p-2").click(function(){
-        $("#btn-p-2").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-2").click(function(){
-        $("#btn-m-2").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-2").click(function(){
-        $("#btn-p-3").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-2").click(function(){
-        $("#btn-m-3").show();
+        $("#btn-p-2, #btn-m-2").hide();
+        $("#btn-p-3, #btn-m-3").show();
     });
 });
 
@@ -111,28 +82,12 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-m-2").click(function(){
-        $("#btn-p-2").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-2").click(function(){
-        $("#btn-m-2").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-2").click(function(){
+        $("#btn-p-2, #btn-m-2").hide();
         $("#btn-p-1").show();
     });
 });
 
-
 function partChange2(){
-
-    var select = ["PART 선택"];
-    var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form2_1").val();
 
@@ -173,25 +128,8 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-p-3").click(function(){
-        $("#btn-p-3").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-3").click(function(){
-        $("#btn-m-3").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-3").click(function(){
-        $("#btn-p-4").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-3").click(function(){
-        $("#btn-m-4").show();
+        $("#btn-p-3, #btn-m-3").hide();
+        $("#btn-p-4, #btn-m-4").show();
     });
 });
 
@@ -210,33 +148,13 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-m-3").click(function(){
-        $("#btn-p-3").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-3").click(function(){
-        $("#btn-m-3").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-3").click(function(){
-        $("#btn-p-2").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-3").click(function(){
-        $("#btn-m-2").show();
+        $("#btn-p-3, #btn-m-3").hide();
+        $("#btn-p-2, #btn-m-2").show();
     });
 });
 
 function partChange3(){
 
-    var select = ["PART 선택"];
-    var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form3_1").val();
 
@@ -261,7 +179,6 @@ function partChange3(){
     }
 }
 
-
 /*444444444444444444444444444444444444444444444444444444444444444444444444444444444*/
 
 $(document).ready(function (){
@@ -278,25 +195,8 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-p-4").click(function(){
-        $("#btn-p-4").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-4").click(function(){
-        $("#btn-m-4").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-4").click(function(){
-        $("#btn-p-5").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-4").click(function(){
-        $("#btn-m-5").show();
+        $("#btn-p-4, #btn-m-4").hide();
+        $("#btn-p-5, #btn-m-5").show();
     });
 });
 
@@ -315,33 +215,13 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-m-4").click(function(){
-        $("#btn-p-4").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-4").click(function(){
-        $("#btn-m-4").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-4").click(function(){
-        $("#btn-p-3").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-4").click(function(){
-        $("#btn-m-3").show();
+        $("#btn-p-4, #btn-m-4").hide();
+        $("#btn-p-3, #btn-m-3").show();
     });
 });
 
 function partChange4(){
 
-    var select = ["PART 선택"];
-    var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form4_1").val();
 
@@ -383,25 +263,8 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-p-5").click(function(){
-        $("#btn-p-5").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-5").click(function(){
-        $("#btn-m-5").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-5").click(function(){
-        $("#btn-p-6").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-5").click(function(){
-        $("#btn-m-6").show();
+        $("#btn-p-5, #btn-m-5").hide();
+        $("#btn-p-6, #btn-m-6").show();
     });
 });
 
@@ -420,33 +283,13 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-m-5").click(function(){
-        $("#btn-p-5").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-5").click(function(){
-        $("#btn-m-5").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-5").click(function(){
-        $("#btn-p-4").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-5").click(function(){
-        $("#btn-m-4").show();
+        $("#btn-p-5, #btn-m-5").hide();
+        $("#btn-p-4, #btn-m-4").show();
     });
 });
 
 function partChange5(){
 
-    var select = ["PART 선택"];
-    var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form5_1").val();
 
@@ -487,25 +330,8 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-p-6").click(function(){
-        $("#btn-p-6").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-6").click(function(){
-        $("#btn-m-6").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-6").click(function(){
-        $("#btn-p-7").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-6").click(function(){
-        $("#btn-m-7").show();
+        $("#btn-p-6, #btn-m-6").hide();
+        $("#btn-p-7, #btn-m-7").show();
     });
 });
 
@@ -524,33 +350,13 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-m-6").click(function(){
-        $("#btn-p-6").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-6").click(function(){
-        $("#btn-m-6").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-6").click(function(){
-        $("#btn-p-5").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-6").click(function(){
-        $("#btn-m-5").show();
+        $("#btn-p-6, #btn-m-6").hide();
+        $("#btn-p-5, #btn-m-5").show();
     });
 });
 
 function partChange6(){
 
-    var select = ["PART 선택"];
-    var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form6_1").val();
 
@@ -591,18 +397,7 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-p-7").click(function(){
-        $("#btn-p-7").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-7").click(function(){
-        $("#btn-m-7").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-p-7").click(function(){
+        $("#btn-p-7, #btn-m-7").hide();
         $("#btn-m-8").show();
     });
 });
@@ -622,45 +417,18 @@ $(document).ready(function (){
 
 $(document).ready(function (){
     $("#btn-m-7").click(function(){
-        $("#btn-p-7").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-7").click(function(){
-        $("#btn-m-7").hide();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-7").click(function(){
-        $("#btn-p-6").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-7").click(function(){
-        $("#btn-m-6").show();
+        $("#btn-p-7, #btn-m-7").hide();
+        $("#btn-p-6, #btn-m-6").show();
     });
 });
 
 $(document).ready(function (){
     $("#btn-m-8").click(function(){
-        $("#btn-p-7").show();
-    });
-});
-
-$(document).ready(function (){
-    $("#btn-m-8").click(function(){
-        $("#btn-m-7").show();
+        $("#btn-p-7, #btn-m-7").show();
     });
 });
 
 function partChange7(){
-
-    var select = ["PART 선택"];
-    var LC_part = ["PART1", "PART2", "PART3", "PART4"];
-    var RC_part = ["PART5", "PART6", "PART7"];
 
     var selectPart = $("#form7_1").val();
 

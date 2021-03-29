@@ -9,33 +9,33 @@
 </th:block>
 
 <div layout:fragment="content" >
-        <div class="container">
-            <h3 th:text="${type} + ' 모의시험'"></h3>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#p1">part1</a>
-                </li>
-                <li class="nav-item" >
-                    <a class="nav-link " data-toggle="tab" href="#p2">part2</a>
-                </li>
-                <li class="nav-item" >
-                    <a class="nav-link " data-toggle="tab" href="#p3">part3</a>
-                </li>
-                <li class="nav-item" >
-                    <a class="nav-link " data-toggle="tab" href="#p4">part4</a>
-                </li>
-                <li class="nav-item" >
-                    <a class="nav-link " data-toggle="tab" href="#p5">part5</a>
-                </li>
-                <li class="nav-item" >
-                    <a class="nav-link " data-toggle="tab" href="#p6">part6</a>
-                </li>
-                <li class="nav-item" >
-                    <a class="nav-link " data-toggle="tab" href="#p7">part7</a>
-                </li>
-            </ul>
-            <form th:action="@{/result_sheet}" th:method="post">
-                <input type="hidden" th:name="questionSetId" th:value="${questionSet.getId()}">
+    <div class="container">
+        <h3 th:text="${type} + ' 모의시험'"></h3>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#p1">part1</a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link " data-toggle="tab" href="#p2">part2</a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link " data-toggle="tab" href="#p3">part3</a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link " data-toggle="tab" href="#p4">part4</a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link " data-toggle="tab" href="#p5">part5</a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link " data-toggle="tab" href="#p6">part6</a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link " data-toggle="tab" href="#p7">part7</a>
+            </li>
+        </ul>
+        <form th:action="@{/result_sheet/{questionSetId}(questionSetId=${questionSet.getId()})}" th:method="post">
+            <input type="hidden" th:name="questionSetId" th:value="${questionSet.getId()}">
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="p1">
                     <div class="banner">
@@ -100,10 +100,10 @@
                     <th:block th:insert="fragments/question_RC7_2_fragments :: question_list(${questionList})"/>
                 </div>
             </div>
-                <button type="submit"> 제출</button>
-            </form>
-        </div>
-
-
+            <button type="submit"> 제출</button>
+        </form>
     </div>
+
+
+</div>
 </html>

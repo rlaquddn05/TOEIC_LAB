@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter @Setter @Builder
@@ -15,13 +17,13 @@ public class ReviewNote {
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     private Member member;
 
     @OneToMany
     private List<Question> questions = new ArrayList<>();
 
     @ElementCollection
-    private List<String> submittedAnswers = new ArrayList<>();
+    private Map<Long, String> submittedAnswers = new HashMap<>();
 
 }

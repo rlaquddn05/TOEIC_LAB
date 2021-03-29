@@ -19,6 +19,7 @@ import toeicLab.toeicLab.user.MemberUser;
 import toeicLab.toeicLab.user.SignUpForm;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -60,10 +61,10 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByUserId(username);
-        log.info(member.getUserId());
         if(member == null) {
             throw new UsernameNotFoundException(username);
         }
+        log.info(member.getUserId());
         return new MemberUser(member);
     }
 
@@ -122,26 +123,45 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean addReviewNote(Member member, Long questionId) {
+    public boolean addReviewNote(Member member, Long questionId, String answer) {
         Question question = questionRepository.getOne(questionId);
         ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
         if (reviewNote == null){
             reviewNote = new ReviewNote();
             reviewNote.setMember(member);
         }
-        List<Question> list = reviewNote.getQuestions();
+        List<Question> qlist = reviewNote.getQuestions();
+        Map<Long, String> alist = reviewNote.getSubmittedAnswers();
 
-        if(list.contains(question)){
-            list.remove(question);
-            reviewNote.setQuestions(list);
-            reviewNoteRepository.save(reviewNote);
+        if(qlist.contains(question)){
             return false;
         } else {
 
-            list.add(question);
-            reviewNote.setQuestions(list);
+            qlist.add(question);
+            alist.put(questionId, answer);
+            reviewNote.setQuestions(qlist);
+            reviewNote.setSubmittedAnswers(alist);
             reviewNoteRepository.save(reviewNote);
             return true;
         }
     }
+
+    public void deleteReviewNote(Member member, Long questionId) {
+        Question question = questionRepository.getOne(questionId);
+        ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
+        List<Question> list = reviewNote.getQuestions();
+        Map <Long, String> alist = reviewNote.getSubmittedAnswers();
+        for(int i=0; i<list.size(); ++i){
+            if(list.get(i) == question){
+                list.remove(i);
+                alist.remove(i);
+
+                reviewNote.setQuestions(list);
+                reviewNote.setSubmittedAnswers(alist);
+                reviewNoteRepository.save(reviewNote);
+            }
+        }
+        return;
+    }
+
 }
