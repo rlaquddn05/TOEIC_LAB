@@ -9,10 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.*;
-import toeicLab.toeicLab.repository.MailRepository;
-import toeicLab.toeicLab.repository.MemberRepository;
-import toeicLab.toeicLab.repository.QuestionSetRepository;
-import toeicLab.toeicLab.repository.StudyGroupRepository;
+import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.*;
 
@@ -36,6 +33,7 @@ public class MainController {
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupRepository studyGroupRepository;
     private final QuestionService questionService;
+    private final ReviewNoteRepository reviewNoteRepository;
 
     @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
@@ -357,11 +355,32 @@ public class MainController {
         return "/view/my_studygroup_detail";
     }
 
-    @GetMapping("/create_meeting")
-    public String createMeeting(@CurrentUser Member member, Model model) {
+    @PostMapping("/my_studygroup_detail/{id}")
+    public String myStudyGroupDetailPost(@CurrentUser Member member, @PathVariable String id, Model model, String date,
+                                         String[] select_form) {
+
+        int[] numberOfQuestions = questionSetService.selectFormToArray(select_form);
+
+        StudyGroup thisStudyGroup = studyGroupRepository.findById(Long.parseLong(id));
+        model.addAttribute("questionSetId", id);
         model.addAttribute("member", member);
+        questionSetService.createMeeting(thisStudyGroup, numberOfQuestions, date);
+        return "redirect:/my_studygroup_detail/{id}";
+    }
+
+    @GetMapping("/create_meeting/{id}")
+    public String createMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {
+        model.addAttribute("member", member);
+        model.addAttribute("studyGroupId", id);
         return "/view/create_meeting";
     }
+
+//    @PostMapping("/create_meeting/{id}")
+//    public String submitCreateMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup, String date){
+//        model.addAttribute("member", member);
+//
+//        return "redirect:/";
+//    }
 
     @GetMapping("/my_vocabulary_list")
     public String myVocabularyList(@CurrentUser Member member, Model model) {
@@ -425,23 +444,21 @@ public class MainController {
         return "redirect:/";
     }
 
-    @PostMapping("/result_sheet")
-    public String resultSheet(@CurrentUser Member member, HttpServletRequest request, Model model) {
-
+    @PostMapping("/result_sheet/{questionSetId}")
+    public String resultSheet(@CurrentUser Member member, HttpServletRequest request, @PathVariable Long questionSetId, Model model) {
         QuestionSet questionSet = null;
         Map <Long, String> map = new HashMap<>();
-
         Enumeration en = request.getParameterNames();
         String param;
         String value;
         long setIdValue = 0;
-        while (en.hasMoreElements()){
-            param = (String)en.nextElement();
+        while (en.hasMoreElements()) {
+            param = (String) en.nextElement();
             value = request.getParameter(param);
-            if(param.equals("_csrf")){
+            if (param.equals("_csrf")) {
                 continue;
             }
-            if(param.equals("questionSetId")){
+            if (param.equals("questionSetId")) {
                 questionSet = questionSetRepository.getOne(Long.parseLong(value));
                 setIdValue = Long.parseLong(value);
                 continue;
@@ -455,7 +472,6 @@ public class MainController {
         questionSetRepository.save(questionSet);
         questionSet = questionSetRepository.getOne(setIdValue);
 
-
         /*=================================PART 걸러내기===============================*/
         List <String> str = new ArrayList<>();
         questionService.checkTypeList(questionSet, str);
@@ -465,15 +481,47 @@ public class MainController {
         model.addAttribute("questionType", str);
         model.addAttribute("questionList", questionSet.getQuestions());
         model.addAttribute("questionSet", questionSet);
-        model.addAttribute("userAnswer", questionSet.getSubmittedAnswers());
+        model.addAttribute("userAnswer", map);
         model.addAttribute("member", member);
+        model.addAttribute("questionSetId", questionSetId);
 
         return "/view/result_sheet";
     }
 
+    @RequestMapping( "/detail/{id}")
+    public String lcAnswerSheet(@CurrentUser Member member, @PathVariable Long id, HttpServletRequest request, Model model) {
+        System.out.println(request.getParameter("questionSetId"));
+        long questionSetId = Long.parseLong(request.getParameter("questionSetId"));
+        QuestionSet questionSet = questionSetRepository.getOne(questionSetId);
+
+        log.info("id: " + id);
+        Question question= questionService.findQuestion(id);
+
+        if(member!=null){
+            member = memberRepository.findByEmail(member.getEmail());
+        }
+        System.out.println(questionSet.getSubmittedAnswers());
+        model.addAttribute("question", question);
+        model.addAttribute("member", member);
+        model.addAttribute("questionSetId", questionSetId);
+        model.addAttribute("userAnswer", questionSet.getSubmittedAnswers());
+        return "/view/detail";
+    }
+
     @GetMapping("/my_review_note")
     public String myReviewNote(@CurrentUser Member member, Model model) {
+        ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
+        List<Question> list = reviewNote.getQuestions();
+        QuestionSet questionSet = new QuestionSet();
+        questionSet.setQuestions(list);
+        List<String> str = new ArrayList<>();
+        questionService.checkTypeList(questionSet, str);
+        System.out.println(str);
+
+        model.addAttribute("questionType", str);
+        model.addAttribute("questionList", list);
         model.addAttribute("member", member);
+        model.addAttribute("userAnswer", reviewNote.getSubmittedAnswers());
         return "/view/my_review_note";
     }
 
@@ -596,38 +644,23 @@ public class MainController {
         return "/view/question/test";
     }
 
-    @GetMapping("/detail/{id}")
-    public String lcAnswerSheet(@CurrentUser Member member, @PathVariable Long id, Model model) {
-        log.info("id: " + id);
-//        log.info("setId: " + setId);
-        Question question= questionService.findQuestion(id);
-//        QuestionSet questionSet = questionSetService.findQuestionSet(setId);
-        if(member!=null){
-            member = memberRepository.findByEmail(member.getEmail());
-        }
-
-
-
-//        model.addAttribute("questionSet", questionSet);
-        model.addAttribute("question", question);
-        model.addAttribute("member", member);
-
-        return "/view/detail";
-    }
 
     @GetMapping("/add_review_note")
     @ResponseBody
-    public String AddReviewNote(@CurrentUser Member member, @RequestParam("id") Long itemId){
+    public String AddReviewNote(@CurrentUser Member member, @RequestParam("id") Long id, @RequestParam("answer") String answer){
         JsonObject jsonObject = new JsonObject();
         boolean result = false;
 
+        System.out.println(id);
+        System.out.println(answer);
+
         try {
-            result = memberService.addReviewNote(member, itemId);
+            result = memberService.addReviewNote(member, id, answer);
             if(result) {
                 jsonObject.addProperty("message", "오답노트추가");
             }
             else {
-                jsonObject.addProperty("message", "오답노트삭제");
+                jsonObject.addProperty("message", "오답노트에 이미 있음");
             }
 
         } catch (IllegalArgumentException e){
@@ -636,5 +669,14 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    @GetMapping("/my_review_note/{id}")
+    public String DeleteTest(@CurrentUser Member member, @PathVariable Long id, Model model){
+        memberService.deleteReviewNote(member, id);
+
+        System.out.println(id + "삭제");
+
+        model.addAttribute("member", member);
+        return "redirect:/my_review_note";
+    }
 
 }

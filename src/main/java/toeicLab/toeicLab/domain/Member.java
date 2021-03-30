@@ -73,8 +73,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Notice> noticeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<ReviewNote> reviewNoteList = new ArrayList<>();
+    @OneToOne(mappedBy = "member")
+    private ReviewNote reviewNoteList;
 
     @OneToMany
     private List<Schedule> schedules = new ArrayList<>();

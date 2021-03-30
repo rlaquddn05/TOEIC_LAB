@@ -4,7 +4,7 @@
       layout:decorate="layout" th:with="title='Result!'">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/sheet/result_sheet.css}">
 </th:block>
 
 <div layout:fragment="content">
@@ -14,84 +14,102 @@
                 <div>
                     <div><span>연습문제/모의시험</span><span style="margin-left: 6.250em;">문제풀이 결과</span></div>
                     <hr/>
-                    <div th:if="${questionType.contains('PART1')}">
+                    <div id="part1-div" th:if="${questionType.contains('PART1')}" style="clear:both;">
                         <span>PART1</span>
                         <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part1">Part1 문제 풀이 결과</button>
                         <div style="margin-left: 6.250em;">
                             <span id="part1" class="collapse" th:each="question:${questionList}">
-                                <button th:if="${question.getQuestionType().toString().equals('PART1')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
+                                <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post" >
+                                    <button th:if="${question.getQuestionType().toString().equals('PART1')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
 <!--                                <button th:if="${question.getQuestionType().toString().equals('PART1')}" th:classappend="${userAnswer.get(question.id).equals(null)} ? 'btn btn-sm btn-secondary' : ${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-danger'">-->
-                                    <!--                                <button th:if="${question.getQuestionType().toString().equals('PART1')}" th:classappend="${userAnswer.get(question.id).equals(null)} ? ${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn btn-sm btn-secondary' :  'btn btn-sm btn-primary' : 'btn btn-sm btn-danger'">-->
-                                    <!--                                    <a th:href="@{/lc_answer_sheet/{setId}(setId=${questionSet.id})/{id}(id=${question.id})}" th:text="${question.id}"></a>-->
-                                    <!--                                    <a th:href="@{/lc_answer_sheet/{setId}(setId=${questionSet.id}),{id}(id=${question.id})}" th:text="${question.id}"></a>-->
-                                    <a th:href="@{/detail/{id}(id=${question.id})}" th:text="${question.id}"></a>
-                                </button>
+                                        <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
+                                        <a th:text="${question.id}"></a>
+                                        </button>
+                                    </form>
                             </span>
                         </div>
                     </div>
-                    <div th:if="${questionType.contains('PART2')}">
+                    <div id="part2-div" th:if="${questionType.contains('PART2')}" style="clear:both;">
                         <span>PART2</span>
                         <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part2">Part2 문제 풀이 결과</button>
                         <div>
                             <span id="part2" class="collapse" th:each="question:${questionList}">
-                                <button th:if="${question.getQuestionType().toString().equals('PART2')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
-                                    <a th:href="@{/detail/{id}(id=${question.id})}" th:text="${question.id}"></a>
-                                </button>
+                                <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post">
+                                    <button th:if="${question.getQuestionType().toString().equals('PART2')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
+                                        <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
+                                        <a th:text="${question.id}"></a>
+                                    </button>
+                                </form>
                             </span>
                         </div>
                     </div>
-                    <div th:if="${questionType.contains('PART3')}">
+                    <div id="part3-div" th:if="${questionType.contains('PART3')}">
                         <span>PART3</span>
                         <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part3">Part3 문제 풀이 결과</button>
                         <div>
                             <span id="part3" class="collapse" th:each="question:${questionList}">
-                                <button th:if="${question.getQuestionType().toString().equals('PART3')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
-                                     <a th:href="@{/detail/{id}(id=${question.id})}" th:text="${question.id}"></a>
-                                </button>
+                                <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post">
+                                    <button th:if="${question.getQuestionType().toString().equals('PART3')}" class="btn btn-sm btn-group" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
+                                        <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
+                                        <a th:text="${question.id}"></a>
+                                    </button>
+                                </form>
                             </span>
                         </div>
                     </div>
-                    <div th:if="${questionType.contains('PART4')}">
+                    <div id="part4-div" th:if="${questionType.contains('PART4')}">
                         <span>PART4</span>
                         <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part4">Part4 문제 풀이 결과</button>
                         <div>
                             <span id="part4" class="collapse" th:each="question:${questionList}">
-                                <button th:if="${question.getQuestionType().toString().equals('PART4')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
-                                     <a th:href="@{/detail/{id}(id=${question.id})}" th:text="${question.id}"></a>
-                                </button>
+                                <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post">
+                                    <button th:if="${question.getQuestionType().toString().equals('PART4')}" class="btn btn-sm btn-group" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
+                                        <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
+                                        <a th:text="${question.id}"></a>
+                                    </button>
+                                </form>
                             </span>
                         </div>
                     </div>
-                    <div th:if="${questionType.contains('PART5')}">
+                    <div id="part5-div" th:if="${questionType.contains('PART5')}">
                         <span>PART5</span>
                         <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part5">Part5 문제 풀이 결과</button>
                         <div>
                             <span id="part5" class="collapse" th:each="question:${questionList}">
-                                <button th:if="${question.getQuestionType().toString().equals('PART5')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
-                                    <a th:href="@{/detail/{id}(id=${question.id})}" th:text="${question.id}"></a>
-                                </button>
+                                <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post">
+                                    <button th:if="${question.getQuestionType().toString().equals('PART5')}" class="btn btn-sm btn-group" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
+                                        <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
+                                        <a th:text="${question.id}"></a>
+                                    </button>
+                                </form>
                             </span>
                         </div>
                     </div>
-                    <div th:if="${questionType.contains('PART6')}">
+                    <div id="part6-div" th:if="${questionType.contains('PART6')}">
                         <span>PART6</span>
                         <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part6">Part6 문제 풀이 결과</button>
                         <div>
                             <span id="part6" class="collapse" th:each="question:${questionList}">
-                                <button th:if="${question.getQuestionType().toString().equals('PART6')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
-                                     <a th:href="@{/detail/{id}(id=${question.id})}" th:text="${question.id}"></a>
-                                </button>
+                                <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post">
+                                    <button th:if="${question.getQuestionType().toString().equals('PART6')}" class="btn btn-sm btn-group" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
+                                        <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
+                                        <a th:text="${question.id}"></a>
+                                    </button>
+                                </form>
                             </span>
                         </div>
                     </div>
-                    <div th:if="${questionType.contains('PART7_SINGLE_PARAGRAPH')||questionType.contains('PART7_MULTIPLE_PARAGRAPH')}">
-                        <p>PART7</p>
+                    <div id="part7-div" th:if="${questionType.contains('PART7_SINGLE_PARAGRAPH')||questionType.contains('PART7_MULTIPLE_PARAGRAPH')}">
+                        <span>PART7</span>
                         <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part7">Part7 문제 풀이 결과</button>
                         <div>
                             <span id="part7" class="collapse" th:each="question:${questionList}">
-                                <button th:if="${question.getQuestionType().toString().equals('PART7_SINGLE_PARAGRAPH') || question.getQuestionType().toString().equals('PART7_MULTIPLE_PARAGRAPH')}" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
-                                     <a th:href="@{/detail/{id}(id=${question.id})}" th:text="${question.id}"></a>
-                                </button>
+                                <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post">
+                                    <button th:if="${question.getQuestionType().toString().equals('PART7_SINGLE_PARAGRAPH') || question.getQuestionType().toString().equals('PART7_MULTIPLE_PARAGRAPH')}" class="btn btn-sm btn-group" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
+                                        <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
+                                        <a th:text="${question.id}"></a>
+                                    </button>
+                                </form>
                             </span>
                         </div>
                     </div>

@@ -10,40 +10,40 @@
 
 <div layout:fragment="content">
     <div class="container">
-        <div class="tab-pane fade show active" th:id="${studyGroupId}">
-            <div class="py-5 row">
-                <div class="col-7">
-                    <h2 th:text="${member1.getUserId()}+'(조장)'"></h2>
-                </div>
-                <div class="col-5">
-                    <button type="button" onclick="" class="btn btn-primary">스터디 일정 만들기</button>
-                    <select class="form-line-select" name="" id="">
-                        <option selected>조장 변경</option>
-                        <option value="">조원 이름</option>
-                    </select>
-                    <!--스터디 그룹 삭제 아이콘-->
-                </div>
-                <div class="col-12">
-                    <h2 th:text="${member2.getUserId()}"></h2>
-                </div>
-                <div class="col-12">
-                    <h2 th:text="${member3.getUserId()}"></h2>
-                </div>
-                <div class="col-12">
-                    <h2 th:text="${member4.getUserId()}"></h2>
-                </div>
+        <div class="py-5 row">
+            <div class="col-7">
+                <h2 th:text="${member1.getUserId()}+'(조장)'"></h2>
             </div>
+            <div class="col-5">
+                <button type="button" onclick="" class="btn btn-primary">
+                    <a th:href="@{/create_meeting/{id}(id=${id})}">스터디 일정 만들기</a>
+                </button>
 
-            <div class="py-5">
-                <h2>스터디 진행 현황</h2>
-                <div th:each="meeting:${meetings}">
-                    <span th:text="meeting.date"> </span>
-                    <button type="button" class="btn btn-primary">스터디 시작하기</button>
-                    <button type="button" class="btn btn-primary">스터디 해답보기</button>
-                </div>
+                <select class="form-line-select" name="" id="">
+                    <option selected>조장 변경</option>
+                    <option value="">조원 이름</option>
+                </select>
+                <!--스터디 그룹 삭제 아이콘-->
+            </div>
+            <div class="col-12">
+                <h2 th:text="${member2.getUserId()}"></h2>
+            </div>
+            <div class="col-12">
+                <h2 th:text="${member3.getUserId()}"></h2>
+            </div>
+            <div class="col-12">
+                <h2 th:text="${member4.getUserId()}"></h2>
             </div>
         </div>
 
+        <div class="py-5">
+            <h2>스터디 예약 / 진행 현황</h2>
+            <div th:each="meeting:${meetings}">
+                <span th:text="${meeting.date.toLocalDate()}"> </span>
+                <button type="button" class="btn btn-primary">스터디 시작하기</button>
+                <button type="button" class="btn btn-primary">스터디 해답보기</button>
+            </div>
+        </div>
     </div>
 </div>
 </html>

@@ -10,7 +10,7 @@
 
 <div layout:fragment="content">
     <div class="container">
-        <form th:action="@{/result_sheet}" th:method="post">
+        <form th:action="@{/result_sheet/{questionSetId}(questionSetId=${questionSet.getId()})}" th:method="post">
             <input type="hidden" th:name="questionSetId" th:value="${questionSet.getId()}">
             <ul class="nav nav-tabs">
                 <li th:if="${part1List != null}" class="nav-item">
@@ -117,12 +117,8 @@
 
             </div>
 
-
-
-
-            <!--풀다 말았을때 저장 기능이랑 제출-->
             <div id="submit_btn">
-                <button type="submit" class="btn btn-primary" >저장</button>
+                <button type="submit" class="btn btn-primary" >맨위로 추가하기</button>
                 <button type="submit" class="btn btn-primary" >제출 및 채점</button>
             </div>
         </form>
