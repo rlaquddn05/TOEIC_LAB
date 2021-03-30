@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" th:with="title='Result!'">
 
-</body>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/sheet/result_sheet.css}">
+</th:block>
+
+<div layout:fragment="content">
+    <div class="container">
+        <div class="py-5">
+            <div class="banner">
+                <p>게시판 설명란</p>
+            </div>
+            <button class="btn"><a th:href="@{/forum_upload}">문제사진 올리기</a></button>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td>번호</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>조회수</td>
+                    <td>날짜</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td><a></a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
 </html>

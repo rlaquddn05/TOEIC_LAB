@@ -554,10 +554,6 @@ public class MainController {
         return "/view/popup_dictionary";
     }
 
-    @GetMapping("/forum")
-    public String forum() {
-        return "/view/forum";
-    }
 
     @GetMapping("/schedule")
     public String schedule(@CurrentUser Member member, Model model) {
