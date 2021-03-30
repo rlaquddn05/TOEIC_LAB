@@ -26,7 +26,7 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="userId" class="form-label">Id</label>
-                            <input type="text" name ="username" class="form-control" id="userId" aria-describedby="userId_help_text" required>
+                            <input type="text" name ="userId" class="form-control" id="userId" aria-describedby="userId_help_text" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id ="userId_help_text" class="form-text text-muted">
                                 아이디가 기억나지 않으세요? <a href="#" th:href="@{/send_find_id_link}">아이디 찾기 링크 보내기</a>
@@ -52,7 +52,13 @@
                     </div>
 
                     <hr class="col-12 my-4">
-                    <button class="w-50 btn btn-dark btn-lg" type="submit">Login</button>
+                    <div class="btn-group">
+                    <button class="w-100 btn btn-dark btn-lg" type="submit">Login</button>
+                    <button class="w-100 btn btn-dark btn-lg" type="button" onclick="location.href='/oauth2/authorization/google'">GoogleLogin</button>
+                    </div>
+<!--                    <a href="/oauth2/authorization/google" >-->
+<!--                        구글로그인-->
+<!--                    </a>-->
                 </form>
             </div>
 

@@ -72,6 +72,7 @@ public class MainController {
             model.addAttribute("resetPasswordEmail", mailDto);
             log.info("이메일보내기 성공");
 
+
         } catch (IllegalArgumentException e) {
             log.info("실패");
             model.addAttribute("error_code", "password.reset.failed");
@@ -267,11 +268,68 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    @GetMapping("/update/password")
+    @ResponseBody
+    public String updatePassword(@RequestParam("password") String password, @RequestParam("userId") String userId) {
+
+        Member member = memberRepository.findByUserId(userId);
+        JsonObject jsonObject = new JsonObject();
+
+        if(member.getPassword() == null){
+            jsonObject.addProperty("message", "비밀번호를 먼저 저장해주세요.");
+        }else{
+            member.setPassword("{noop}" + password);
+            memberRepository.save(member);
+            jsonObject.addProperty("message", "비밀번호를 수정하였습니다.");
+        }
+        return jsonObject.toString();
+    }
+
+    @GetMapping("/update/delete")
+    @ResponseBody
+    public String updatePassword(@RequestParam("userId") String userId) {
+
+        Member deletedMember = memberRepository.findByUserId(userId);
+        memberRepository.deleteById(deletedMember.getId());
+
+        boolean result = true;
+        result = memberRepository.existsById(deletedMember.getId());
+        JsonObject jsonObject = new JsonObject();
+
+        if(result){
+            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴실패...");
+        }else{
+            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴했습니다.");
+        }
+        return "redirect:/";
+    }
+
+
     @GetMapping("/my_page")
-    public String myPage(@CurrentUser Member member, Model model) {
-        Member user = memberRepository.findByEmail(member.getEmail());
-        model.addAttribute("userDto", user);
+    public String myPageView(@CurrentUser Member member, Model model) {
+        Member currentUser = memberRepository.findByEmail(member.getEmail());
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("member", member);
+        model.addAttribute(new UpdateForm());
+        return "/view/my_page";
+    }
+
+    @PostMapping("/my_page")
+    public String myPageSubmit(UpdateForm updateForm){
+        Member updatedMember = memberRepository.findByUserId(updateForm.getUserId());
+        updatedMember.setPassword(updateForm.getPassword());
+        updatedMember.setAge(updateForm.getAge());
+        updatedMember.setContact(updateForm.getContact());
+        updatedMember.setAddress(Address.builder()
+                .zipcode(updateForm.getZipcode())
+                .city(updateForm.getCity())
+                .street(updateForm.getStreet())
+                .build());
+        if(updateForm.getGender().equals("male")){
+            updatedMember.setGenderType(GenderType.MALE);
+        }else {
+            updatedMember.setGenderType(GenderType.FEMALE);
+        }
         return "/view/my_page";
     }
 

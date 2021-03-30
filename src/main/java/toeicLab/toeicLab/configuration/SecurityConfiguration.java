@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import toeicLab.toeicLab.configuration.oauth.PrincipalOauth2UserService;
 import toeicLab.toeicLab.service.MemberService;
 
 import javax.sql.DataSource;
@@ -20,11 +22,14 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final DataSource dataSource;
 
     private final MemberService memberService;
+
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
     @Bean // 로그인 유지 (persistence_logins) 레파지토리 빈으로 등록
     public PersistentTokenRepository tokenRepository(){
@@ -66,7 +71,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/notify_password",
                         "/reset_password",
                         "/notify_password2",
-                        "detail/**")
+                        "detail/**",
+                        "update/**"
+                )
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")
@@ -86,7 +93,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 로그인 기능 추가
         http.formLogin()
                 .loginPage("/login")
-                .permitAll();
+                .loginProcessingUrl("/login")
+                .permitAll()
+                .defaultSuccessUrl("/")
+                .usernameParameter("userId")
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService);
+
     }
 
 }

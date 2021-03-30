@@ -17,6 +17,7 @@ import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.ReviewNoteRepository;
 import toeicLab.toeicLab.user.MemberUser;
 import toeicLab.toeicLab.user.SignUpForm;
+import toeicLab.toeicLab.user.UpdateForm;
 
 import java.util.List;
 
@@ -30,12 +31,16 @@ public class MemberService implements UserDetailsService {
     private final ReviewNoteRepository reviewNoteRepository;
     private final QuestionRepository questionRepository;
 
+
+
     public Member createNewMember(SignUpForm signUpForm) {
         Member member = Member.builder()
                 .userId(signUpForm.getUserId())
-                .password(signUpForm.getPassword())
+                .password("{noop}" + signUpForm.getPassword())
                 .nickname(signUpForm.getNickname())
+                .role("ROLE_USER")
                 .age(signUpForm.getAge())
+                .provider("toeicLab")
                 .email(signUpForm.getEmail())
                 .contact(signUpForm.getContact())
                 .address(Address.builder()
@@ -52,17 +57,17 @@ public class MemberService implements UserDetailsService {
             member.setGenderType(GenderType.FEMALE);
         }
 
-        member.encodePassword(passwordEncoder);
+//        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
         return member;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUserId(username);
-        log.info(member.getUserId());
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Member member = memberRepository.findByUserId(userId);
+        log.info("[ToeicLab]으로 로그인" + member.getUserId());
         if(member == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(userId);
         }
         return new MemberUser(member);
     }
@@ -107,8 +112,8 @@ public class MemberService implements UserDetailsService {
 
     public void resetPassword(String email, String password) {
         Member member = memberRepository.findByEmail(email);
-        member.setPassword(password);
-        member.encodePassword(passwordEncoder);
+        member.setPassword("{noop}" + password);
+//        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
     }
 

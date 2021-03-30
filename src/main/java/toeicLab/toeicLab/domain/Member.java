@@ -35,7 +35,7 @@ public class Member {
 
     private String email;
 
-    private String emailCheckToken;
+//    private String emailCheckToken;
 
     private String contact;
 
@@ -45,6 +45,14 @@ public class Member {
 
     @Embedded
     private Address address;
+
+    private String username;
+
+    private String provider;
+
+    private String providerId;
+
+    private String role;
 
     @Enumerated(EnumType.STRING)
     private LevelType levelType;
