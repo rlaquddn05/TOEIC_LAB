@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
+import toeicLab.toeicLab.repository.QuestionSetRepository;
 import toeicLab.toeicLab.repository.ReviewNoteRepository;
 import toeicLab.toeicLab.user.MemberUser;
 import toeicLab.toeicLab.user.SignUpForm;
@@ -31,7 +32,7 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final ReviewNoteRepository reviewNoteRepository;
     private final QuestionRepository questionRepository;
-
+    private final QuestionSetRepository questionSetRepository;
 
 
     public Member createNewMember(SignUpForm signUpForm) {
@@ -169,6 +170,43 @@ public class MemberService implements UserDetailsService {
             }
         }
         return;
+    }
+
+    public int[] numberOfCorrectAndWrongAnswersByQuestionType(Member member, QuestionType questionType) {
+
+        List<QuestionSet> questionSets = questionSetRepository.getAllByMember(member);
+        int correctCount = 0;
+        int totalCount = 0;
+
+        for (QuestionSet qs : questionSets) {
+            Map<Long, String> submittedAnswersForQs = qs.getSubmittedAnswers();
+            totalCount += submittedAnswersForQs.size();
+            for (Map.Entry<Long, String> entry : submittedAnswersForQs.entrySet()) {
+                Question question = questionRepository.getOne(entry.getKey());
+                if (question.getQuestionType() == questionType && question.getAnswer().equals(entry.getValue())) {
+                    correctCount++;
+                }
+            }
+        }
+        return new int[]{correctCount, totalCount - correctCount};
+    }
+
+    public String createCommentByQuestionType(Member member, QuestionType questionType) {
+        String comment = "생성된 코멘트가 없습니다";
+        int[] correctAndWrong = numberOfCorrectAndWrongAnswersByQuestionType(member, questionType);
+        int total = correctAndWrong[0] + correctAndWrong[1];
+        int percentage = correctAndWrong[1] / total * 100;
+        if (total < 10) {
+            comment = "현재 " + questionType.toString() + " 을 " + total + " 문제 푸셨습니다. 정확한 평가를 위해서는 더 많은 문제를 풀어주세요.";
+        } else {
+            if (percentage > 80) {
+                comment = questionType.toString() + " 의 정답률이 " + percentage + "% 로 높은 편입니다.";
+            }
+            if (percentage < 50) {
+                comment = questionType.toString() + " 의 정답률이 " + percentage + "% 로 낮은 편입니다.";
+            }
+        }
+        return comment;
     }
 
 }
