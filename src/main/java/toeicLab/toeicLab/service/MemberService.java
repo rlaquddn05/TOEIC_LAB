@@ -67,8 +67,7 @@ public class MemberService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member member = memberRepository.findByUserId(userId);
         log.info("[ToeicLab]으로 로그인" + member.getUserId());
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUserId(username);
+
         if(member == null) {
             throw new UsernameNotFoundException(userId);
         }

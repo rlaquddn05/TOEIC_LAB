@@ -72,8 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/reset_password",
                         "/notify_password2",
                         "detail/**",
-                        "update/**"
-                )
+                        "update/**",
                         "/create_meeting/**")
                 .permitAll()
 
