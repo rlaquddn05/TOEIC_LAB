@@ -18,8 +18,8 @@ public class UpdateForm {
     @NotBlank
     private String gender;
 
-    @NotNull
-    private int age;
+    @NotBlank
+    private Integer age;
 
     @NotBlank
     private String contact;

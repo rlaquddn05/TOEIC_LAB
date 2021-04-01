@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import toeicLab.toeicLab.configuration.auth.PrincipalDetails;
 import toeicLab.toeicLab.configuration.oauth.provider.GoogleUserInfo;
 import toeicLab.toeicLab.configuration.oauth.provider.OAuth2UserInfo;
+import toeicLab.toeicLab.domain.Address;
+import toeicLab.toeicLab.domain.GenderType;
 import toeicLab.toeicLab.domain.Member;
 import toeicLab.toeicLab.domain.MemberType;
 import toeicLab.toeicLab.repository.MemberRepository;
@@ -61,6 +63,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .userId(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
                     .nickname(oAuth2UserInfo.getNickname())
                     .email(oAuth2UserInfo.getEmail())
+                    .age(000)
+                    .address(Address.builder()
+                            .city("미등록")
+                            .street("미등록")
+                            .zipcode("미등록").build())
                     .memberType(MemberType.USER)
                     .role("ROLE_USER")
                     .provider(oAuth2UserInfo.getProvider())

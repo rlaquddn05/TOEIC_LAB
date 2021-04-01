@@ -32,7 +32,7 @@
                                    name="userId" id="userId"
                                    aria-describedby="userId_help_text"
                                    th:value="${currentUser.getUserId()}"
-                                   th:field="*{userId}" readonly="readonly">
+                                   readonly="readonly">
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="userId_help_text"
                                    class="form-text text-muted">
@@ -49,10 +49,10 @@
                                        name="password" id="password"
                                        aria-describedby="password_help_text"
                                        th:value="${currentUser.getPassword()}"
-                                       th:field="*{password}"
+                                       placeholder="미등록"
                                        required>
                                 <div class="invalid-feedback">필수 사항입니다.</div>
-                                <button type="button" id="update_password_button" class="btn btn-dark">변경</button>
+                                <button type="button" id="update_password_button" class="btn btn-dark">등록 / 변경</button>
                             </div>
                         </div>
                     </div>
@@ -74,25 +74,54 @@
                         </div>
                     </div>
 
+<!--                    <div class="row g-3">-->
+<!--                        <div class="col-12">-->
+<!--                            <label class="form-label">성별</label><br/>-->
+<!--                            <input type="radio" th:field="*{gender}" name="gender" id="male" value="male"-->
+<!--                                   aria-describedby="gender_help_text"> 남자-->
+<!--                            <input type="radio" th:field="*{gender}" name="gender" id="female" value="female"-->
+<!--                                   aria-describedby="gender_help_text"> 여자-->
+<!--                            <div class="invalid-feedback">필수 사항입니다.</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="form-label">성별</label><br/>
-                            <input type="radio" th:field="*{gender}" name="gender" id="male" value="male"
-                                   aria-describedby="gender_help_text"> 남자
-                            <input type="radio" th:field="*{gender}" name="gender" id="female" value="female"
-                                   aria-describedby="gender_help_text"> 여자
+                            <label for="gender" class="form-label">성별(male / female)입력</label>
+                            <input type="text" class="form-control"
+                                   name="gender" id="gender"
+                                   aria-describedby="age_help_text"
+                                   placeholder="male or female"
+                                   th:value="${currentUser.getGenderType()}" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
+                            <small id="gender_help_text"
+                                   class="form-text text-muted">
+                                회원님의 성별입니다.
+                            </small>
                         </div>
                     </div>
+
+<!--                    <div class="row g-3">-->
+<!--                        <div class="col-12">-->
+<!--                            <label class="form-label">성별</label><br/>-->
+<!--                            <input type="radio1" th:attr="${currentUser.getGenderType().toString() == 'MALE'} ? 'checked' : ''" name="gender" id="male" value="male"-->
+<!--                                   aria-describedby="gender_help_text"> 남자-->
+<!--                            <input type="radio1" th:attr="${currentUser.getGenderType().toString() == 'FEMALE'} ? 'checked' : ''" name="gender" id="female" value="female"-->
+<!--                                   aria-describedby="gender_help_text"> 여자-->
+<!--                            <div class="invalid-feedback">필수 사항입니다.</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+
 
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="age" class="form-label">나이</label>
-                            <input type="text" class="form-control"
+                            <input type="tel" class="form-control"
                                    name="age" id="age"
                                    aria-describedby="age_help_text"
-                                   th:value="${currentUser.getAge()}"
-                                   th:field="*{age}" required>
+                                   th:value="${currentUser.getAge()}" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="age_help_text"
                                    class="form-text text-muted">
@@ -100,6 +129,7 @@
                             </small>
                         </div>
                     </div>
+
 
                     <div class="row g-3">
                         <div class="col-12">
@@ -122,8 +152,9 @@
                             <label for="contact" class="form-label">전화번호</label>
                             <input type="tel" class="form-control"
                                    name="contact" id="contact"
-                                   aria-describedby="contact_help_text"  th:value="${currentUser.getContact()}"
-                                   th:field="*{contact}" required>
+                                   aria-describedby="contact_help_text"
+                                   placeholder="미등록"
+                                   th:value="${currentUser.getContact()}" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                             <small id="contact_help_text"
                                    class="form-text text-muted">
@@ -151,19 +182,19 @@
                         <div class="col-2">
                             <label for="zipcode" class="form-label">우편번호</label>
                             <div class="input-group">
-                                <input type="text" th:field="*{zipcode}" name="zipcode" class="form-control" id="zipcode" readonly>
+                                <input type="text" th:value="${currentUser.getAddress().getZipcode}" name="zipcode" class="form-control" id="zipcode" readonly>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="city" class="form-label">기본주소</label>
                             <div class="input-group">
-                                <input type="text" th:field="*{city}" name="city" class="form-control" id="city" readonly>
+                                <input type="text" th:value="${currentUser.getAddress().getCity()}" name="city" class="form-control" id="city" readonly>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="street" class="form-label">상세주소</label>
                             <div class="input-group">
-                                <input type="text" th:field="*{street}" name="street" class="form-control" id="street">
+                                <input type="text" th:value="${currentUser.getAddress().getStreet()}" name="street" class="form-control" id="street">
                             </div>
                         </div>
                         <div class="col-2">
@@ -177,9 +208,7 @@
                     <div class="btn-group">
                         <button type="submit" class="btn btn-dark group-btn">정보수정</button>
                         <button type="button" class="btn btn-dark group-btn" onclick="location.href='/'">뒤로가기</button>
-                        <button type="button" id="delete_button" class="btn btn-danger
-
-                         group-btn">탈퇴하기</button>
+                        <button type="button" id="delete_button" class="btn btn-danger group-btn">탈퇴하기</button>
                     </div>
 
                 </form>
@@ -216,6 +245,31 @@
         </div>
     </div>
 
+    <!-- The Modal -->
+    <div class="modal fade" id="emailButton2">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    ...
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn info" data-dismiss="modal" onclick="location.href='/'">메인화면으로</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script th:inline="javascript">
         $(document).ready(function () {
             $("#update_password_button").click(function () {
@@ -239,7 +293,7 @@
                     dataType: 'json',
                     success: function (result){
                         $(".modal-body").html(result.message);
-                        $("#emailButton1").modal();
+                        $("#emailButton2").modal();
                     }
                 });
             });

@@ -9,6 +9,7 @@ public enum GenderType {
         primary = p;
     }
 
+
     public int get() {
         return primary;
     }

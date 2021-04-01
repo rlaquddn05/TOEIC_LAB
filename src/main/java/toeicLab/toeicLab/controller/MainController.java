@@ -48,6 +48,11 @@ public class MainController {
         return "/view/login";
     }
 
+    @GetMapping("/logout")
+    public String showLogoutPage() {
+        return "/view/index";
+    }
+
     @GetMapping("/send_reset_password_link")
     public String sendResetPasswordView() {
         return "/view/send_reset_password_link";
@@ -274,7 +279,9 @@ public class MainController {
         JsonObject jsonObject = new JsonObject();
 
         if(member.getPassword() == null){
-            jsonObject.addProperty("message", "비밀번호를 먼저 저장해주세요.");
+            member.setPassword("{noop}" + password);
+            memberRepository.save(member);
+            jsonObject.addProperty("message", "비밀번호를 등록하였습니다.");
         }else{
             member.setPassword("{noop}" + password);
             memberRepository.save(member);
@@ -285,9 +292,10 @@ public class MainController {
 
     @GetMapping("/update/delete")
     @ResponseBody
-    public String updatePassword(@RequestParam("userId") String userId) {
+    public String deletePassword(@RequestParam("userId") String userId) {
 
         Member deletedMember = memberRepository.findByUserId(userId);
+        log.info(String.valueOf(deletedMember.getId()));
         memberRepository.deleteById(deletedMember.getId());
 
         boolean result = true;
@@ -296,10 +304,12 @@ public class MainController {
 
         if(result){
             jsonObject.addProperty("message", "[ToeicLab]을 탈퇴실패...");
+
         }else{
             jsonObject.addProperty("message", "[ToeicLab]을 탈퇴했습니다.");
         }
-        return "redirect:/";
+
+        return jsonObject.toString();
     }
 
 
@@ -307,6 +317,7 @@ public class MainController {
     public String myPageView(@CurrentUser Member member, Model model) {
         Member currentUser = memberRepository.findByEmail(member.getEmail());
         model.addAttribute("currentUser", currentUser);
+        log.info(String.valueOf(currentUser.getGenderType()));
         model.addAttribute("member", member);
         model.addAttribute(new UpdateForm());
         return "/view/my_page";
@@ -314,8 +325,9 @@ public class MainController {
 
     @PostMapping("/my_page")
     public String myPageSubmit(UpdateForm updateForm){
+        log.info("회원정보수정 시작");
+
         Member updatedMember = memberRepository.findByUserId(updateForm.getUserId());
-        updatedMember.setPassword(updateForm.getPassword());
         updatedMember.setAge(updateForm.getAge());
         updatedMember.setContact(updateForm.getContact());
         updatedMember.setAddress(Address.builder()
@@ -325,10 +337,13 @@ public class MainController {
                 .build());
         if(updateForm.getGender().equals("male")){
             updatedMember.setGenderType(GenderType.MALE);
-        }else {
+        }else if(updateForm.getGender().equals("female")) {
             updatedMember.setGenderType(GenderType.FEMALE);
+        }else{
+            updatedMember.setGenderType(updatedMember.getGenderType());
         }
-        return "/view/my_page";
+        memberRepository.save(updatedMember);
+        return "redirect:/";
     }
 
     @GetMapping("/my_progress")
