@@ -75,7 +75,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/update/**",
                         "/create_meeting/**",
                         "/forum/**",
-                        "/forum_upload")
+                        "/forum_upload",
+                        "/bulletin",
+                        "/bulletin_upload",
+                        "/bulletinDetail/**"
+                        )
                 .permitAll()
 
                 .mvcMatchers(HttpMethod.GET, "/item/*")
