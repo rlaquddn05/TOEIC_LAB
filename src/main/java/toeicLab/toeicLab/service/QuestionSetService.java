@@ -1,21 +1,20 @@
 package toeicLab.toeicLab.service;
 
+import com.sun.xml.bind.v2.util.QNameMap;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MeetingRepository;
+import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
 import toeicLab.toeicLab.repository.StudyGroupRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +32,7 @@ public class QuestionSetService {
     private final QuestionService questionService;
     private final MeetingRepository meetingRepository;
     private final StudyGroupRepository studyGroupRepository;
+    private final QuestionRepository questionRepository;
 
     public QuestionSet createToeicSet(Member member, QuestionSetType questionSetType) {
         QuestionSet result = new QuestionSet();
@@ -173,5 +173,19 @@ public class QuestionSetService {
         }
 
         return result;
+    }
+
+    public String getPercentage(QuestionSet questionSet) {
+        int correctCount = 0;
+        int totalCount = questionSet.getQuestions().size();
+        Map<Long, String> submittedAnswersForQs = questionSet.getSubmittedAnswers();
+        for (Map.Entry<Long, String> entry : submittedAnswersForQs.entrySet()) {
+            Question question = questionRepository.getOne(entry.getKey());
+            if (question.getAnswer().equals(entry.getValue())) {
+                correctCount++;
+            }
+        }
+        String str = Integer.toString(correctCount * 100 / totalCount);
+        return str + "%";
     }
 }
