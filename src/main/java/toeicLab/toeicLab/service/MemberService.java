@@ -17,6 +17,7 @@ import toeicLab.toeicLab.user.MemberUser;
 import toeicLab.toeicLab.user.SignUpForm;
 import toeicLab.toeicLab.user.UpdateForm;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public class MemberService implements UserDetailsService {
     private final QuestionRepository questionRepository;
     private final QuestionSetRepository questionSetRepository;
     private final WordRepository wordRepository;
+    private final QuestionSetService questionSetService;
 
 
     public Member createNewMember(SignUpForm signUpForm) {
@@ -178,35 +180,18 @@ public class MemberService implements UserDetailsService {
 
         for (QuestionSet qs : questionSets) {
             Map<Long, String> submittedAnswersForQs = qs.getSubmittedAnswers();
-            totalCount += submittedAnswersForQs.size();
             for (Map.Entry<Long, String> entry : submittedAnswersForQs.entrySet()) {
                 Question question = questionRepository.getOne(entry.getKey());
-                if (question.getQuestionType() == questionType && question.getAnswer().equals(entry.getValue())) {
-                    correctCount++;
+                if (question.getQuestionType() == questionType) {
+                    totalCount++;
+                    if(question.getAnswer().equals(entry.getValue())){
+                        correctCount++;
+                    }
                 }
             }
         }
         return new int[]{correctCount, totalCount - correctCount};
     }
-
-    public String createCommentByQuestionType(Member member, QuestionType questionType) {
-        String comment = "생성된 코멘트가 없습니다";
-        int[] correctAndWrong = numberOfCorrectAndWrongAnswersByQuestionType(member, questionType);
-        int total = correctAndWrong[0] + correctAndWrong[1];
-        int percentage = correctAndWrong[1] / total * 100;
-        if (total < 10) {
-            comment = "현재 " + questionType.toString() + " 을 " + total + " 문제 푸셨습니다. 정확한 평가를 위해서는 더 많은 문제를 풀어주세요.";
-        } else {
-            if (percentage > 80) {
-                comment = questionType.toString() + " 의 정답률이 " + percentage + "% 로 높은 편입니다.";
-            }
-            if (percentage < 50) {
-                comment = questionType.toString() + " 의 정답률이 " + percentage + "% 로 낮은 편입니다.";
-            }
-        }
-        return comment;
-    }
-
 
 
 
@@ -238,6 +223,7 @@ public class MemberService implements UserDetailsService {
         wordRepository.save(wordList);
     }
 
+
 //    public boolean deleteWord(Member member, String word) {
 //        Word wordList = wordRepository.findByMember(member);
 //        Map<String, String> map = wordList.getWord();
@@ -246,4 +232,61 @@ public class MemberService implements UserDetailsService {
 //        wordRepository.save(wordList);
 //        return true;
 //    }
+
+
+    public String createCommentByQuestionType(Member member, QuestionType questionType) {
+        String comment = "생성된 코멘트가 없습니다";
+        int[] correctAndWrong = numberOfCorrectAndWrongAnswersByQuestionType(member, questionType);
+        int total = correctAndWrong[0] + correctAndWrong[1];
+        if (total == 0) {
+            return comment;
+        }
+        int percentage = correctAndWrong[0] / total * 100;
+        if (total < 10) {
+            comment = "현재 " + total + "문제 풀었습니다. 정확한 평가를 위해 더 많은 문제를 푸세요.";
+        } else {
+            if (percentage > 80) {
+                comment = "정답률이 " + percentage + "% 로 높은 편입니다.";
+            }
+            if (percentage < 50) {
+                comment = "정답률이 " + percentage + "% 로 낮은 편입니다.";
+            }
+        }
+        return comment;
+    }
+
+
+    public String CreateProgressByQuestionSet(QuestionSet questionSet){
+        String date = questionSet.getCreatedAt().format(DateTimeFormatter.ofPattern("yy년MM월dd일HH시"));
+        String percentage = questionSetService.getPercentage(questionSet);
+        return date + "에 실시한 학습의 정답률 : " + percentage;
+    }
+
+    public String CreateLevelByAllQuestions(Member member) {
+        int total = 0;
+        int correct = 0;
+        List<QuestionSet> questionSetList = questionSetRepository.getAllByMember(member);
+        if(questionSetList == null) return "레벨 산정 데이터가 없습니다.";
+        for (QuestionSet qs : questionSetList) {
+            if (qs.getQuestionSetType().toString().equals("PRACTICE") ||qs.getQuestionSetType().toString().equals("MEETING")) continue;
+            Map<Long, String> submittedAnswersForQs = qs.getSubmittedAnswers();
+            for (Map.Entry<Long, String> entry : submittedAnswersForQs.entrySet()) {
+                Question question = questionRepository.getOne(entry.getKey());
+                total++;
+                if (question.getAnswer().equals(entry.getValue())) {
+                    correct++;
+                }
+            }
+        }
+        if(total==0) return "데이터가 없습니다.";
+
+
+        String level = null;
+        if (correct * 100 / total < 30) level ="하";
+        if (correct * 100 / total >= 30 && correct * 100 / total < 80 ) level = "중";
+        if (correct * 100 / total >= 80) level = "상";
+
+        return level;
+    }
+
 }

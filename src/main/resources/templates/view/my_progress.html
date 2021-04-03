@@ -5,160 +5,117 @@
       layout:decorate="layout" th:with="title='ReviewNote'">
 
 <th:block layout:fragment="css">
-
+    <link rel="stylesheet" th:href="@{/css/member/progress.css}">
 </th:block>
 
 
 <div layout:fragment="content">
     <div th:class="container">
-        <br>
-
-        <div class="row" style="border: #444444 solid 1px;">
-            <div class="col-3 text" style="padding: 10px 0px 0px 10px;">
-                <p class="lead">나의 모의 시험 점수 :</p>
-            </div>
-            <div class="col-1 text" style="padding: 10px 0px 0px 0px;">
-                <p class="lead">RC</p>
-            </div>
-            <div class="col-1 text" style="padding: 10px 0px 0px 0px;">
-                <p class="lead">~~</p>
-            </div>
-            <div class="col-1 text" style="padding: 10px 0px 0px 0px;">
-                <p class="lead">LC</p>
-            </div>
-            <div class="col-1 text" style="padding: 10px 0px 0px 0px;">
-                <p class="lead">~~</p>
-            </div>
-        </div>
-        <br>
 
         <div class="row">
 
-            <div style="border: #444444 solid 1px; width: 65.5%; float: left; margin-right:1.5%; padding: 10px 10px 10px 10px;">
-                <div class="row justify-content-center">
-                    <p>TOEIC</p>
+            <div class="div-common" style="width: 65.5%; float: left; margin-right:1.5%;">
+                <div class="row justify-content-center div-margin-bottom">
+                    <a class="lead"><b>TOEIC Lv .</b><b th:text="${level}"></b></a>
                 </div>
-                <div style="border: #444444 solid 1px; width: 49%; float: left; margin-right:2%; padding: 10px 10px 10px 10px;">
-                    <div  style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>RC Lv.</p>
-                        </div>
+                <div class="div-common div-margin-bottom">
+                    <div class="row justify-content-center">
+                        <a><b>최근 학습 현황</b></a>
                     </div>
-                    <div style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>최근 RC학습 현황</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>레벨 테스트 :</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>연습문제</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>모의시험</p>
-                        </div>
-                    </div>
-                    <div style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>comment</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>~유형 정답률</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>~유형 정답률</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>전체적으로 ~</p>
-                        </div>
-                    </div>
-
-                </div>
-                <div style="border: #444444 solid 1px; width: 49%; float: right; padding: 10px 10px 10px 10px;">
-                    <div style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>LC Lv.</p>
-                        </div>
-                    </div>
-                    <div style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>최근 LC학습 현황</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>레벨 테스트 :</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>연습문제</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>모의시험</p>
-                        </div>
-                    </div>
-                    <div style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>comment</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>~유형 정답률</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>~유형 정답률</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>전체적으로 ~</p>
-                        </div>
-                    </div>
+                    <hr>
+                    <p>QUARTER_TOEIC</p>
+                    <p th:if="${qToeic == null}">진행한 학습이 없습니다.</p>
+                    <form th:if="${qToeic != null}" th:action="@{/result_sheet/{questionSetId}(questionSetId=${qToeic.getId()})}" th:method="post">
+                        <input type="hidden" th:name="questionSetId" th:value="${qToeic.id}">
+                        <input type="hidden" th:each="map:${qToeic.submittedAnswers}" th:name="${map.getKey()}" th:value="${map.getValue()}">
+                        <button type="submit" class="btn btn-sm"><p th:text="${qToeicComment}"></p></button>
+                    </form>
+                    <hr>
+                    <p>HALF_TOEIC</p>
+                    <p th:if="${hToeic == null}">진행한 학습이 없습니다.</p>
+                    <form th:if="${hToeic != null}" th:action="@{/result_sheet/{questionSetId}(questionSetId=${hToeic.getId()})}" th:method="post">
+                        <input type="hidden" th:name="questionSetId" th:value="${hToeic.id}">
+                        <input type="hidden" th:each="map:${hToeic.submittedAnswers}" th:name="${map.getKey()}" th:value="${map.getValue()}">
+                        <button type="submit" class="btn btn-sm"><p th:text="${hToeicComment}"></p></button>
+                    </form>
+                    <hr>
+                    <p>FULL_TOEIC</p>
+                    <p th:if="${fToeic == null}">진행한 학습이 없습니다.</p>
+                    <form th:if="${fToeic != null}" th:action="@{/result_sheet/{questionSetId}(questionSetId=${fToeic.getId()})}" th:method="post">
+                        <input type="hidden" th:name="questionSetId" th:value="${fToeic.id}">
+                        <input type="hidden" th:each="map:${fToeic.submittedAnswers}" th:name="${map.getKey()}" th:value="${map.getValue()}">
+                        <button type="submit" class="btn btn-sm"><p th:text="${fToeicComment}"></p></button>
+                    </form>
+                    <hr>
+                    <p>PRACTICE</p>
+                    <p th:if="${pToeic == null}">진행한 학습이 없습니다.</p>
+                    <form th:if="${pToeic != null}" th:action="@{/result_sheet/{questionSetId}(questionSetId=${pToeic.getId()})}" th:method="post">
+                        <input type="hidden" th:name="questionSetId" th:value="${pToeic.id}">
+                        <input type="hidden" th:each="map:${pToeic.submittedAnswers}" th:name="${map.getKey()}" th:value="${map.getValue()}">
+                        <button type="submit" class="btn btn-sm"><p th:text="${pToeicComment}"></p></button>
+                    </form>
                 </div>
 
+                <div class="div-common div-margin-bottom">
+                    <div class="row justify-content-center">
+                        <a><b>전체 학습 COMMENT</b></a>
+                    </div>
+                    <hr>
+                    <p>PART 1</p>
+                    <p th:text="${part1}"></p>
+                    <hr>
+                    <p>PART 2</p>
+                    <p th:text="${part2}"></p>
+                    <hr>
+                    <p>PART 3</p>
+                    <p th:text="${part3}"></p>
+                    <hr>
+                    <p>PART 4</p>
+                    <p th:text="${part4}"></p>
+                    <hr>
+                    <p>PART 5</p>
+                    <p th:text="${part5}"></p>
+                    <hr>
+                    <p>PART 6</p>
+                    <p th:text="${part6}"></p>
+                    <hr>
+                    <p>PART 7_SINGLE_PARAGRAPH</p>
+                    <p th:text="${part7s}"></p>
+                    <hr>
+                    <p>PART 7_MULTIPLE_PARAGRAPH</p>
+                    <p th:text="${part7m}"></p>
+                </div>
             </div>
 
-            <div style="border: #444444 solid 1px; width: 33%; float: right; padding: 10px 10px 10px 10px;">
-                <div class="row justify-content-center">
-                    <p>TOEIC SPEAKING</p>
-                </div>
-                <div style="border: #444444 solid 1px; padding: 10px 10px 10px 10px;">
-                    <div style="border: #444444 solid 1px;  margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>SPK Lv.</p>
-                        </div>
-                    </div>
-                    <div style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>최근 SPK학습 현황</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>레벨 테스트 :</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>연습문제</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>모의시험</p>
-                        </div>
-                    </div>
-                    <div style="border: #444444 solid 1px; margin-bottom: 10px;">
-                        <div class="row justify-content-center">
-                            <p>comment</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>시간을 잘 채우는 편입니다</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>~유형 키워드 포함률</p>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <p>~유형 키워드 포함률</p>
-                        </div>
-                    </div>
-                </div>
 
+            <div class="div-common" style="width: 33%; float: right;">
+                <div class="row justify-content-center div-margin-bottom">
+                    <a class="lead"><b>SPRAKING Lv .</b></a>
+                </div>
+                <div class="div-common div-margin-bottom">
+                    <div class="row justify-content-center">
+                        <a><b>최근 학습 현황</b></a>
+                    </div>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                </div>
+                <div class="div-common div-margin-bottom">
+                    <div class="row justify-content-center">
+                        <a><b>COMMENT</b></a>
+                    </div>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                </div>
             </div>
-
         </div>
-
-
-
-
         <br>
     </div>
 </div>
