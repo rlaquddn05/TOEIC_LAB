@@ -292,9 +292,9 @@ public class DevConfiguration {
         initPart7_multiple();
     }
 
-//    @PostConstruct
+    @PostConstruct
     public void initDummyUsers() {
-        createDummyUsers();
+//        createDummyUsers();
         createTestUsers();
     }
 }

@@ -78,7 +78,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/forum_upload",
                         "/bulletin",
                         "/bulletin_upload",
-                        "/bulletinDetail/**"
+                        "/bulletinDetail/**",
+                        "/updateBulletin"
                         )
                 .permitAll()
 

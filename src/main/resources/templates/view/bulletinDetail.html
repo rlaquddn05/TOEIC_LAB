@@ -16,8 +16,12 @@
 <div layout:fragment="content">
     <div class="container">
         <div class="py-5">
-            <button id="likeNumber" class="btn btn-dark">좋아요</button>
-            <form th:action="@{/comment_upload}" method="post">
+            <div class="btn-group">
+                <button id="likeNumber" class="btn btn-dark">좋아요</button>
+                <a th:if="${member.userId.equals(bulletin.getWriterId())}" th:href="@{/updateBulletin/{id}(id=${bulletin.id})}" class="btn btn-dark">글 수정</a>
+                <button th:if="${member.userId.equals(bulletin.getWriterId())}" id="deleteBulletin" class="btn btn-danger">글 삭제</button>
+            </div>
+                <form th:action="@{/comment_upload}" method="post">
                 <div>
                     <label for="title">글 제목</label>
                     <input class="form-control" id="id" type="hidden" th:value="${bulletin.getId()}" name="id" readonly>
@@ -51,8 +55,6 @@
                     </tr>
                     </tbody>
                 </table>
-
-
 
 
             <hr class="col-12 my-4">
@@ -94,6 +96,30 @@
         </div>
     </div>
 
+    <div class="modal fade" id="emailButton2">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    ...
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn info" onclick="location.href='/bulletin'" data-dismiss="modal">확인</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <script th:inline="javascript">
         $(document).ready(function () {
@@ -109,6 +135,20 @@
                     }
                 });
             });
+
+            $("#deleteBulletin").click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/bulletinDetail/deleteBulletin',
+                    data: 'id=' + $("#id").val() + '&writerId=' + $("#writerId").val(),
+                    dataType: 'json',
+                    success: function (result){
+                        $(".modal-body").html(result.message);
+                        $("#emailButton2").modal();
+                    }
+                });
+            });
+
         });
 
     </script>

@@ -46,6 +46,7 @@ public class BulletinController {
 
     @PostMapping("/bulletin_upload")
     public String uploadBulletin(Member member , Model model, String title, String content, String memberId){
+        log.info("글쓰기");
         log.info(String.valueOf(memberId));
 
         Bulletin bulletin = Bulletin.builder()
@@ -63,7 +64,9 @@ public class BulletinController {
 
     @GetMapping("/bulletinDetail/{id}")
     public String bulletinDetailView(@CurrentUser Member member, @PathVariable Long id, Model model){
+        log.info("상세보기");
         log.info(String.valueOf(id));
+
         Bulletin bulletin = bulletinRepository.findById(id).orElse(null);
         assert bulletin != null;
         log.info(bulletin.getContent());
@@ -73,6 +76,7 @@ public class BulletinController {
         bulletin.setHit(hit);
         bulletinRepository.save(bulletin);
         log.info("조회수 증가 성공!");
+
         List<BulletinComment> bulletinCommentList = bulletinCommentRepository.findAllByBulletinId(id);
         log.info(bulletin.getWriterId());
 
@@ -110,9 +114,11 @@ public class BulletinController {
     }
 
     @PostMapping("/comment_upload")
-    public String uploadComment(@CurrentUser Member member, @RequestParam("comment") String comment, @RequestParam("commentWriter") String commentWriter, @RequestParam("id") String id, Model model){
+    public String uploadComment(@CurrentUser Member member, @RequestParam("comment") String comment,
+                                @RequestParam("commentWriter") String commentWriter, @RequestParam("id") String id, Model model){
         Bulletin bulletin = bulletinRepository.findById(Long.valueOf(id)).orElse(null);
         assert bulletin != null;
+        // 그냥 바로 아이디 넣어도 됨...
         long bulletinId = bulletin.getId();
 
         BulletinComment bulletinComment = BulletinComment.builder()
@@ -126,5 +132,57 @@ public class BulletinController {
 
         return "redirect:/bulletinDetail/"+bulletin.getId();
     }
+
+    @GetMapping("/bulletinDetail/deleteBulletin")
+    @ResponseBody
+    public String deleteBulletin(@RequestParam("id")String id, @RequestParam("writerId")String writerId){
+        Bulletin bulletin = bulletinRepository.findById(Long.valueOf(id)).orElse(null);
+        assert bulletin != null;
+
+        JsonObject jsonObject = new JsonObject();
+        boolean result = true;
+        bulletinRepository.deleteById(Long.valueOf(id));
+        List<BulletinComment> deleteBulletinCommentList = bulletinCommentRepository.findAllByBulletinId(Long.valueOf(id));
+
+        for (BulletinComment bulletinComment : deleteBulletinCommentList) {
+            long deleteId = bulletinComment.getId();
+            bulletinCommentRepository.deleteById(deleteId);
+        }
+
+
+        jsonObject.addProperty("message", "글 삭제 성공!");
+
+        return jsonObject.toString();
+    }
+
+    @GetMapping("/updateBulletin/{id}")
+    public String updateBulletinView(@PathVariable Long id, @CurrentUser Member member, Model model ){
+        log.info("글 수정 시작");
+        log.info(String.valueOf(id));
+
+        Bulletin bulletin = bulletinRepository.findById(Long.valueOf(id)).orElse(null);
+        assert bulletin != null;
+
+        model.addAttribute("updateBulletin", bulletin);
+        model.addAttribute(member);
+        model.addAttribute("id", id);
+
+        return "/view/updateBulletin";
+    }
+
+    @PostMapping("/updateBulletin")
+    public String updateBulletin(long id, String title, String content, Model model, Member member){
+        Bulletin updateBulletin = bulletinRepository.findById(id).orElse(null);
+        assert updateBulletin != null;
+
+        updateBulletin.setTitle(title);
+        updateBulletin.setContent(content);
+        bulletinRepository.save(updateBulletin);
+        log.info("글 수정 성공!");
+
+        model.addAttribute(member);
+        return "redirect:/bulletin";
+    }
+
 
 }
