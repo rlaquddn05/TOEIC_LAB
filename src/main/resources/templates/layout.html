@@ -32,6 +32,20 @@
 <th:block layout:fragment="content"></th:block>
 
 <th:block th:replace="common_fragments::footer"></th:block>
+
+<script type="text/javascript">
+    function popupOpen(){
+
+        var popUrl = "/popup_dictionary"; //팝업창에 출력될 페이지 URL
+        // var popUrl = "/popup_dictionary_aa/"+ $("#popup2").val(); //팝업창에 출력될 페이지 URL
+
+        var popOption = "width=500, height=400, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+
+        window.open(popUrl,"",popOption);
+
+    }
+</script>
+
 <!--------------------------------Modal------------------------------------>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

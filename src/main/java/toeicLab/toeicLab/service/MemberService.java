@@ -12,10 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
-import toeicLab.toeicLab.repository.MemberRepository;
-import toeicLab.toeicLab.repository.QuestionRepository;
-import toeicLab.toeicLab.repository.QuestionSetRepository;
-import toeicLab.toeicLab.repository.ReviewNoteRepository;
+import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.user.MemberUser;
 import toeicLab.toeicLab.user.SignUpForm;
 import toeicLab.toeicLab.user.UpdateForm;
@@ -33,6 +30,7 @@ public class MemberService implements UserDetailsService {
     private final ReviewNoteRepository reviewNoteRepository;
     private final QuestionRepository questionRepository;
     private final QuestionSetRepository questionSetRepository;
+    private final WordRepository wordRepository;
 
 
     public Member createNewMember(SignUpForm signUpForm) {
@@ -209,4 +207,43 @@ public class MemberService implements UserDetailsService {
         return comment;
     }
 
+
+
+
+    public boolean addWordList(Member member, String word, String meaning) {
+        Word wordList = wordRepository.findByMember(member);
+        if (wordList == null){
+            wordList = new Word();
+            wordList.setMember(member);
+        }
+        System.out.println(word);
+        System.out.println(meaning);
+        Map<String, String> map = wordList.getWord();
+        for (Map.Entry<String, String> m : map.entrySet()) {
+            if (m.getKey().contains(word)) {
+                return false;
+            }
+        }
+        map.put(word, meaning);
+        wordList.setWord(map);
+        wordRepository.save(wordList);
+        return true;
+    }
+
+    public void deleteWord(Member member, String word) {
+        Word wordList = wordRepository.findByMember(member);
+        Map<String, String> map = wordList.getWord();
+        map.remove(word);
+        wordList.setWord(map);
+        wordRepository.save(wordList);
+    }
+
+//    public boolean deleteWord(Member member, String word) {
+//        Word wordList = wordRepository.findByMember(member);
+//        Map<String, String> map = wordList.getWord();
+//        map.remove(word);
+//        wordList.setWord(map);
+//        wordRepository.save(wordList);
+//        return true;
+//    }
 }
