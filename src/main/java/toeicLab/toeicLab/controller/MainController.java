@@ -397,11 +397,6 @@ public class MainController {
 //        return "redirect:/";
 //    }
 
-    @GetMapping("/my_vocabulary_list")
-    public String myVocabularyList(@CurrentUser Member member, Model model) {
-        model.addAttribute("member", member);
-        return "/view/my_vocabulary_list";
-    }
 
     @GetMapping("/toeiclab_introduction")
     public String toeiclabIntroduction() {
