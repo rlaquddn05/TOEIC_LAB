@@ -9,12 +9,16 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import toeicLab.toeicLab.domain.Bulletin;
+import toeicLab.toeicLab.domain.Forum;
 import toeicLab.toeicLab.domain.Member;
 import toeicLab.toeicLab.domain.Word;
+import toeicLab.toeicLab.repository.ForumRepository;
 import toeicLab.toeicLab.repository.WordRepository;
 import toeicLab.toeicLab.service.MemberService;
 import toeicLab.toeicLab.user.CurrentUser;
 
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -25,18 +29,33 @@ public class ForumController {
 
     private final MemberService memberService;
     private final WordRepository wordRepository;
+    private final ForumRepository forumRepository;
 
     @GetMapping("/forum")
-    public String forum(Member member, Model model) {
-
+    public String forum(@CurrentUser Member member, Model model) {
+        List<Forum> ForumList = forumRepository.findAll();
+        model.addAttribute("ForumList", ForumList);
+        model.addAttribute("member", member);
         return "/view/forum";
     }
 
     @GetMapping("/forum_upload")
-    public String uploadQuestion(Member member, Model model){
-
+    public String uploadQuestion(@CurrentUser Member member, Model model){
+        model.addAttribute("member", member);
         return "/view/forum_upload";
     }
+
+    @PostMapping("/forum_upload")
+    public String addQuestion(@CurrentUser Member member, Model model){
+        model.addAttribute("member", member);
+        log.info("test");
+        return "/view/forum";
+    }
+
+    @GetMapping("/readText")
+    public void readText(){
+    log.info("test");
+        }
 
     @GetMapping("/vocabulary_test")
     public String vocabularyTest(@CurrentUser Member member, Model model) {
@@ -45,9 +64,8 @@ public class ForumController {
     }
 
     @GetMapping("/popup_dictionary")
-    public String popupLayout(Member member, Model model){
-
-        model.addAttribute(member);
+    public String popupLayout(@CurrentUser Member member, Model model){
+        model.addAttribute("member", member);
         return "/view/popup_dictionary";
     }
 

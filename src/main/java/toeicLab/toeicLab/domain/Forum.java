@@ -34,7 +34,7 @@ public class Forum {
 
     private Long hit;
 
-    private Long likeNumber;
+    private Long questionId;
 
 
 

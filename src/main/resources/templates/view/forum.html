@@ -11,7 +11,7 @@
     <div class="container">
         <div class="py-5">
             <div class="banner">
-                <p>게시판 설명란</p>
+                <p>새로운 문제를 등록하여 저희 커뮤니티를 발전 시키세요!</p>
             </div>
             <button class="btn"><a th:href="@{/forum_upload}">문제사진 올리기</a></button>
             <table class="table table-striped">
@@ -25,13 +25,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td></td>
-                    <td><a></a></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+
+                <tr th:each="forum : ${forumList}">
+                    <td th:text="${forum.getId}"></td>
+                    <td th:text="${forum.getTitle}"></td>
+                    <td th:text="${forum.getWriterId()}"></td>
+                    <td th:text="${forum.getDate()}"></td>
+                    <td th:text="${forum.getHit()}"></td>
+                    <td> <a th:href="@{/forumDetail/{id}(id=${forum.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>
                 </tr>
+
                 </tbody>
             </table>
             <hr/>
