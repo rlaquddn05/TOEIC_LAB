@@ -66,8 +66,8 @@ public class Member {
     @OneToOne(mappedBy = "member")
     private StudyGroupApplication studyGroupApplication;
 
-    @OneToMany
-    private List<Word> wordList = new ArrayList<>();
+    @OneToOne(mappedBy = "member")
+    private Word wordList;
 
 
     @OneToMany(mappedBy = "member")

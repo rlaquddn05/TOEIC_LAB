@@ -397,11 +397,6 @@ public class MainController {
 //        return "redirect:/";
 //    }
 
-    @GetMapping("/my_vocabulary_list")
-    public String myVocabularyList(@CurrentUser Member member, Model model) {
-        model.addAttribute("member", member);
-        return "/view/my_vocabulary_list";
-    }
 
     @GetMapping("/toeiclab_introduction")
     public String toeiclabIntroduction() {
@@ -526,12 +521,16 @@ public class MainController {
     @GetMapping("/my_review_note")
     public String myReviewNote(@CurrentUser Member member, Model model) {
         ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
+        if(reviewNote == null){
+            reviewNote = new ReviewNote();
+            model.addAttribute("exist", "noReviewNote");
+        }
         List<Question> list = reviewNote.getQuestions();
+
         QuestionSet questionSet = new QuestionSet();
         questionSet.setQuestions(list);
         List<String> str = new ArrayList<>();
         questionService.checkTypeList(questionSet, str);
-        System.out.println(str);
 
         model.addAttribute("questionType", str);
         model.addAttribute("questionList", list);
@@ -556,17 +555,6 @@ public class MainController {
     public String spkAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "/view/spk_answer_sheet";
-    }
-
-    @GetMapping("/vocabulary_test")
-    public String vocabularyTest(@CurrentUser Member member, Model model) {
-        model.addAttribute("member", member);
-        return "/view/vocabulary_test";
-    }
-
-    @PostMapping("/popup_dictionary")
-    public String popupDictionary() {
-        return "/view/popup_dictionary";
     }
 
 

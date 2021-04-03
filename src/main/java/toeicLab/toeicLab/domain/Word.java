@@ -1,18 +1,29 @@
 package toeicLab.toeicLab.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Word {
 
     @Id @GeneratedValue
     private Long id;
 
-    private String word;
+    @OneToOne
+    Member member;
 
-    private String meaning;
+    @ElementCollection
+    private Map<String, String> word = new HashMap<>();
 
 //////////////////////////////////////////////////
 //    private String example;
