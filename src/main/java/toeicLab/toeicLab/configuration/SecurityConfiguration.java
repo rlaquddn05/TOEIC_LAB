@@ -79,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/bulletin",
                         "/bulletin_upload",
                         "/bulletinDetail/**",
-                        "/updateBulletin"
+                        "/updateBulletin",
                         "/popup_dictionary",
                         "/popup_dictionary_find/**",
                         "/add_word_list/**",
