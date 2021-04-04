@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -383,14 +381,6 @@ public class MainController {
         model.addAttribute("studyGroupId", id);
         return "/view/create_meeting";
     }
-
-//    @PostMapping("/create_meeting/{id}")
-//    public String submitCreateMeeting(@CurrentUser Member member, Model model, StudyGroup thisStudyGroup, String date){
-//        model.addAttribute("member", member);
-//
-//        return "redirect:/";
-//    }
-
 
     @GetMapping("/toeiclab_introduction")
     public String toeiclabIntroduction() {

@@ -28,25 +28,33 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="bulletin : ${bulletinList}">
-                    <td th:text="${bulletin.getId}"></td>
-                    <td th:text="${bulletin.getTitle}"></td>
-                    <td th:text="${bulletin.getWriterId()}"></td>
-                    <td th:text="${bulletin.getDate()}"></td>
-                    <td th:text="${bulletin.getHit()}"></td>
-                    <td th:text="${bulletin.getLikeNumber()}"></td>
-                    <td> <a th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>
-                </tr>
+                    <tr th:each="bulletin : ${bulletinList}">
+                        <th scope="row" th:text="${bulletinStat.index + 1}">1</th>
+
+                        <td th:text="${bulletin.getTitle}"></td>
+                        <td th:text="${bulletin.getNickname()}"></td>
+                        <td th:text="${bulletin.getDate()}"></td>
+                        <td th:text="${bulletin.getHit()}"></td>
+                        <td th:text="${bulletin.getLikeNumber()}"></td>
+                        <td> <a th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>
+                    </tr>
                 </tbody>
             </table>
             <hr/>
             <nav>
                 <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{/bulletin/?page=1}" aria-label="Previous"><span aria-hidden="true">처음</span></a></li>
+                    <li class="page-item"> <a class="page-link" th:href="@{/bulletin/?page={page} (page = ${pagination.prevBlock})}" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
+
+                    <th:block  th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                        <li class="page-item"
+                            th:with="start = ${pagination.startPage}, end = ${pagination.endPage}"
+                            th:each="pageButton : ${#numbers.sequence(start, end)}">
+                            <a class="page-link active" th:href="@{/bulletin/?page={page} (page = ${pageButton})}" th:text=${pageButton}></a>
+                        </li>
+                    </th:block>
+                    <li class="page-item"><a class="page-link" th:href="@{/bulletin/?page={page} (page = ${pagination.nextBlock})}" aria-label="Next"><span aria-hidden="true">다음</span></a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{/bulletin/?page={page} (page = ${pagination.totalPageCnt})}" aria-label="Previous"><span aria-hidden="true">끝</span></a></li>
                 </ul>
             </nav>
         </div>

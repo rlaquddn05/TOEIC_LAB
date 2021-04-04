@@ -28,6 +28,8 @@ public class Bulletin {
 
         private String writerId;
 
+        private String nickname;
+
         @ElementCollection
         private Set<String> likeSets = new HashSet<>();
 

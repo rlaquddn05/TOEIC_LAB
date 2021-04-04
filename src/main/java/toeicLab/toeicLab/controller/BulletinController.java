@@ -4,11 +4,13 @@ import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.Bulletin;
 import toeicLab.toeicLab.domain.BulletinComment;
 import toeicLab.toeicLab.domain.Member;
+import toeicLab.toeicLab.domain.Pagination;
 import toeicLab.toeicLab.repository.BulletinCommentRepository;
 import toeicLab.toeicLab.repository.BulletinRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
@@ -16,6 +18,7 @@ import toeicLab.toeicLab.user.CurrentUser;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,12 +29,53 @@ public class BulletinController {
 
     private final BulletinRepository bulletinRepository;
     private final BulletinCommentRepository bulletinCommentRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/bulletin")
-    public String bulletin(Member member, Model model) {
+    public String bulletin(Member member, Model model, @RequestParam(defaultValue = "1") int page) {
 
-        List<Bulletin> bulletinList = bulletinRepository.findAll();
-        model.addAttribute("bulletinList", bulletinList);
+            // 총 게시물 수
+            List<Bulletin> bulletinList = bulletinRepository.findAll();
+            int size = bulletinList.size();
+            log.info("리스트의 개수");
+            log.info(String.valueOf(size));
+            int totalListCnt = size;
+
+            // 생성인자로  총 게시물 수, 현재 페이지를 전달
+            Pagination pagination = new Pagination(totalListCnt, page);
+
+            // DB select start index
+            int startIndex = pagination.getStartIndex();
+            // 페이지 당 보여지는 게시글의 최대 개수
+            int pageSize = pagination.getPageSize();
+
+            int pageCheck = startIndex + pageSize;
+
+            log.info("pageCheck=" + pageCheck);
+            List<Bulletin> bulletinList2 = new ArrayList<>();
+
+            if(totalListCnt == 0){
+                model.addAttribute(member);
+                model.addAttribute("bulletinList", bulletinList2);
+                model.addAttribute("pagination", pagination);
+                return "/view/bulletin";
+            }
+
+            for (int i = startIndex; i < pageCheck; i++){
+                Bulletin bulletin = bulletinList.get(i);
+
+                bulletinList2.add(bulletin);
+
+                if(i == (totalListCnt-1)){
+                    pageCheck = totalListCnt-1;
+                }
+
+            }
+
+            log.info(String.valueOf(startIndex));
+            model.addAttribute(member);
+            model.addAttribute("bulletinList", bulletinList2);
+            model.addAttribute("pagination", pagination);
 
         model.addAttribute(member);
         return "/view/bulletin";
@@ -40,19 +84,23 @@ public class BulletinController {
     @GetMapping("/bulletin_upload")
     public String showBulletinUploadView(@CurrentUser Member member, Model model){
         model.addAttribute("member", member);
-        model.addAttribute(member);
+
         return "/view/bulletin_upload";
     }
 
     @PostMapping("/bulletin_upload")
-    public String uploadBulletin(Member member , Model model, String title, String content, String memberId){
+    public String uploadBulletin(@CurrentUser Member member , Model model, String title, String content, String memberId){
         log.info("글쓰기");
         log.info(String.valueOf(memberId));
+
+        Member needMemberNickname = memberRepository.findByUserId(memberId);
+        String nickname = needMemberNickname.getNickname();
 
         Bulletin bulletin = Bulletin.builder()
                 .title(title)
                 .content(content)
                 .writerId(memberId)
+                .nickname(nickname)
                 .date(LocalDateTime.now())
                 .hit(0L)
                 .likeNumber(0L)

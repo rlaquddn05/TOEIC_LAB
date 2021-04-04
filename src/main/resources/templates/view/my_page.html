@@ -58,7 +58,6 @@
                     </div>
 
 
-
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="nickname" class="form-label">닉네임 / 이름</label>
@@ -111,8 +110,6 @@
 <!--                            <div class="invalid-feedback">필수 사항입니다.</div>-->
 <!--                        </div>-->
 <!--                    </div>-->
-
-
 
 
                     <div class="row g-3">
@@ -221,7 +218,7 @@
     </div>
 
     <!-- The Modal -->
-    <div class="modal fade" id="emailButton1">
+    <div class="modal fade" id="myPageButton1">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
 
@@ -246,7 +243,7 @@
     </div>
 
     <!-- The Modal -->
-    <div class="modal fade" id="emailButton2">
+    <div class="modal fade" id="myPageButton2">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
 
@@ -263,7 +260,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn info" data-dismiss="modal" onclick="location.href='/'">메인화면으로</button>
+                    <button type="button" class="btn btn info" data-dismiss="modal" onclick="location.href='/'" >메인화면으로</button>
                 </div>
 
             </div>
@@ -280,7 +277,7 @@
                     dataType: 'json',
                     success: function (result){
                         $(".modal-body").html(result.message);
-                        $("#emailButton1").modal();
+                        $("#myPageButton1").modal();
                     }
                 });
             });
@@ -293,7 +290,7 @@
                     dataType: 'json',
                     success: function (result){
                         $(".modal-body").html(result.message);
-                        $("#emailButton2").modal();
+                        $("#myPageButton2").modal();
                     }
                 });
             });

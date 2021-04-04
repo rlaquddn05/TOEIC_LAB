@@ -77,9 +77,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/forum/**",
                         "/forum_upload",
                         "/bulletin",
-                        "/bulletin_upload",
-                        "/bulletinDetail/**",
-                        "/updateBulletin"
+//                        "/bulletin_upload",
+//                        "/bulletinDetail/**",
+//                        "/updateBulletin",
                         "/popup_dictionary",
                         "/popup_dictionary_find/**",
                         "/add_word_list/**",
