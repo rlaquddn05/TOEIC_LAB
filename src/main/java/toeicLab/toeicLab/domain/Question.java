@@ -1,13 +1,15 @@
 package toeicLab.toeicLab.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Question {
 
     @Id @GeneratedValue
@@ -17,6 +19,8 @@ public class Question {
     private QuestionType questionType;
 
     private String image;
+
+    private String questionExplanation;
 
     private int smallSetType;
 

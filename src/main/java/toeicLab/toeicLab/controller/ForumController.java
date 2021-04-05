@@ -9,13 +9,11 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import toeicLab.toeicLab.domain.Bulletin;
-import toeicLab.toeicLab.domain.Forum;
-import toeicLab.toeicLab.domain.Member;
-import toeicLab.toeicLab.domain.Word;
+import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.ForumRepository;
 import toeicLab.toeicLab.repository.WordRepository;
 import toeicLab.toeicLab.service.MemberService;
+import toeicLab.toeicLab.service.QuestionService;
 import toeicLab.toeicLab.user.CurrentUser;
 
 import java.util.List;
@@ -30,6 +28,7 @@ public class ForumController {
     private final MemberService memberService;
     private final WordRepository wordRepository;
     private final ForumRepository forumRepository;
+    private final QuestionService questionService;
 
     @GetMapping("/forum")
     public String forum(@CurrentUser Member member, Model model) {
@@ -46,10 +45,20 @@ public class ForumController {
     }
 
     @PostMapping("/forum_upload")
-    public String addQuestion(@CurrentUser Member member, Model model){
+    public String addQuestion(@CurrentUser Member member, Model model, @RequestParam String title,
+                              @RequestParam String questionType, @RequestParam String content,
+                              @RequestParam String content2, @RequestParam String content3,
+                              @RequestParam String question, @RequestParam String exampleA,
+                              @RequestParam String exampleB, @RequestParam String exampleC,
+                              @RequestParam String exampleD, @RequestParam String answer,
+                              @RequestParam String solution){
+
+
+        questionService.createQuestion(questionType, content, content2, content3, question, exampleA, exampleB, 
+                exampleC, exampleD, answer, solution);
+
         model.addAttribute("member", member);
-        log.info("test");
-        return "/view/forum";
+        return "redirect:/forum";
     }
 
     @GetMapping("/readText")

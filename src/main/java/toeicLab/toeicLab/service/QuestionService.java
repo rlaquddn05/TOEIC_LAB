@@ -246,5 +246,69 @@ public class QuestionService {
     }
 
 
+    public void createQuestion(String questionType, String content, String content2, String content3, String question, String exampleA, String exampleB, String exampleC, String exampleD, String answer, String solution) {
+        QuestionType type=null;
 
+        switch (questionType){
+            case "part1" : {
+                type = QuestionType.PART1;
+                break;
+            }
+            case "part2" : {
+                type = QuestionType.PART2;
+                break;
+            }
+            case "part3" : {
+                type = QuestionType.PART3;
+                break;
+            }
+            case "part4" : {
+                type = QuestionType.PART4;
+                break;
+            }
+            case "part5" : {
+                type = QuestionType.PART5;
+                break;
+            }
+            case "part6" : {
+                type = QuestionType.PART6;
+                break;
+            }
+            case "part7" : {
+                if (content2.length()>10){
+                    type = QuestionType.PART7_MULTIPLE_PARAGRAPH;
+                } else type = QuestionType.PART7_SINGLE_PARAGRAPH;
+                break;
+            }
+
+        }
+
+        if (type==QuestionType.PART1||type==QuestionType.PART2||type==QuestionType.PART3||type==QuestionType.PART4){
+            LC lc = new LC();
+            lc.setExampleA(exampleA);
+            lc.setExampleB(exampleB);
+            lc.setExampleC(exampleC);
+            lc.setExampleD(exampleD);
+            lc.setSolution(solution);
+            lc.setQuestionType(type);
+            lc.setAnswer(answer);
+            lc.setQuestionExplanation(question);
+            questionRepository.save(lc);
+        } else {
+            RC rc = new RC();
+            rc.setExampleA(exampleA);
+            rc.setExampleB(exampleB);
+            rc.setExampleC(exampleC);
+            rc.setExampleD(exampleD);
+            rc.setSolution(solution);
+            rc.setContent(content);
+            rc.setContent2(content2);
+            rc.setContent3(content3);
+            rc.setAnswer(answer);
+            rc.setQuestionType(type);
+            rc.setQuestionExplanation(question);
+            questionRepository.save(rc);
+        }
+
+    }
 }
