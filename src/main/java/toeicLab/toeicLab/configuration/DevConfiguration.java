@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import toeicLab.toeicLab.controller.ForumController;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
 import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
+import toeicLab.toeicLab.service.VisionService;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -48,6 +50,7 @@ public class DevConfiguration {
     private static final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
     private int smallSetId = 1;
+    private final VisionService visionService;
 
 
     public void initPart1() throws IOException {
@@ -292,9 +295,15 @@ public class DevConfiguration {
         initPart7_multiple();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initDummyUsers() {
 //        createDummyUsers();
         createTestUsers();
     }
+    
+    @PostConstruct
+    public void testVision(){
+        visionService.readText("sample");
+    }
+    
 }

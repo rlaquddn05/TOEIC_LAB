@@ -11,7 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.ForumRepository;
+import toeicLab.toeicLab.repository.QuestionRepository;
+import toeicLab.toeicLab.repository.StudyGroupRepository;
 import toeicLab.toeicLab.repository.WordRepository;
+import toeicLab.toeicLab.service.ForumService;
 import toeicLab.toeicLab.service.MemberService;
 import toeicLab.toeicLab.service.QuestionService;
 import toeicLab.toeicLab.user.CurrentUser;
@@ -29,42 +32,91 @@ public class ForumController {
     private final WordRepository wordRepository;
     private final ForumRepository forumRepository;
     private final QuestionService questionService;
+    private final ForumService forumService;
+    private final QuestionRepository questionRepository;
 
     @GetMapping("/forum")
     public String forum(@CurrentUser Member member, Model model) {
-        List<Forum> ForumList = forumRepository.findAll();
-        model.addAttribute("ForumList", ForumList);
+        List<Forum> forumList = forumRepository.findAll();
+        model.addAttribute("forumList", forumList);
         model.addAttribute("member", member);
         return "/view/forum";
     }
 
     @GetMapping("/forum_upload")
-    public String uploadQuestion(@CurrentUser Member member, Model model){
+    public String uploadQuestion(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "/view/forum_upload";
     }
 
     @PostMapping("/forum_upload")
     public String addQuestion(@CurrentUser Member member, Model model, @RequestParam String title,
-                              @RequestParam String questionType, @RequestParam String content,
-                              @RequestParam String content2, @RequestParam String content3,
+                              @RequestParam String questionType, @RequestParam(required = false) String content,
+                              @RequestParam(required = false) String content2, @RequestParam(required = false) String content3,
                               @RequestParam String question, @RequestParam String exampleA,
                               @RequestParam String exampleB, @RequestParam String exampleC,
                               @RequestParam String exampleD, @RequestParam String answer,
-                              @RequestParam String solution){
+                              @RequestParam String solution) {
 
 
-        questionService.createQuestion(questionType, content, content2, content3, question, exampleA, exampleB, 
+        Question q = questionService.createQuestion(questionType, content, content2, content3, question, exampleA, exampleB,
                 exampleC, exampleD, answer, solution);
 
+        forumService.addForum(member, title, q);
         model.addAttribute("member", member);
         return "redirect:/forum";
     }
 
-    @GetMapping("/readText")
-    public void readText(){
-    log.info("test");
+    @GetMapping("/forumDetail/{id}")
+    public String bulletinDetailView(@CurrentUser Member member, @PathVariable Long id, Model model) {
+        log.info("상세보기");
+        log.info(String.valueOf(id));
+        Forum forum = forumRepository.findById(id).orElse(null);
+
+        long hit = forum.getHit();
+        hit++;
+        forum.setHit(hit);
+        forumRepository.save(forum);
+        log.info("조회수 증가 성공!");
+
+        Question question = questionRepository.findById(forum.getQuestionId()).orElse(null);
+        assert question != null;
+        QuestionType type = question.getQuestionType();
+        if (type==QuestionType.PART1||type==QuestionType.PART2||type==QuestionType.PART3||type==QuestionType.PART4) {
+            model.addAttribute("content",((LC) question).getContent());
+            model.addAttribute("recording",((LC) question).getRecording());
+            model.addAttribute("exampleA", ((LC) question).getExampleA());
+            model.addAttribute("exampleB", ((LC) question).getExampleB());
+            model.addAttribute("exampleC", ((LC) question).getExampleC());
+            model.addAttribute("exampleD", ((LC) question).getExampleD());
+            model.addAttribute("solution", ((LC) question).getSolution());
         }
+        else {
+            model.addAttribute("content", ((RC) question).getContent());
+            model.addAttribute("content2", ((RC) question).getContent2());
+            model.addAttribute("content3", ((RC) question).getContent3());
+            model.addAttribute("exampleA", ((RC) question).getExampleA());
+            model.addAttribute("exampleB", ((RC) question).getExampleB());
+            model.addAttribute("exampleC", ((RC) question).getExampleC());
+            model.addAttribute("exampleD", ((RC) question).getExampleD());
+            model.addAttribute("solution", ((RC) question).getSolution());
+
+        }
+        model.addAttribute("forum", forum);
+        model.addAttribute("member", member);
+        model.addAttribute("question", question);
+        model.addAttribute("type", question.getQuestionType());
+        model.addAttribute("answer", question.getAnswer());
+        model.addAttribute("questionExplanation", question.getQuestionExplanation());
+
+
+        return "/view/forum_detail";
+    }
+
+    @GetMapping("/readText")
+    public void readText() {
+        log.info("test");
+    }
 
     @GetMapping("/vocabulary_test")
     public String vocabularyTest(@CurrentUser Member member, Model model) {
@@ -73,7 +125,7 @@ public class ForumController {
     }
 
     @GetMapping("/popup_dictionary")
-    public String popupLayout(@CurrentUser Member member, Model model){
+    public String popupLayout(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "/view/popup_dictionary";
     }
@@ -84,7 +136,7 @@ public class ForumController {
         String result;
         System.out.println(word);
         String[] splittedWord = word.split("");
-        if(Pattern.matches("[a-zA-Z]", splittedWord[0])){
+        if (Pattern.matches("[a-zA-Z]", splittedWord[0])) {
             log.info("영어 -> 한국어");
             String loweredWord = word.toLowerCase();
             String url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=" + loweredWord + "뜻";
@@ -95,9 +147,9 @@ public class ForumController {
 //            result = cut.substring(0, index);
             result = cut;
 
-            return "{" + "\"" + "word"  + "\"" + ":" +  "\"" + word  + "\"" + "," + "\"" + "meaning"  + "\"" +":" + "\"" + result  + "\""  + "}";
+            return "{" + "\"" + "word" + "\"" + ":" + "\"" + word + "\"" + "," + "\"" + "meaning" + "\"" + ":" + "\"" + result + "\"" + "}";
 
-        }  else {
+        } else {
             log.info("한국어 -> 영어");
             String url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" + word + "영어로";
             Document document = Jsoup.connect(url).get();
@@ -106,14 +158,14 @@ public class ForumController {
             String cut = element.get(0).text();
             result = cut;
 
-            return "{" + "\"" + "word"  + "\"" + ":" +  "\"" + result  + "\"" + "," + "\"" + "meaning"  + "\"" +":" + "\"" + word  + "\""  + "}";
+            return "{" + "\"" + "word" + "\"" + ":" + "\"" + result + "\"" + "," + "\"" + "meaning" + "\"" + ":" + "\"" + word + "\"" + "}";
         }
 
     }
 
     @RequestMapping("/add_word_list")
     @ResponseBody
-    public String addWordList (@CurrentUser Member member, @RequestParam("word") String word, @RequestParam("meaning") String meaning){
+    public String addWordList(@CurrentUser Member member, @RequestParam("word") String word, @RequestParam("meaning") String meaning) {
 //    public String addWordList (Member member, HttpServletRequest request){
         String w = word.replaceAll("\"", " ").trim();
         String m = meaning.replaceAll("\"", " ").trim();
@@ -126,14 +178,13 @@ public class ForumController {
 
         try {
             result = memberService.addWordList(member, w, m);
-            if(result) {
+            if (result) {
                 jsonObject.addProperty("message", "단어장에 추가");
-            }
-            else {
+            } else {
                 jsonObject.addProperty("message", "단어장에 이미 존재합니다.");
             }
 
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             jsonObject.addProperty("message", "잘못된정보");
         }
 
@@ -145,7 +196,7 @@ public class ForumController {
     public String myVocabularyList(@CurrentUser Member member, Model model) {
         Word wordList = wordRepository.findByMember(member);
         System.out.println(wordList);
-        if(wordList == null){
+        if (wordList == null) {
             wordList = new Word();
             model.addAttribute("exist", "noWordList");
         }
@@ -159,7 +210,7 @@ public class ForumController {
     }
 
     @GetMapping("/delete_word/{word}")
-    public String DeleteTest(@CurrentUser Member member, Model model, @PathVariable String word){
+    public String DeleteTest(@CurrentUser Member member, Model model, @PathVariable String word) {
         memberService.deleteWord(member, word);
         System.out.println(word + "삭제");
 

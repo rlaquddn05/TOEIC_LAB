@@ -22,15 +22,9 @@ public class Forum {
 
     private String title;
 
-    private String content;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private String userId;
 
     private LocalDateTime date;
-
-    @OneToMany(mappedBy = "parent",fetch = FetchType.LAZY)
-    private List<ForumComment> comments = new ArrayList<>();
 
     private Long hit;
 
