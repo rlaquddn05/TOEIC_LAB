@@ -43,18 +43,18 @@
             <hr/>
             <nav>
                 <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" th:href="@{/bulletin/?page=1}" aria-label="Previous"><span aria-hidden="true">처음</span></a></li>
-                    <li class="page-item"> <a class="page-link" th:href="@{/bulletin/?page={page} (page = ${pagination.prevBlock})}" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{/bulletin?page=1}" aria-label="Previous"><span aria-hidden="true">처음</span></a></li>
+                    <li class="page-item"> <a class="page-link" th:href="@{/bulletin?page={page} (page = ${pagination.prevBlock})}" aria-label="Previous"><span aria-hidden="true">이전</span></a></li>
 
                     <th:block  th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
                         <li class="page-item"
                             th:with="start = ${pagination.startPage}, end = ${pagination.endPage}"
                             th:each="pageButton : ${#numbers.sequence(start, end)}">
-                            <a class="page-link active" th:href="@{/bulletin/?page={page} (page = ${pageButton})}" th:text=${pageButton}></a>
+                            <a class="page-link active" th:href="@{/bulletin?page={page} (page = ${pageButton})}" th:text=${pageButton}></a>
                         </li>
                     </th:block>
-                    <li class="page-item"><a class="page-link" th:href="@{/bulletin/?page={page} (page = ${pagination.nextBlock})}" aria-label="Next"><span aria-hidden="true">다음</span></a></li>
-                    <li class="page-item"><a class="page-link" th:href="@{/bulletin/?page={page} (page = ${pagination.totalPageCnt})}" aria-label="Previous"><span aria-hidden="true">끝</span></a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{/bulletin?page={page} (page = ${pagination.nextBlock})}" aria-label="Next"><span aria-hidden="true">다음</span></a></li>
+                    <li class="page-item"><a class="page-link" th:href="@{/bulletin?page={page} (page = ${pagination.totalPageCnt})}" aria-label="Previous"><span aria-hidden="true">끝</span></a></li>
                 </ul>
             </nav>
         </div>

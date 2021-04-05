@@ -55,6 +55,12 @@ public class BulletinController {
             List<Bulletin> bulletinList2 = new ArrayList<>();
 
             if(totalListCnt == 0){
+                log.info("마지막페이지=" + pagination.getEndPage());
+                // ============================전체페이지가 1일때 설정============================
+                pagination.setEndPage(1);
+                pagination.setNextBlock(1);
+                pagination.setTotalPageCnt(1);
+                // ===========================================================================
                 model.addAttribute(member);
                 model.addAttribute("bulletinList", bulletinList2);
                 model.addAttribute("pagination", pagination);
