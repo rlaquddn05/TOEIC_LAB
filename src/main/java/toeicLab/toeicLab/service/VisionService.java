@@ -16,15 +16,15 @@ import java.util.List;
 @Transactional
 public class VisionService {
 
-    public void readText(String fileName){
+    public void readText(String fileName, StringBuilder loadText){
         try {
-            ClassPathResource resource = new ClassPathResource("/questionPhoto/" + fileName + ".jpg");
-
-            String imageFilePath = resource.getFile().getPath();
+//            ClassPathResource resource = new ClassPathResource("/questionPhoto/" + fileName + ".jpg");
+            String resource = System.getProperty("java.io.tmpdir") + fileName + ".jpg";
+//            String imageFilePath = resource.getFile().getPath();
 
             List<AnnotateImageRequest> requests = new ArrayList<>();
-
-            ByteString imgBytes = ByteString.readFrom(new FileInputStream(imageFilePath));
+            ByteString imgBytes = ByteString.readFrom(new FileInputStream(resource));
+//            ByteString imgBytes = ByteString.readFrom(new FileInputStream(imageFilePath));
 
             Image img = Image.newBuilder().setContent(imgBytes).build();
             Feature feat = Feature.newBuilder().setType(Feature.Type.DOCUMENT_TEXT_DETECTION).build();
@@ -43,6 +43,7 @@ public class VisionService {
 
                     System.out.println("Text : ");
                     System.out.println(res.getTextAnnotationsList().get(0).getDescription());
+                    loadText.append(res.getTextAnnotationsList().get(0).getDescription());
 
                 }
             }

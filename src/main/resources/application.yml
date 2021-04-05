@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       format_sql: true
     open-in-view: true
@@ -31,6 +31,12 @@ spring:
             scope:
               - email
               - profile
+  servlet:
+    multipart:
+      enabled: true
+      location: ${java.io.tmpdir}
+      max-file-size: 100MB
+      max-request-size: 100MB
 
   profiles:
     active: dev

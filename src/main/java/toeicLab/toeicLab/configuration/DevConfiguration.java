@@ -58,6 +58,7 @@ public class DevConfiguration {
             LC lc = new LC();
             lc.setQuestionType(QuestionType.PART1);
             lc.setImage((int) (Math.random() * 50 + 1) + ".jpg");
+            lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
             lc.setAnswer("A");
             lc.setExampleA("A");
             lc.setExampleB("B");
@@ -73,6 +74,7 @@ public class DevConfiguration {
             LC lc = new LC();
             lc.setQuestionType(QuestionType.PART2);
             lc.setContent("Mark your answer on your answer sheet");
+            lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
             lc.setAnswer("A");
             lc.setExampleA("A");
             lc.setExampleB("B");
@@ -87,6 +89,7 @@ public class DevConfiguration {
             for (int j = 1; j <= 3; j++) {
                 LC lc = new LC();
                 lc.setQuestionType(QuestionType.PART3);
+                lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
                 lc.setContent(aRandomSentence());
                 lc.setExampleA(aRandomSentence());
                 lc.setExampleB(aRandomSentence());
@@ -109,6 +112,7 @@ public class DevConfiguration {
             for (int j = 1; j <= 3; j++) {
                 LC lc = new LC();
                 lc.setQuestionType(QuestionType.PART4);
+                lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
                 lc.setContent(aRandomSentence());
                 lc.setExampleA(aRandomSentence());
                 lc.setExampleB(aRandomSentence());
@@ -301,9 +305,9 @@ public class DevConfiguration {
         createTestUsers();
     }
     
-    @PostConstruct
-    public void testVision(){
-        visionService.readText("sample");
-    }
+//    @PostConstruct
+//    public void testVision(){
+//        visionService.readText("sample");
+//    }
     
 }

@@ -14,8 +14,8 @@
                 <span th:if="${question.image} != null">
                    <img th:src= "@{/images/place_holder_images/ + ${question.image}}" class="img" ><br/>
                 </span>
-                <span th:text="${question.content}"></span>
-                <button type="button" class="btn btn-primary">듣기</button>
+                <span th:text="${question.content}"></span><br/>
+                <audio controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" th:name="${question.id}" th:value="A" id="part3_radio1">

@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.ForumRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
@@ -17,8 +18,11 @@ import toeicLab.toeicLab.repository.WordRepository;
 import toeicLab.toeicLab.service.ForumService;
 import toeicLab.toeicLab.service.MemberService;
 import toeicLab.toeicLab.service.QuestionService;
+import toeicLab.toeicLab.service.VisionService;
 import toeicLab.toeicLab.user.CurrentUser;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -34,6 +38,7 @@ public class ForumController {
     private final QuestionService questionService;
     private final ForumService forumService;
     private final QuestionRepository questionRepository;
+    private final VisionService visionService;
 
     @GetMapping("/forum")
     public String forum(@CurrentUser Member member, Model model) {
@@ -241,4 +246,38 @@ public class ForumController {
 ////
 ////        return "redirect:/my_vocabulary_list";
 //    }
+
+    @RequestMapping(value="/upload_img", method = RequestMethod.POST)
+    @ResponseBody
+    public StringBuilder upload(@CurrentUser Member member, Model model, @RequestParam("file") MultipartFile file) throws IOException, IllegalStateException{
+        StringBuilder loadText = new StringBuilder();
+        FileOutputStream fos = null;
+//        int data = 0;
+        System.out.println("Temp Path:" + System.getProperty("java.io.tmpdir"));
+        System.out.println(file);
+        try {
+//            ClassPathResource resource = new ClassPathResource("/questionPhoto/"+file+".jpg");
+//            File f = new File(String.valueOf(resource));
+//            file.transferTo(f);
+            byte fileData[] = file.getBytes();
+            fos = new FileOutputStream(System.getProperty("java.io.tmpdir")+file.getName()+".jpg");
+            fos.write(fileData);
+//            while((data =System.in.read()) != -1){
+//
+//            }
+
+        } finally {
+            if (fos!= null){
+                try {
+                    fos.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        visionService.readText(file.getName(), loadText);
+
+        model.addAttribute(member);
+        return loadText;
+    }
 }

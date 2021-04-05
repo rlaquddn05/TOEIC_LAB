@@ -10,29 +10,62 @@
 <div layout:fragment="content">
     <div class="container">
         <div class="py-5">
-            <form id="file_form">
+            <form id="file_form" enctype="multipart/form-data">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="imageFile" accept="image/*">
                     <label class="custom-file-label" for="imageFile">파일선택</label>
+                    <input type="file" class="custom-file-input" name="file" id="imageFile" accept="image/*"/>
                     <script>
-                        $('.custom-file-input').on('change', function(){
-                            files = $(this)[0].files;
+                        $('.custom-file-input').on('change', function () {
+                            var files = $(this)[0].files;
                             name = '';
-                            for(var i = 0; i < files.length; i++)
-                            {
-                                name += '\"' + files[i].name + '\"' + (i !== files.length-1 ? ", " : "");
+                            for (var i = 0; i < files.length; i++) {
+                                name += '\"' + files[i].name + '\"' + (i !== files.length - 1 ? ", " : "");
                             }
                             $(".custom-file-label").html(name);
                         });
                     </script>
                 </div>
-
             </form>
-            <button class="btn btn-primary" id="readText">텍스트 추출</button>
+            <button class="btn btn-primary" id="readText" type="button">텍스트 추출</button>
+            <!--                <input type="submit">-->
+            <script th:inline="javascript">
+                $(function (){
+                    $('#readText').on('click', function (){
+                        uploadFile();
+                    });
+                });
+
+                function uploadFile(){
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
+
+                    var form = $('#file_form')[0];
+                    var formData = new FormData(form);
+                    console.log(formData);
+                    for (var pair of formData.entries()) {
+                        console.log(pair[0]+ ', ' + pair[1]);
+                    }
+                    $.ajax({
+                        url: '/upload_img',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        success: function (data){
+                            document.getElementById("image-to-text").innerHTML = data;
+                        }
+                    });
+                }
+
+            </script>
+
 
             <br/>
             <label for="image-to-text">사진을 읽은 결과</label><br/>
-            <input name="word"  type="text" id="image-to-text" value="" class="form-control" readonly>
+            <textarea name="word"  id="image-to-text" class="form-control" readOnly></textarea>
             <br/>
 
             <form th:action="@{/forum_upload}" method="POST">
@@ -153,30 +186,4 @@
     </div>
 </div>
 
-<script th:inline="javascript">
-
-    $(document).ready(function () {
-        $("#readText").click(function () {
-            var form = $('#file_form')[0];
-            var formData = new FormData(form);
-            formData.append("file", $("#imageFile")[0].files[0]);
-
-            $.ajax({
-                type: 'GET',
-                url: '/readText',
-                processData: false,
-                contentType: false,
-                data: formData,
-                dataType: 'json',
-                success: function (data) {
-                    var word = JSON.stringify(data.word);
-                    $('input[name=word]').attr('value', word);
-                },
-                error: function () {
-                    alert("검색한 단어를 찾지 못하였습니다." + "반대로 입력해보세요.")
-                }
-            });
-        });
-    });
-</script>
 </html>
