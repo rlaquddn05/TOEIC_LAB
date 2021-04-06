@@ -20,16 +20,16 @@
                     <td>번호</td>
                     <td>제목</td>
                     <td>작성자</td>
-                    <td>조회수</td>
                     <td>날짜</td>
+                    <td>조회수</td>
                 </tr>
                 </thead>
                 <tbody>
 
                 <tr th:each="forum : ${forumList}">
                     <td th:text="${forum.getId}"></td>
+                    <td th:text="${forum.getUserId()}"></td>
                     <td th:text="${forum.getTitle}"></td>
-                    <td th:text="${forum.getWriterId()}"></td>
                     <td th:text="${forum.getDate()}"></td>
                     <td th:text="${forum.getHit()}"></td>
                     <td> <a th:href="@{/forumDetail/{id}(id=${forum.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>

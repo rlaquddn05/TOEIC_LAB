@@ -11,8 +11,8 @@
             <div class="row">
                 <div class="col-1"></div>
                 <span class="col-1" th:text="${question.id} + '.'"></span>
-                <img th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img col-8" >
-                <button type="button" class="btn btn-primary col-1" id="btn">듣기</button>
+                <img th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img col-9" >
+                <audio controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
                 <div class="col-1"></div>
             </div>
             <div class="form-check form-check-inline">

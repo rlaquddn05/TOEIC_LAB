@@ -31,6 +31,12 @@ spring:
             scope:
               - email
               - profile
+  servlet:
+    multipart:
+      enabled: true
+      location: ${java.io.tmpdir}
+      max-file-size: 100MB
+      max-request-size: 100MB
 
   profiles:
     active: dev

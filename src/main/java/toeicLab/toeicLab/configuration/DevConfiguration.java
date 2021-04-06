@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import toeicLab.toeicLab.controller.ForumController;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
 import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
+import toeicLab.toeicLab.service.VisionService;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -48,6 +50,7 @@ public class DevConfiguration {
     private static final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
     private int smallSetId = 1;
+    private final VisionService visionService;
 
 
     public void initPart1() throws IOException {
@@ -55,6 +58,7 @@ public class DevConfiguration {
             LC lc = new LC();
             lc.setQuestionType(QuestionType.PART1);
             lc.setImage((int) (Math.random() * 50 + 1) + ".jpg");
+            lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
             lc.setAnswer("A");
             lc.setExampleA("A");
             lc.setExampleB("B");
@@ -70,6 +74,7 @@ public class DevConfiguration {
             LC lc = new LC();
             lc.setQuestionType(QuestionType.PART2);
             lc.setContent("Mark your answer on your answer sheet");
+            lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
             lc.setAnswer("A");
             lc.setExampleA("A");
             lc.setExampleB("B");
@@ -84,6 +89,7 @@ public class DevConfiguration {
             for (int j = 1; j <= 3; j++) {
                 LC lc = new LC();
                 lc.setQuestionType(QuestionType.PART3);
+                lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
                 lc.setContent(aRandomSentence());
                 lc.setExampleA(aRandomSentence());
                 lc.setExampleB(aRandomSentence());
@@ -106,6 +112,7 @@ public class DevConfiguration {
             for (int j = 1; j <= 3; j++) {
                 LC lc = new LC();
                 lc.setQuestionType(QuestionType.PART4);
+                lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
                 lc.setContent(aRandomSentence());
                 lc.setExampleA(aRandomSentence());
                 lc.setExampleB(aRandomSentence());
@@ -292,9 +299,15 @@ public class DevConfiguration {
         initPart7_multiple();
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void initDummyUsers() {
 //        createDummyUsers();
         createTestUsers();
     }
+    
+//    @PostConstruct
+//    public void testVision(){
+//        visionService.readText("sample");
+//    }
+    
 }

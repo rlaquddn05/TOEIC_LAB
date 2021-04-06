@@ -246,8 +246,9 @@ public class QuestionService {
     }
 
 
-    public void createQuestion(String questionType, String content, String content2, String content3, String question, String exampleA, String exampleB, String exampleC, String exampleD, String answer, String solution) {
+    public Question createQuestion(String questionType, String content, String content2, String content3, String question, String exampleA, String exampleB, String exampleC, String exampleD, String answer, String solution) {
         QuestionType type=null;
+        Question result = new Question();
 
         switch (questionType){
             case "part1" : {
@@ -293,7 +294,7 @@ public class QuestionService {
             lc.setQuestionType(type);
             lc.setAnswer(answer);
             lc.setQuestionExplanation(question);
-            questionRepository.save(lc);
+            result = questionRepository.save(lc);
         } else {
             RC rc = new RC();
             rc.setExampleA(exampleA);
@@ -307,8 +308,10 @@ public class QuestionService {
             rc.setAnswer(answer);
             rc.setQuestionType(type);
             rc.setQuestionExplanation(question);
-            questionRepository.save(rc);
+            result = questionRepository.save(rc);
         }
 
+
+        return result;
     }
 }
