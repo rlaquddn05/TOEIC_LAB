@@ -150,6 +150,14 @@ public class QuestionController {
         model.addAttribute("member", member);
         model.addAttribute("questionSetId", questionSetId);
 
+//        if (questionSet.getQuestionSetType().toString().equals("PRACTICE") || questionSet.getQuestionSetType().toString().equals("MEETING")) {
+//            model.addAttribute("PracOrMeet", questionSetService.getPercentage(questionSet));
+//            return "/view/result_sheet";
+//        }
+
+        String[] eachstrings = questionSetService.getPercentageEachOfQuestionSet(questionSet);
+        model.addAttribute("eachstrings", eachstrings);
+
         return "/view/result_sheet";
     }
 

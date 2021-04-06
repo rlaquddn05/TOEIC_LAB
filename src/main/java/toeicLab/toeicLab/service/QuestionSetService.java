@@ -188,4 +188,89 @@ public class QuestionSetService {
         String str = Integer.toString(correctCount * 100 / totalCount);
         return str + "%";
     }
+
+    public String[] getPercentageEachOfQuestionSet(QuestionSet questionSet) {
+        String[] comments = new String[8];
+
+        int[] part1 = new int[2];
+        int[] part2 = new int[2];
+        int[] part3 = new int[2];
+        int[] part4 = new int[2];
+        int[] part5 = new int[2];
+        int[] part6 = new int[2];
+        int[] part7 = new int[2];
+
+        Map<Long, String> submittedAnswersForQs = questionSet.getSubmittedAnswers();
+        for (Map.Entry<Long, String> entry : submittedAnswersForQs.entrySet()) {
+            Question question = questionRepository.getOne(entry.getKey());
+            if(question.getQuestionType().toString().equals("PART1")){
+                part1[0]++;
+                if (question.getAnswer().equals(entry.getValue())) part1[1]++;
+            }
+            else if (question.getQuestionType().toString().equals("PART2")){
+                part2[0]++;
+                if ((question.getAnswer().equals(entry.getValue()))) part2[1]++;
+            }
+            else if (question.getQuestionType().toString().equals("PART3")){
+                part3[0]++;
+                if ((question.getAnswer().equals(entry.getValue()))) part3[1]++;
+            }
+            else if (question.getQuestionType().toString().equals("PART4")){
+                part4[0]++;
+                if ((question.getAnswer().equals(entry.getValue()))) part4[1]++;
+            }
+            else if (question.getQuestionType().toString().equals("PART5")){
+                part5[0]++;
+                if ((question.getAnswer().equals(entry.getValue()))) part5[1]++;
+            }
+            else if (question.getQuestionType().toString().equals("PART6")){
+                part6[0]++;
+                if ((question.getAnswer().equals(entry.getValue()))) part6[1]++;
+            }
+            else if (question.getQuestionType().toString().equals("PART7_SINGLE_PARAGRAPH") || question.getQuestionType().toString().equals("PART7_MULTIPLE_PARAGRAPH")){
+                part7[0]++;
+                if ((question.getAnswer().equals(entry.getValue()))) part7[1]++;
+            }
+        }
+
+        comments[0] = getPercentage(questionSet);
+
+        try {
+            comments[1] = part1[1] + " / " + part1[0] + " = " + (part1[1] * 100 / part1[0]) + "%";
+        } catch (ArithmeticException e) {
+            comments[1] = null;
+        }
+        try {
+            comments[2] = part2[1] + " / " + part2[0] + " = " + (part2[1] * 100 / part2[0]) + "%";
+        } catch (ArithmeticException e) {
+            comments[2] = null;
+        }
+        try {
+            comments[3] = part3[1] + " / " + part3[0] + " = " + (part3[1] * 100 / part3[0]) + "%";
+        } catch (ArithmeticException e) {
+            comments[3] = null;
+        }
+        try {
+            comments[4] = part4[1] + " / " + part4[0] + " = " + (part4[1] * 100 / part4[0]) + "%";
+        } catch (ArithmeticException e) {
+            comments[4] = null;
+        }
+        try {
+            comments[5] = part5[1] + " / " + part5[0] + " = " + (part5[1] * 100 / part5[0]) + "%";
+        } catch (ArithmeticException e) {
+            comments[5] = null;
+        }
+        try {
+            comments[6] = part6[1] + " / " + part6[0] + " = " + (part6[1] * 100 / part6[0]) + "%";
+        } catch (ArithmeticException e) {
+            comments[6] = null;
+        }
+        try {
+            comments[7] = part7[1] + " / " + part7[0] + " = " + (part7[1] * 100 / part7[0]) + "%";
+        } catch (ArithmeticException e) {
+            comments[7] = null;
+        }
+
+        return comments;
+    }
 }

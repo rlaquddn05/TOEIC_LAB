@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/sheet/sheet.css}">
 </th:block>
 
-<div layout:fragment="content" >
+<div layout:fragment="content">
     <div class="container">
         <h3 th:text="${type} + ' 모의시험'"></h3>
         <ul class="nav nav-tabs">
@@ -100,10 +100,11 @@
                     <th:block th:insert="fragments/question_RC7_2_fragments :: question_list(${questionList})"/>
                 </div>
             </div>
-            <button type="submit"> 제출</button>
+            <div id="submit_btn">
+                <button type="button" class="btn btn-primary" onclick="location.href='#header'">맨위로 이동</button>
+                <button type="submit" class="btn btn-primary" >제출 및 채점</button>
+            </div>
         </form>
     </div>
-
-
 </div>
 </html>

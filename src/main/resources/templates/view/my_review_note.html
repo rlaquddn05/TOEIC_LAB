@@ -76,17 +76,17 @@
                     </p>
                     <hr/>
                 </div>
-                <ol>
-                    <div class="py-5" th:each="question,index:${questionList}" th:if="${question.getQuestionType().toString().equals('PART1')}">
+                <ol class="list">
+                    <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART1')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                         </div>
-                        <hr>
                         <div class="row">
                             <img th:id="'a' + ${question.id}" th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img collapse col-10">
                         </div>
@@ -110,11 +110,12 @@
                 <ol class="list">
                     <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART2')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                             <hr/>
                         </div>
@@ -142,11 +143,12 @@
                 <ol class="list">
                     <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART3')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                         </div>
                         <div class="row">
@@ -175,11 +177,12 @@
                 <ol class="list">
                     <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART4')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                         </div>
                         <div>
@@ -205,12 +208,12 @@
                 <ol class="list">
                     <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART5')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
-
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                             <hr/>
                         </div>
@@ -234,12 +237,12 @@
                 <ol class="list">
                     <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART6')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
-
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                             <hr/>
                         </div>
@@ -266,12 +269,12 @@
                 <ol class="list">
                     <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART7_SINGLE_PARAGRAPH')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
-
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                             <hr/>
                         </div>
@@ -298,12 +301,12 @@
                 <ol class="list">
                     <div class="py-5" th:each="question:${questionList}" th:if="${question.getQuestionType().toString().equals('PART7_MULTIPLE_PARAGRAPH')}">
                         <div class="row">
-                            <li></li>
+                            <li class="col-1"></li>
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-3" data-toggle="collapse" th:attr="data-target=|#a${question.id}|">문제보기</button>
-
                             <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" data-toggle="collapse" th:attr="data-target=|#b${question.id}|">해답보기</button>
+                            <span class="col-1"></span>
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                             <hr/>
                         </div>

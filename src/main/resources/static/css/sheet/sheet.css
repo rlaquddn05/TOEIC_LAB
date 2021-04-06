@@ -17,3 +17,15 @@
 #btn{
     margin-top: 300px;
 }
+
+
+.list {
+    counter-reset: number;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.list li::before{
+    counter-increment: number;
+    content: counter(number)"\a0";
+}
