@@ -11,7 +11,6 @@
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </th:block>
 
 <div layout:fragment="content">
@@ -73,43 +72,21 @@
                         </div>
                     </div>
 
-<!--                    <div class="row g-3">-->
-<!--                        <div class="col-12">-->
-<!--                            <label class="form-label">성별</label><br/>-->
-<!--                            <input type="radio" th:field="*{gender}" name="gender" id="male" value="male"-->
-<!--                                   aria-describedby="gender_help_text"> 남자-->
-<!--                            <input type="radio" th:field="*{gender}" name="gender" id="female" value="female"-->
-<!--                                   aria-describedby="gender_help_text"> 여자-->
-<!--                            <div class="invalid-feedback">필수 사항입니다.</div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                     <div class="row g-3">
-                        <div class="col-12">
-                            <label for="gender" class="form-label">성별(male / female)입력</label>
-                            <input type="text" class="form-control"
-                                   name="gender" id="gender"
-                                   aria-describedby="age_help_text"
-                                   placeholder="male or female"
-                                   th:value="${currentUser.getGenderType()}" required>
+                        <div class="col-12" th:if="${currentUser.getGenderType().toString().equals('MALE')}">
+                            <label class="form-label">성별</label><br/>
+                            <input type="radio" name="gender" value="male" checked> 남자
+                            <input type="radio" name="gender" value="female"> 여자
                             <div class="invalid-feedback">필수 사항입니다.</div>
-                            <small id="gender_help_text"
-                                   class="form-text text-muted">
-                                회원님의 성별입니다.
-                            </small>
+                        </div>
+                        <div class="col-12" th:if="${currentUser.getGenderType().toString().equals('FEMALE')}">
+                            <label class="form-label">성별</label><br/>
+                            <input type="radio" name="gender" value="male"> 남자
+                            <input type="radio" name="gender" value="female" checked> 여자
+                            <div class="invalid-feedback">필수 사항입니다.</div>
                         </div>
                     </div>
 
-<!--                    <div class="row g-3">-->
-<!--                        <div class="col-12">-->
-<!--                            <label class="form-label">성별</label><br/>-->
-<!--                            <input type="radio1" th:attr="${currentUser.getGenderType().toString() == 'MALE'} ? 'checked' : ''" name="gender" id="male" value="male"-->
-<!--                                   aria-describedby="gender_help_text"> 남자-->
-<!--                            <input type="radio1" th:attr="${currentUser.getGenderType().toString() == 'FEMALE'} ? 'checked' : ''" name="gender" id="female" value="female"-->
-<!--                                   aria-describedby="gender_help_text"> 여자-->
-<!--                            <div class="invalid-feedback">필수 사항입니다.</div>-->
-<!--                        </div>-->
-<!--                    </div>-->
 
 
                     <div class="row g-3">
