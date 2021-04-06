@@ -39,7 +39,7 @@ spring:
       max-request-size: 100MB
 
   profiles:
-    active: dev
+    active: test
 
 #logging:
 #  level:
