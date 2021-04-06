@@ -206,7 +206,9 @@
             <div th:if="${questionType.contains('PART5')}" th:classappend="${!questionType.contains('PART1') && !questionType.contains('PART2') && !questionType.contains('PART3') && !questionType.contains('PART4')} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p5">
                 <div class="banner">
                     <p>
-                        Directions:
+                        Directions: A word or phrase is missing in each of the sentences below. <br/>
+                        Four answer choices are given below each sentence. Select the best answer to complete the sentence. <br/>
+                        Then mark the letter (A), (B), (C), or (D) on your answer sheet.
                     </p>
                 </div>
                 <ol class="list">
@@ -235,7 +237,11 @@
             <div th:if="${questionType.contains('PART6')}" th:classappend="${!questionType.contains('PART1') && !questionType.contains('PART2') && !questionType.contains('PART3') && !questionType.contains('PART4') && !questionType.contains('PART5')} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p6">
                 <div class="banner">
                     <p>
-                        Directions:
+                        PART 6<br/>
+                        Directions: Read the texts that follow. A word, phrase, or sentence is missing in parts of each text.<br/>
+                        Four answer choices for each question are given below the text. <br/>
+                        Select the best answer to complete the text. <br/>
+                        Then mark the letter (A), (B), (C), or (D) on your answer sheet.
                     </p>
                 </div>
                 <ol class="list">
@@ -267,7 +273,10 @@
             <div th:if="${questionType.contains('PART7_SINGLE_PARAGRAPH')}" th:classappend="${!questionType.contains('PART1') && !questionType.contains('PART2') && !questionType.contains('PART3') && !questionType.contains('PART4') && !questionType.contains('PART5') && !questionType.contains('PART6')} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p7s">
                 <div class="banner">
                     <p>
-                        Directions:
+                        PART 7<br/>
+                        Directions: In this part you will read a selection of texts, such as magazine and newspaper articles, e-mails, and instant messages. <br/>
+                        Each text or set of texts is followed by several questions. <br/>
+                        Select the best answer for each question and mark the letter (A), (B), (C), or (D) on your answer sheet.
                     </p>
                 </div>
                 <ol class="list">
@@ -299,7 +308,10 @@
             <div th:if="${questionType.contains('PART7_MULTIPLE_PARAGRAPH')}" th:classappend="${!questionType.contains('PART1') && !questionType.contains('PART2') && !questionType.contains('PART3') && !questionType.contains('PART4') && !questionType.contains('PART5') && !questionType.contains('PART6') && !questionType.contains('PART7_SINGLE_PARAGRAPH')} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p7m">
                 <div class="banner">
                     <p>
-                        Directions:
+                        PART 7<br/>
+                        Directions: In this part you will read a selection of texts, such as magazine and newspaper articles, e-mails, and instant messages. <br/>
+                        Each text or set of texts is followed by several questions. <br/>
+                        Select the best answer for each question and mark the letter (A), (B), (C), or (D) on your answer sheet.
                     </p>
                 </div>
                 <ol class="list">

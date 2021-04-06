@@ -97,21 +97,54 @@
 
                 <div th:if="${part5List != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
                  part4List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p5">
+                    <div class="banner">
+                        <p>
+                            PART 5<br/>
+                            Directions: A word or phrase is missing in each of the sentences below. <br/>
+                            Four answer choices are given below each sentence. Select the best answer to complete the sentence. <br/>
+                            Then mark the letter (A), (B), (C), or (D) on your answer sheet.
+                        </p>
+                    </div>
                     <th:block th:insert="fragments/question_RC5_fragments :: question_list(${questionList})"/>
                 </div>
 
                 <div th:if="${part6List != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
                  part4List == null && part5List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p6">
+                    <div class="banner">
+                        <p>
+                            PART 6<br/>
+                            Directions: Read the texts that follow. A word, phrase, or sentence is missing in parts of each text.<br/>
+                            Four answer choices for each question are given below the text. <br/>
+                            Select the best answer to complete the text. <br/>
+                            Then mark the letter (A), (B), (C), or (D) on your answer sheet.
+                        </p>
+                    </div>
                     <th:block th:insert="fragments/question_RC6_fragments :: question_list(${questionList})"/>
                 </div>
 
                 <div th:if="${part7sList != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
                  part4List == null && part5List == null && part6List == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p7s">
+                    <div class="banner">
+                        <p>
+                            PART 7<br/>
+                            Directions: In this part you will read a selection of texts, such as magazine and newspaper articles, e-mails, and instant messages. <br/>
+                            Each text or set of texts is followed by several questions. <br/>
+                            Select the best answer for each question and mark the letter (A), (B), (C), or (D) on your answer sheet.
+                        </p>
+                    </div>
                     <th:block th:insert="fragments/question_RC7_1_fragments :: question_list(${questionList})"/>
                 </div>
 
                 <div th:if="${part7mList != null}" th:classappend="${part1List == null && part2List == null && part3List == null &&
                  part4List == null && part5List == null && part6List == null && part7sList == null} ? 'tab-pane fade show active' : 'tab-pane fade'" id="p7m">
+                    <div class="banner">
+                        <p>
+                            PART 7<br/>
+                            Directions: In this part you will read a selection of texts, such as magazine and newspaper articles, e-mails, and instant messages. <br/>
+                            Each text or set of texts is followed by several questions. <br/>
+                            Select the best answer for each question and mark the letter (A), (B), (C), or (D) on your answer sheet.
+                        </p>
+                    </div>
                     <th:block th:insert="fragments/question_RC7_2_fragments :: question_list(${questionList})"/>
                 </div>
 
