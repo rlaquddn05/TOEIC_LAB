@@ -3,6 +3,7 @@ package toeicLab.toeicLab.controller;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -32,6 +33,7 @@ public class MainController {
     private final StudyGroupRepository studyGroupRepository;
     private final QuestionService questionService;
     private final ReviewNoteRepository reviewNoteRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
@@ -176,22 +178,26 @@ public class MainController {
     @GetMapping("/signup/email")
     @ResponseBody
     public String sendEmailCheckToken(@RequestParam("email") String email) {
-        MailDto mailDto = new MailDto();
-        mailDto.setEmail(email);
-        mailDto.setEmailCheckToken(mailDto.generateEmailCheckToken());
-
-        MailDto saveMail = mailService.mailSend(mailDto);
-        mailRepository.save(saveMail);
 
         JsonObject jsonObject = new JsonObject();
-
         boolean result = false;
-        result = saveMail != null;
+
+        MailDto checkEmail = mailRepository.findByEmail(email);
+        if(checkEmail==null){
+            MailDto mailDto = new MailDto();
+            mailDto.setEmail(email);
+            mailDto.setEmailCheckToken(mailDto.generateEmailCheckToken());
+            MailDto saveMail = mailService.mailSend(mailDto);
+            mailRepository.save(saveMail);
+            result = saveMail != null;
+        }else{
+            result = false;
+        }
 
         if (result) {
             jsonObject.addProperty("message", "이메일을 확인하세요.");
         } else {
-            jsonObject.addProperty("message", "올바른 이메일형식이 아닙니다.");
+            jsonObject.addProperty("message", "이미 존재하는 이메일입니다.");
         }
         return jsonObject.toString();
     }
@@ -209,7 +215,7 @@ public class MainController {
         result = getTokenMail.getEmailCheckToken().equals(certification_number);
 
         if (result) {
-            jsonObject.addProperty("message", "이메일 인증 성공");
+            jsonObject.addProperty("message", "이메일 인증 성공.");
         } else {
             jsonObject.addProperty("message", "이메일 인증번호가 일치하지 않습니다.");
         }
@@ -228,8 +234,11 @@ public class MainController {
 
         if (result) {
             jsonObject.addProperty("message", "이미 존재하는 아이디입니다.");
+//            jsonObject.addProperty("message",false);
         } else {
             jsonObject.addProperty("message", "사용 가능한 아이디입니다.");
+//            jsonObject.addProperty("message",true);
+
         }
         return jsonObject.toString();
     }
@@ -261,7 +270,7 @@ public class MainController {
         result = password.equals(check_password);
 
         if (result) {
-            jsonObject.addProperty("message", "비밀번호가 일치합니다,");
+            jsonObject.addProperty("message", "비밀번호가 일치합니다.");
         } else {
             jsonObject.addProperty("message", "비밀번호가 일치하지 않습니다.");
         }
@@ -277,6 +286,7 @@ public class MainController {
 
         if (member.getPassword() == null) {
             member.setPassword("{noop}" + password);
+            member.encodePassword(passwordEncoder);
             memberRepository.save(member);
             jsonObject.addProperty("message", "비밀번호를 등록하였습니다.");
         } else {

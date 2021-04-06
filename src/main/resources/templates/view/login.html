@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout" th:with="title='Login'">
+
 <div layout:fragment="content">
     <div class="container">
         <main>
@@ -53,12 +54,10 @@
 
                     <hr class="col-12 my-4">
                     <div class="btn-group">
-                    <button class="w-100 btn btn-dark btn-lg" type="submit">Login</button>
-                    <button class="w-100 btn btn-dark btn-lg" type="button" onclick="location.href='/oauth2/authorization/google'">GoogleLogin</button>
+                    <button class="w-100 btn btn-lg" type="submit">Login</button>
+                    <button class="btn btn-link" type="button" onclick="location.href='/oauth2/authorization/google'"><img src="/images/google_sign_in/btn_google_signin_light_normal_web.png"></button>
                     </div>
-<!--                    <a href="/oauth2/authorization/google" >-->
-<!--                        구글로그인-->
-<!--                    </a>-->
+
                 </form>
             </div>
 

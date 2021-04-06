@@ -24,7 +24,7 @@
 
             <div class="row g-10">
 
-                <form th:action="@{/signup}" th:object="${signUpForm}" method="post" name="signupForm" novalidate>
+                <form th:action="@{/signup}" th:object="${signUpForm}" method="post" name="signupForm" onsubmit='return beforeSubmit();'>
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="userId" class="form-label">아이디</label>
@@ -32,7 +32,7 @@
                             <input type="text" th:field="*{userId}" class="form-control"
                                    name="userId" id="userId"
                                    aria-describedby="userId_help_text"
-                                   value="userId">
+                                   value="userId" required>
                             <div class="invalid-feedback">필수 사항입니다.</div>
                                 <button id="user_id_button" class="btn btn-dark" type="button">중복확인</button>
                             </div>
@@ -144,19 +144,19 @@
                         <div class="col-2">
                             <label for="zipcode" class="form-label">우편번호</label>
                             <div class="input-group">
-                                <input type="text" th:field="*{zipcode}" name="zipcode" class="form-control" id="zipcode" readonly>
+                                <input type="text" th:field="*{zipcode}" name="zipcode" class="form-control" id="zipcode" readonly required>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="city"  class="form-label">기본주소</label>
                             <div class="input-group">
-                                <input type="text" th:field="*{city}" name="city" class="form-control" id="city" readonly>
+                                <input type="text" th:field="*{city}" name="city" class="form-control" id="city" readonly required>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="street" class="form-label">상세주소</label>
                             <div class="input-group">
-                                <input type="text" th:field="*{street}" name="street" class="form-control" id="street">
+                                <input type="text" th:field="*{street}" name="street" class="form-control" id="street" required>
                             </div>
                         </div>
                         <div class="col-2">
@@ -169,7 +169,20 @@
 
                     <button type="submit" class="btn btn-dark">회원가입</button>
 
+
                 </form>
+                <script>
+                    function beforeSubmit(){
+                        if($("#user_id_button").prop('disabled')&&$("#check_password_button").prop('disabled')
+                            &&$("#nickname_button").prop('disabled')&&$("#check_certification_number_button").prop('disabled')){
+                            return true;
+                        }else{
+                            $(".modal-body").html("[중복확인]과 [확인]을 확인하세요.");
+                            $("#emailButton1").modal();
+                            return false;
+                        }
+                    }
+                </script>
 
             </div>
 
@@ -215,6 +228,12 @@
                 success: function (result){
                     $(".modal-body").html(result.message);
                     $("#emailButton1").modal();
+                    if(result.message == "이미 존재하는 아이디입니다."){
+                        $("#user_id_button").attr('disabled', false);
+                    }else{
+                        $("#user_id_button").attr('disabled', true);
+                    }
+
                 }
             });
         });
@@ -228,6 +247,11 @@
                 success: function (result){
                     $(".modal-body").html(result.message);
                     $("#emailButton1").modal();
+                    if(result.message == "비밀번호가 일치합니다."){
+                        $("#check_password_button").attr('disabled', true);
+                    }else{
+                        $("#check_password_button").attr('disabled', false);
+                    }
                 }
             });
         });
@@ -241,6 +265,11 @@
                 success: function (result){
                     $(".modal-body").html(result.message);
                     $("#emailButton1").modal();
+                    if(result.message == "이미 존재하는 닉네임입니다."){
+                        $("#nickname_button").attr('disabled', false);
+                    }else{
+                        $("#nickname_button").attr('disabled', true);
+                    }
                 }
             });
         });
@@ -267,6 +296,11 @@
                 success: function (result){
                     $(".modal-body").html(result.message);
                     $("#emailButton1").modal();
+                    if(result.message == "이메일 인증 성공."){
+                        $("#check_certification_number_button").attr('disabled', true);
+                    }else{
+                        $("#check_certification_number_button").attr('disabled', false);
+                    }
                 }
             });
         });

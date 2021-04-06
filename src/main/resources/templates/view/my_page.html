@@ -24,7 +24,7 @@
             </div>
 
             <div class="row g-10">
-                <form th:action="@{/my_page}" th:object="${updateForm}" method="post" name="updateForm" novalidate>
+                <form th:action="@{/my_page}" th:object="${updateForm}" method="post" name="updateForm">
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="userId" class="form-label">아이디</label>
@@ -179,19 +179,19 @@
                         <div class="col-2">
                             <label for="zipcode" class="form-label">우편번호</label>
                             <div class="input-group">
-                                <input type="text" th:value="${currentUser.getAddress().getZipcode}" name="zipcode" class="form-control" id="zipcode" readonly>
+                                <input type="text" th:value="${currentUser.getAddress().getZipcode}" name="zipcode" class="form-control" id="zipcode" readonly required>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="city" class="form-label">기본주소</label>
                             <div class="input-group">
-                                <input type="text" th:value="${currentUser.getAddress().getCity()}" name="city" class="form-control" id="city" readonly>
+                                <input type="text" th:value="${currentUser.getAddress().getCity()}" name="city" class="form-control" id="city" readonly required>
                             </div>
                         </div>
                         <div class="col-4">
                             <label for="street" class="form-label">상세주소</label>
                             <div class="input-group">
-                                <input type="text" th:value="${currentUser.getAddress().getStreet()}" name="street" class="form-control" id="street">
+                                <input type="text" th:value="${currentUser.getAddress().getStreet()}" name="street" class="form-control" id="street" required>
                             </div>
                         </div>
                         <div class="col-2">
