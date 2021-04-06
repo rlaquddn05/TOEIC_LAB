@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.Bulletin;
@@ -16,11 +15,9 @@ import toeicLab.toeicLab.repository.BulletinRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.user.CurrentUser;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -124,7 +121,6 @@ public class BulletinController {
         Bulletin bulletin = bulletinRepository.findById(id).orElse(null);
         assert bulletin != null;
         log.info(bulletin.getContent());
-//        Bulletin bulletinByWriterId = bulletinRepository.findByWriterId(bulletin.getWriterId());
         long hit = bulletin.getHit();
         hit++;
         bulletin.setHit(hit);
