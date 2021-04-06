@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import toeicLab.toeicLab.controller.ForumController;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
@@ -24,11 +22,11 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Profile("dev")
+@Profile("test")
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class DevConfiguration {
+public class TestConfiguration {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
@@ -59,7 +57,7 @@ public class DevConfiguration {
             LC lc = new LC();
             lc.setQuestionType(QuestionType.PART1);
             lc.setImage((int) (Math.random() * 50 + 1) + ".jpg");
-            lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
+            lc.setRecording("D1_0" + (int) (Math.random() * 5 + 1) + ".mp3");
             lc.setAnswer("A");
             lc.setExampleA("A");
             lc.setExampleB("B");
@@ -75,7 +73,7 @@ public class DevConfiguration {
             LC lc = new LC();
             lc.setQuestionType(QuestionType.PART2);
             lc.setContent("Mark your answer on your answer sheet");
-            lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
+            lc.setRecording("D1_0" + (int) (Math.random() * 5 + 1) + ".mp3");
             lc.setAnswer("A");
             lc.setExampleA("A");
             lc.setExampleB("B");
@@ -90,7 +88,7 @@ public class DevConfiguration {
             for (int j = 1; j <= 3; j++) {
                 LC lc = new LC();
                 lc.setQuestionType(QuestionType.PART3);
-                lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
+                lc.setRecording("D1_0" + (int) (Math.random() * 5 + 1) + ".mp3");
                 lc.setContent(aRandomSentence());
                 lc.setExampleA(aRandomSentence());
                 lc.setExampleB(aRandomSentence());
@@ -113,7 +111,7 @@ public class DevConfiguration {
             for (int j = 1; j <= 3; j++) {
                 LC lc = new LC();
                 lc.setQuestionType(QuestionType.PART4);
-                lc.setRecording("D1_0"+(int)(Math.random()*5+1)+".mp3");
+                lc.setRecording("D1_0" + (int) (Math.random() * 5 + 1) + ".mp3");
                 lc.setContent(aRandomSentence());
                 lc.setExampleA(aRandomSentence());
                 lc.setExampleB(aRandomSentence());
@@ -276,12 +274,13 @@ public class DevConfiguration {
         log.info("a@a.a created.");
     }
 
-//    @PostConstruct
+    @PostConstruct
     public void testMatchStudyGroup() {
         studyGroupApplicationService.matchStudyGroups();
     }
 
-//    @PostConstruct
+
+    @PostConstruct
     public void initQuestions() throws IOException {
         initPart1();
         initPart2();
@@ -293,10 +292,9 @@ public class DevConfiguration {
         initPart7_multiple();
     }
 
-//    @PostConstruct
+    @PostConstruct
     public void initDummyUsers() {
         createDummyUsers();
         createTestUsers();
     }
-    
 }
