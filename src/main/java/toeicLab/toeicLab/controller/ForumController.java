@@ -23,6 +23,7 @@ import toeicLab.toeicLab.user.CurrentUser;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -41,10 +42,58 @@ public class ForumController {
     private final VisionService visionService;
 
     @GetMapping("/forum")
-    public String forum(@CurrentUser Member member, Model model) {
+    public String forum(@CurrentUser Member member, Model model, @RequestParam(defaultValue = "1") int page) {
+        // 총 게시물 수
         List<Forum> forumList = forumRepository.findAll();
-        model.addAttribute("forumList", forumList);
-        model.addAttribute("member", member);
+
+        int size = forumList.size();
+        log.info("리스트의 개수");
+        log.info(String.valueOf(size));
+        int totalListCnt = size;
+
+        // 생성인자로  총 게시물 수, 현재 페이지를 전달
+        Pagination pagination = new Pagination(totalListCnt, page);
+
+        // DB select start index
+        int startIndex = pagination.getStartIndex();
+        // 페이지 당 보여지는 게시글의 최대 개수
+        int pageSize = pagination.getPageSize();
+
+        int pageCheck = startIndex + pageSize;
+
+        log.info("pageCheck=" + pageCheck);
+        List<Forum> forumList2 = new ArrayList<>();
+
+        if(totalListCnt == 0){
+            log.info("마지막페이지=" + pagination.getEndPage());
+            // ============================전체페이지가 1일때 설정============================
+            pagination.setEndPage(1);
+            pagination.setNextBlock(1);
+            pagination.setTotalPageCnt(1);
+            // ===========================================================================
+            model.addAttribute(member);
+            model.addAttribute("forumList", forumList2);
+            model.addAttribute("pagination", pagination);
+            return "/view/forum";
+        }
+
+        for (int i = startIndex; i < pageCheck; i++){
+            Forum forum = forumList.get(i);
+
+            forumList2.add(forum);
+
+            if(i == (totalListCnt-1)){
+                pageCheck = totalListCnt-1;
+            }
+
+        }
+
+        log.info(String.valueOf(startIndex));
+        model.addAttribute(member);
+        model.addAttribute("forumList", forumList2);
+        model.addAttribute("pagination", pagination);
+
+        model.addAttribute(member);
         return "/view/forum";
     }
 
@@ -73,7 +122,7 @@ public class ForumController {
     }
 
     @GetMapping("/forumDetail/{id}")
-    public String bulletinDetailView(@CurrentUser Member member, @PathVariable Long id, Model model) {
+    public String forumDetailView(@CurrentUser Member member, @PathVariable Long id, Model model) {
         log.info("상세보기");
         log.info(String.valueOf(id));
         Forum forum = forumRepository.findById(id).orElse(null);
