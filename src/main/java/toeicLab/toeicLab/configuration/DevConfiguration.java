@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import toeicLab.toeicLab.controller.ForumController;
 import toeicLab.toeicLab.domain.*;
@@ -276,6 +277,7 @@ public class DevConfiguration {
     }
 
 //    @PostConstruct
+//    @Scheduled(cron="0 0 04 * * ?")  // 매일 새벽 4시에 실행
     public void testMatchStudyGroup() {
         studyGroupApplicationService.matchStudyGroups();
     }
@@ -301,7 +303,7 @@ public class DevConfiguration {
 
 //    @PostConstruct
     public void initDummyUsers() {
-//        createDummyUsers();
+        createDummyUsers();
         createTestUsers();
     }
     

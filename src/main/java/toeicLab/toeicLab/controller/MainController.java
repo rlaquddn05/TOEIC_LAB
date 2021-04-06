@@ -57,7 +57,7 @@ public class MainController {
     }
 
     @PostMapping("/send_reset_password_link")
-    public String sendResetPassword(@RequestParam("userId")String userId, @RequestParam("email")String email, Model model) {
+    public String sendResetPassword(@RequestParam("userId") String userId, @RequestParam("email") String email, Model model) {
         try {
             Member checkedMember = memberService.sendResetPasswordEmail(userId, email);
             model.addAttribute("checkedMember", checkedMember);
@@ -86,7 +86,7 @@ public class MainController {
     }
 
     @PostMapping("/notify_password")
-    public String goResetPassword(@RequestParam("token")String resetPasswordEmailToken, Model model){
+    public String goResetPassword(@RequestParam("token") String resetPasswordEmailToken, Model model) {
         MailDto mailByEmailCheckToken = mailRepository.findByEmailCheckToken(resetPasswordEmailToken);
         model.addAttribute("email", mailByEmailCheckToken.getEmail());
         return "/view/reset_password";
@@ -96,7 +96,7 @@ public class MainController {
     @GetMapping("/reset/checkTokens")
     @ResponseBody
     public String resetCheckTokens(@RequestParam("resetPasswordEmail") String resetPasswordEmail,
-                                   @RequestParam("token") String resetPasswordEmailToken){
+                                   @RequestParam("token") String resetPasswordEmailToken) {
         log.info("비밀번호 초기화 인증키 판단");
         JsonObject jsonObject = new JsonObject();
         MailDto getResetPasswordTokenMail = mailRepository.findByEmail(resetPasswordEmail);
@@ -114,9 +114,8 @@ public class MainController {
     }
 
 
-
     @GetMapping("/notify_password")
-    public String notifyPasswordView(){
+    public String notifyPasswordView() {
         return "/view/notify_password";
     }
 
@@ -127,7 +126,7 @@ public class MainController {
 
 
     @PostMapping("/reset_password")
-    public String resetPassword(@RequestParam("email")String email, @RequestParam("password")String password, Model model) {
+    public String resetPassword(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
         memberService.resetPassword(email, password);
         log.info("비밀번호 수정 완료");
         model.addAttribute("result_code", "password.reset.success");
@@ -276,11 +275,11 @@ public class MainController {
         Member member = memberRepository.findByUserId(userId);
         JsonObject jsonObject = new JsonObject();
 
-        if(member.getPassword() == null){
+        if (member.getPassword() == null) {
             member.setPassword("{noop}" + password);
             memberRepository.save(member);
             jsonObject.addProperty("message", "비밀번호를 등록하였습니다.");
-        }else{
+        } else {
             member.setPassword("{noop}" + password);
             memberRepository.save(member);
             jsonObject.addProperty("message", "비밀번호를 수정하였습니다.");
@@ -300,10 +299,10 @@ public class MainController {
         result = memberRepository.existsById(deletedMember.getId());
         JsonObject jsonObject = new JsonObject();
 
-        if(result){
+        if (result) {
             jsonObject.addProperty("message", "[ToeicLab]을 탈퇴실패...");
 
-        }else{
+        } else {
             jsonObject.addProperty("message", "[ToeicLab]을 탈퇴했습니다.");
         }
 
@@ -322,7 +321,7 @@ public class MainController {
     }
 
     @PostMapping("/my_page")
-    public String myPageSubmit(UpdateForm updateForm){
+    public String myPageSubmit(UpdateForm updateForm) {
         log.info("회원정보수정 시작");
 
         Member updatedMember = memberRepository.findByUserId(updateForm.getUserId());
@@ -333,11 +332,11 @@ public class MainController {
                 .city(updateForm.getCity())
                 .street(updateForm.getStreet())
                 .build());
-        if(updateForm.getGender().equals("male")){
+        if (updateForm.getGender().equals("male")) {
             updatedMember.setGenderType(GenderType.MALE);
-        }else if(updateForm.getGender().equals("female")) {
+        } else if (updateForm.getGender().equals("female")) {
             updatedMember.setGenderType(GenderType.FEMALE);
-        }else{
+        } else {
             updatedMember.setGenderType(updatedMember.getGenderType());
         }
         memberRepository.save(updatedMember);
@@ -352,17 +351,17 @@ public class MainController {
         model.addAttribute("studyGroupId", Long.parseLong(id));
         model.addAttribute("thisStudyGroup", thisStudyGroup);
 
-        model.addAttribute("member1",thisStudyGroup.getMembers().get(0));
-        model.addAttribute("member2",thisStudyGroup.getMembers().get(1));
-        model.addAttribute("member3",thisStudyGroup.getMembers().get(2));
-        model.addAttribute("member4",thisStudyGroup.getMembers().get(3));
+        model.addAttribute("member1", thisStudyGroup.getMembers().get(0));
+        model.addAttribute("member2", thisStudyGroup.getMembers().get(1));
+        model.addAttribute("member3", thisStudyGroup.getMembers().get(2));
+        model.addAttribute("member4", thisStudyGroup.getMembers().get(3));
 
-        model.addAttribute("meetings",thisStudyGroup.getMeetings());
+        model.addAttribute("meetings", thisStudyGroup.getMeetings());
 
         return "/view/my_studygroup_detail";
     }
 
-    @PostMapping("/my_studygroup_detail/{id}")
+    @PostMapping("/create_meeting/{id}")
     public String myStudyGroupDetailPost(@CurrentUser Member member, @PathVariable String id, Model model, String date,
                                          String[] select_form) {
 
@@ -376,7 +375,7 @@ public class MainController {
     }
 
     @GetMapping("/create_meeting/{id}")
-    public String createMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {
+    public String viewCreateMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", id);
         return "/view/create_meeting";
@@ -425,7 +424,7 @@ public class MainController {
     }
 
     @PostMapping("/apply_studygroup")
-    public String SubmitStudyGroupApplication(Model model, @CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors){
+    public String SubmitStudyGroupApplication(Model model, @CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors) {
         model.addAttribute("member", member);
         studyGroupApplicationValidator.validate(studyGroupApplicationForm, errors);
         if (errors.hasErrors()) {
@@ -470,10 +469,10 @@ public class MainController {
         QuestionSet fToeic = null;
         QuestionSet pToeic = null;
 
-        if(member.getQuestionSetList() != null) {
+        if (member.getQuestionSetList() != null) {
             member = memberRepository.getOne(member.getId());
             List<QuestionSet> questionSetList = questionSetRepository.getAllByMember(member);
-            for (int i = 0; i<questionSetList.size(); i++){
+            for (int i = 0; i < questionSetList.size(); i++) {
                 QuestionSet questionSet = questionSetList.get(i);
                 if (questionSet.getQuestionSetType().toString() == "QUARTER_TOEIC") qToeic = questionSet;
                 if (questionSet.getQuestionSetType().toString() == "HALF_TOEIC") hToeic = questionSet;
@@ -482,19 +481,19 @@ public class MainController {
             }
         }
 
-        if(qToeic != null) {
+        if (qToeic != null) {
             model.addAttribute("qToeic", qToeic);
             model.addAttribute("qToeicComment", memberService.CreateProgressByQuestionSet(qToeic));
         }
-        if(hToeic != null) {
+        if (hToeic != null) {
             model.addAttribute("hToeic", hToeic);
             model.addAttribute("hToeicComment", memberService.CreateProgressByQuestionSet(hToeic));
         }
-        if(fToeic != null) {
+        if (fToeic != null) {
             model.addAttribute("fToeic", fToeic);
             model.addAttribute("fToeicComment", memberService.CreateProgressByQuestionSet(fToeic));
         }
-        if(pToeic != null) {
+        if (pToeic != null) {
             model.addAttribute("pToeic", pToeic);
             model.addAttribute("pToeicComment", memberService.CreateProgressByQuestionSet(pToeic));
         }
