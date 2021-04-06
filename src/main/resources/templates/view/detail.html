@@ -42,9 +42,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6"></div>
-            <div class="col-2">
-                <button th:if="${question.getQuestionType().toString().equals('PART1') || question.getQuestionType().toString().equals('PART2') || question.getQuestionType().toString().equals('PART3') || question.getQuestionType().toString().equals('PART4')}" class="btn btn-primary">다시듣기</button>
+            <div class="col-4"></div>
+            <div class="col-4">
+<!--                <button th:if="${question.getQuestionType().toString().equals('PART1') || question.getQuestionType().toString().equals('PART2') || question.getQuestionType().toString().equals('PART3') || question.getQuestionType().toString().equals('PART4')}" class="btn btn-primary">다시듣기</button>-->
+                <audio th:if="${question.getQuestionType().toString().equals('PART1') || question.getQuestionType().toString().equals('PART2') || question.getQuestionType().toString().equals('PART3') || question.getQuestionType().toString().equals('PART4')}"  controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
             </div>
             <div class="col-2">
                 <button id="addReview" class="btn btn-primary"> 오답노트 추가</button>

@@ -88,7 +88,8 @@
                             <button type="button" class="btn btn-sm col-2" th:onclick="|javascript:a('${question.id}')|">삭제하기</button>
                         </div>
                         <div class="row">
-                            <img th:id="'a' + ${question.id}" th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img collapse col-10">
+                            <img th:id="'a' + ${question.id}" th:src="@{'/images/place_holder_images/' + ${question.image}}" class="img collapse col-8">
+                            <audio th:id="'a' + ${question.id}" class="col-4 collapse" controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
                         </div>
                         <div>
                             <span th:id="'b'+ ${question.id}" class="collapse" th:text="'해석: ' + ${question.solution} + '정답: '+${question.answer} + '내가 쓴 답: ' + ${userAnswer.get(question.id)}"></span>
@@ -121,6 +122,7 @@
                         </div>
                         <div class="row">
                             <p th:id="'a' + ${question.id}" th:text="${question.content}" class="collapse"></p>
+                            <audio class="collapse" th:id="'a' + ${question.id}" controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
                         </div>
                         <div>
                             <span th:id="'b'+ ${question.id}" class="collapse" th:text="'해석: ' + ${question.solution} + '정답: '+${question.answer} + '내가 쓴 답: ' + ${userAnswer.get(question.id)}"></span>
@@ -156,6 +158,7 @@
                             <img th:id="'a' + ${question.id}" th:src= "@{/images/place_holder_images/ + ${question.image}}" class="img  collapse" >
                         </span>
                             <p th:id="'a' + ${question.id}" th:text="${question.content}" class="collapse"></p>
+                            <audio th:id="'a' + ${question.id}" class="collapse" controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
                         </div>
                         <div>
                             <span th:id="'b'+ ${question.id}" class="collapse" th:text="'해석: ' + ${question.solution} + '정답: '+${question.answer} + '내가 쓴 답: ' + ${userAnswer.get(question.id)}"></span>
@@ -190,6 +193,7 @@
                             <img th:id="'a' + ${question.id}" th:src= "@{/images/place_holder_images/ + ${question.image}}" class="img  collapse" >
                         </span>
                             <p th:id="'a' + ${question.id}" th:text="${question.content}" class="collapse"></p>
+                            <audio th:id="'a' + ${question.id}" class="collapse" controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
                         </div>
                         <div>
                             <span th:id="'b'+ ${question.id}" class="collapse" th:text="'해석: ' + ${question.solution} + '정답: '+${question.answer} + '내가 쓴 답: ' + ${userAnswer.get(question.id)}"></span>
