@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface StudyGroupApplicationRepository extends JpaRepository<StudyGroupApplication, Long> {
     public List<StudyGroupApplication> findAll();
+    public List<StudyGroupApplication> findAllByMatching(boolean matching);
 }

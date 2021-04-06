@@ -26,7 +26,7 @@ public class StudyGroupApplicationService {
 
 
     public List<StudyGroupApplication> getStudyGroupApplicationList() {
-        return studyGroupApplicationRepository.findAll();
+        return studyGroupApplicationRepository.findAllByMatching(false);
     }
 
     public List<StudyGroup> matchStudyGroups() {
@@ -41,6 +41,7 @@ public class StudyGroupApplicationService {
                 studyGroupRepository.save(studyGroup);
                 for (Member member : studyGroup.getMembers()) {
                     applicationPool.remove(member.getStudyGroupApplication());
+
                 }
             }
         }
@@ -211,6 +212,10 @@ public class StudyGroupApplicationService {
                 .tags(Arrays.asList(studyGroupApplicationForm.getTags().clone()))
                 .build();
 
-        studyGroupApplicationRepository.save(studyGroupApplication);
+        if (member.getStudyGroupApplication() == null) {
+            studyGroupApplicationRepository.save(studyGroupApplication);
+        } else {
+            member.setStudyGroupApplication(studyGroupApplication);
+        }
     }
 }

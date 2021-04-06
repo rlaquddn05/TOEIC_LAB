@@ -15,7 +15,7 @@ public class ServiceConfiguration {
     private final StudyGroupApplicationService studyGroupApplicationService;
 
     @Scheduled(cron="0 0 04 * * ?")
-    public void testMatchStudyGroup() {
+    public void MatchStudyGroup() {
         studyGroupApplicationService.matchStudyGroups();
     }
 }
