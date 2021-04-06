@@ -30,6 +30,6 @@ public class Forum {
 
     private Long questionId;
 
-
+    private String nickname;
 
 }

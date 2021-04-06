@@ -17,6 +17,7 @@ public class ForumService {
     public void addForum(Member member, String title, Question q) {
         Forum forum = Forum.builder()
                 .title(title)
+                .nickname(member.getNickname())
                 .userId(member.getUserId())
                 .date(LocalDateTime.now())
                 .hit(0L)
