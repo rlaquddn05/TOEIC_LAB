@@ -118,11 +118,6 @@ public class ForumController {
         return "/view/forum_detail";
     }
 
-    @GetMapping("/readText")
-    public void readText() {
-        log.info("test");
-    }
-
     @GetMapping("/vocabulary_test")
     public String vocabularyTest(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
