@@ -3,6 +3,7 @@ package toeicLab.toeicLab.controller;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,10 @@ import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.net.http.HttpRequest;
 import java.util.*;
 
 @Controller
@@ -299,7 +303,7 @@ public class MainController {
 
     @GetMapping("/update/delete")
     @ResponseBody
-    public String deletePassword(@RequestParam("userId") String userId) {
+    public String deletePassword(@RequestParam("userId") String userId, HttpServletRequest request) {
 
         Member deletedMember = memberRepository.findByUserId(userId);
         log.info(String.valueOf(deletedMember.getId()));
@@ -314,6 +318,11 @@ public class MainController {
 
         } else {
             jsonObject.addProperty("message", "[ToeicLab]을 탈퇴했습니다.");
+            HttpSession session= request.getSession(false);
+            SecurityContextHolder.clearContext();
+            if(session != null) {
+                session.invalidate();
+            }
         }
 
         return jsonObject.toString();
