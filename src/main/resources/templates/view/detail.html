@@ -21,6 +21,7 @@
                 <span th:text="${question.exampleB}"></span>
                 <span th:text="${question.exampleC}"></span>
                 <span th:text="${question.exampleD}"></span>
+                <p th:text="'정답: ' + ${question.answer}"></p>
                 <p th:text="'선택한 답: ' + ${userAnswer.get(question.id)}"></p>
             </div>
             <div th:if="${question.getQuestionType().toString().equals('PART5')}">
@@ -28,6 +29,7 @@
                 <p th:text="'B. ' + ${question.exampleB}"></p>
                 <p th:text="'C. ' + ${question.exampleC}"></p>
                 <p th:text="'D. ' + ${question.exampleD}"></p>
+                <p th:text="'정답: ' + ${question.answer}"></p>
                 <p th:text="'선택한 답: ' + ${userAnswer.get(question.id)}"></p>
             </div>
             <div th:if="${question.getQuestionType().toString().equals('PART3') || question.getQuestionType().toString().equals('PART4') || question.getQuestionType().toString().equals('PART6') || question.getQuestionType().toString().equals('PART7_MULTIPLE_PARAGRAPH') || question.getQuestionType().toString().equals('PART7_SINGLE_PARAGRAPH')}">
@@ -35,6 +37,7 @@
                 <p th:text="'B. ' + ${question.exampleB}"></p>
                 <p th:text="'C. ' + ${question.exampleC}"></p>
                 <p th:text="'D. ' + ${question.exampleD}"></p>
+                <p th:text="'정답: ' + ${question.answer}"></p>
                 <p th:text="'선택한 답: ' + ${userAnswer.get(question.id)}"></p>
             </div>
             <div>
