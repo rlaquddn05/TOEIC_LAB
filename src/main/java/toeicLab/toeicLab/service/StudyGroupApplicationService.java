@@ -149,7 +149,7 @@ public class StudyGroupApplicationService {
                 StudyGroupApplicationTag.AGE_30S.get()};
 
         for (int checkAge : ageCheckList) {
-            if (target.getValue() % checkAge == 0) {
+            if (target.getValue() % checkAge == 0) { // 타켓이 체크리스트의 태그를 눌렀다면
                 for (int i = 0; i < applicationPool.size(); i++) {
                     if (getTagValueFromAge(applicationPool.get(i)) == checkAge) {
                         int count = 0;

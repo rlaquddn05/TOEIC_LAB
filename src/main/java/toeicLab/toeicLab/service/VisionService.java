@@ -3,9 +3,7 @@ package toeicLab.toeicLab.service;
 import com.google.cloud.vision.v1.*;
 import com.google.protobuf.ByteString;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class VisionService {
 
     public void readText(String fileName, StringBuilder loadText){

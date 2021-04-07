@@ -20,7 +20,13 @@ public class Meeting {
     private LocalDateTime date;
 
     @OneToOne
-    private QuestionSet questionSet;
+    private QuestionSet questionSet1;
+    @OneToOne
+    private QuestionSet questionSet2;
+    @OneToOne
+    private QuestionSet questionSet3;
+    @OneToOne
+    private QuestionSet questionSet4;
 
     private Integer count;
 

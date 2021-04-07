@@ -117,20 +117,35 @@ public class QuestionSetService {
 
         studyGroup = studyGroupRepository.findById(studyGroup.getId()).orElse(null);
         int count = 0;
+        assert studyGroup != null;
         if (studyGroup.getMeetings() != null) {
             count = studyGroup.getMeetings().size() + 1;
         }
-
-        questionSetRepository.save(meetingQuestionSet);
 
         Meeting meeting = Meeting.builder()
                 .count(count)
                 .studyGroup(studyGroup)
                 .date(dateTime.atStartOfDay())
-                .questionSet(meetingQuestionSet)
                 .build();
-        meetingRepository.save(meeting);
 
+
+        meetingQuestionSet.setMember(studyGroup.getMembers().get(0));
+        questionSetRepository.save(meetingQuestionSet);
+        meeting.setQuestionSet1(meetingQuestionSet);
+
+        meetingQuestionSet.setMember(studyGroup.getMembers().get(1));
+        questionSetRepository.save(meetingQuestionSet);
+        meeting.setQuestionSet2(meetingQuestionSet);
+
+        meetingQuestionSet.setMember(studyGroup.getMembers().get(2));
+        questionSetRepository.save(meetingQuestionSet);
+        meeting.setQuestionSet3(meetingQuestionSet);
+
+        meetingQuestionSet.setMember(studyGroup.getMembers().get(3));
+        questionSetRepository.save(meetingQuestionSet);
+        meeting.setQuestionSet4(meetingQuestionSet);
+
+        meetingRepository.save(meeting);
     }
 
     public QuestionSet findQuestionSet(Long setId) {
@@ -144,28 +159,28 @@ public class QuestionSetService {
         int[] result = new int[8];
 
         for (int i = 1; i < select_form.length; i = i + 3) {
-            switch (select_form[i]){
-                case "PART1" :
-                    result[0] = Integer.parseInt(select_form[i+1]);
+            switch (select_form[i]) {
+                case "PART1":
+                    result[0] = Integer.parseInt(select_form[i + 1]);
                     break;
-                case "PART2" :
-                    result[1] = Integer.parseInt(select_form[i+1]);
+                case "PART2":
+                    result[1] = Integer.parseInt(select_form[i + 1]);
                     break;
-                case "PART3" :
-                    result[2] = Integer.parseInt(select_form[i+1]);
+                case "PART3":
+                    result[2] = Integer.parseInt(select_form[i + 1]);
                     break;
-                case "PART4" :
-                    result[3] = Integer.parseInt(select_form[i+1]);
+                case "PART4":
+                    result[3] = Integer.parseInt(select_form[i + 1]);
                     break;
-                case "PART5" :
-                    result[4] = Integer.parseInt(select_form[i+1]);
+                case "PART5":
+                    result[4] = Integer.parseInt(select_form[i + 1]);
                     break;
-                case "PART6" :
-                    result[5] = Integer.parseInt(select_form[i+1]);
+                case "PART6":
+                    result[5] = Integer.parseInt(select_form[i + 1]);
                     break;
-                case "PART7" :
-                    result[6] = (int)(Math.random() * Integer.parseInt(select_form[i+1]));
-                    result[7] = Integer.parseInt(select_form[i+1])-result[6];
+                case "PART7":
+                    result[6] = (int) (Math.random() * Integer.parseInt(select_form[i + 1]));
+                    result[7] = Integer.parseInt(select_form[i + 1]) - result[6];
                     break;
                 default:
                     break;
@@ -203,31 +218,25 @@ public class QuestionSetService {
         Map<Long, String> submittedAnswersForQs = questionSet.getSubmittedAnswers();
         for (Map.Entry<Long, String> entry : submittedAnswersForQs.entrySet()) {
             Question question = questionRepository.getOne(entry.getKey());
-            if(question.getQuestionType().toString().equals("PART1")){
+            if (question.getQuestionType().toString().equals("PART1")) {
                 part1[0]++;
                 if (question.getAnswer().equals(entry.getValue())) part1[1]++;
-            }
-            else if (question.getQuestionType().toString().equals("PART2")){
+            } else if (question.getQuestionType().toString().equals("PART2")) {
                 part2[0]++;
                 if ((question.getAnswer().equals(entry.getValue()))) part2[1]++;
-            }
-            else if (question.getQuestionType().toString().equals("PART3")){
+            } else if (question.getQuestionType().toString().equals("PART3")) {
                 part3[0]++;
                 if ((question.getAnswer().equals(entry.getValue()))) part3[1]++;
-            }
-            else if (question.getQuestionType().toString().equals("PART4")){
+            } else if (question.getQuestionType().toString().equals("PART4")) {
                 part4[0]++;
                 if ((question.getAnswer().equals(entry.getValue()))) part4[1]++;
-            }
-            else if (question.getQuestionType().toString().equals("PART5")){
+            } else if (question.getQuestionType().toString().equals("PART5")) {
                 part5[0]++;
                 if ((question.getAnswer().equals(entry.getValue()))) part5[1]++;
-            }
-            else if (question.getQuestionType().toString().equals("PART6")){
+            } else if (question.getQuestionType().toString().equals("PART6")) {
                 part6[0]++;
                 if ((question.getAnswer().equals(entry.getValue()))) part6[1]++;
-            }
-            else if (question.getQuestionType().toString().equals("PART7_SINGLE_PARAGRAPH") || question.getQuestionType().toString().equals("PART7_MULTIPLE_PARAGRAPH")){
+            } else if (question.getQuestionType().toString().equals("PART7_SINGLE_PARAGRAPH") || question.getQuestionType().toString().equals("PART7_MULTIPLE_PARAGRAPH")) {
                 part7[0]++;
                 if ((question.getAnswer().equals(entry.getValue()))) part7[1]++;
             }
