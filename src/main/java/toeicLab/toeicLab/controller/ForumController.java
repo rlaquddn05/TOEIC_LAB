@@ -13,12 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.ForumRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
-import toeicLab.toeicLab.repository.StudyGroupRepository;
 import toeicLab.toeicLab.repository.WordRepository;
-import toeicLab.toeicLab.service.ForumService;
-import toeicLab.toeicLab.service.MemberService;
-import toeicLab.toeicLab.service.QuestionService;
-import toeicLab.toeicLab.service.VisionService;
+import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.CurrentUser;
 
 import java.io.FileOutputStream;

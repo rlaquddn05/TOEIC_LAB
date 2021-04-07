@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.Bulletin;
 import toeicLab.toeicLab.domain.BulletinComment;
 import toeicLab.toeicLab.domain.Member;
-import toeicLab.toeicLab.domain.Pagination;
+import toeicLab.toeicLab.service.Pagination;
 import toeicLab.toeicLab.repository.BulletinCommentRepository;
 import toeicLab.toeicLab.repository.BulletinRepository;
 import toeicLab.toeicLab.repository.MemberRepository;
