@@ -69,10 +69,6 @@ public class Member {
     @OneToOne(mappedBy = "member")
     private Word wordList;
 
-
-    @OneToMany(mappedBy = "member")
-    private List<Notice> noticeList = new ArrayList<>();
-
     @OneToOne(mappedBy = "member")
     private ReviewNote reviewNoteList;
 

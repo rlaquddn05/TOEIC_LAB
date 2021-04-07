@@ -1,4 +1,4 @@
-package toeicLab.toeicLab.domain;
+package toeicLab.toeicLab.service;
 
 import lombok.Getter;
 import lombok.Setter;
