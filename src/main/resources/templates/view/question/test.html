@@ -39,11 +39,6 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="p1">
                     <div class="banner">
-                        <p>LISTENING TEST<br/>
-                            In the Listening test, you will be asked to demonstrate how well you understand spoken English.<br/>
-                            The entire Listening test will last approximately 45 minutes. there are four parts, and directions are given for each part.<br/>
-                            you must mark your answers on the separate answer sheet. Do not write your answers in your test book.
-                        </p>
                         <p>
                             PART1 <br/>
                             Directions: For each question in this part, you will hear four statements about a picture in your test book.<br/>
@@ -90,12 +85,35 @@
                     <th:block th:insert="fragments/question_LC4_fragments :: question_list(${questionList})"/>
                 </div>
                 <div class="tab-pane fade" id="p5">
+                    <div class="banner">
+                        <p>
+                            PART 5<br/>
+                            Directions: A word or phrase is missing in each of the sentences below. <br/>
+                            Four answer choices are given below each sentence. Select the best answer to complete the sentence. <br/>
+                            Then mark the letter (A), (B), (C), or (D) on your answer sheet.
+                        </p>
+                    </div>
                     <th:block th:insert="fragments/question_RC5_fragments :: question_list(${questionList})"/>
                 </div>
                 <div class="tab-pane fade" id="p6">
+                    <div class="banner">
+                        <p>
+                            PART 6<br/>
+                            Directions: Read the texts that follow. A word, phrase, or sentence is missing in parts of each text.<br/>
+                            Four answer choices for each question are given below the text. <br/>
+                            Select the best answer to complete the text. <br/>
+                            Then mark the letter (A), (B), (C), or (D) on your answer sheet.
+                        </p>
+                    </div>
                     <th:block th:insert="fragments/question_RC6_fragments :: question_list(${questionList})"/>
                 </div>
                 <div class="tab-pane fade" id="p7">
+                    <p>
+                        PART 7<br/>
+                        Directions: In this part you will read a selection of texts, such as magazine and newspaper articles, e-mails, and instant messages. <br/>
+                        Each text or set of texts is followed by several questions. <br/>
+                        Select the best answer for each question and mark the letter (A), (B), (C), or (D) on your answer sheet.
+                    </p>
                     <th:block th:insert="fragments/question_RC7_1_fragments :: question_list(${questionList})"/>
                     <th:block th:insert="fragments/question_RC7_2_fragments :: question_list(${questionList})"/>
                 </div>
