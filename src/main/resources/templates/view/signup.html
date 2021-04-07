@@ -7,33 +7,37 @@
 <th:block layout:fragment="js">
     <script th:src="@{/js/user/form_validation.js}"></script>
     <script th:src="@{/js/user/daum_address.js}"></script>
+    <script th:src="@{/js/user/sigup.js}"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </th:block>
 
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/member/login.css}">
+</th:block>
 
 <div layout:fragment="content">
-    <div class="container">
-        <main>
+    <div class="container" id="signup-container">
+        <div class="py-5">
             <div>
                 <h2>회원가입</h2>
                 <p class="lead">회원가입 페이지입니다.</p>
             </div>
 
-            <div class="row g-10">
+            <div class="g-10">
 
                 <form th:action="@{/signup}" th:object="${signUpForm}" method="post" name="signupForm" onsubmit='return beforeSubmit();'>
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="userId" class="form-label">아이디</label>
                             <div class="input-group">
-                            <input type="text" th:field="*{userId}" class="form-control"
-                                   name="userId" id="userId"
-                                   aria-describedby="userId_help_text"
-                                   value="userId" required>
-                            <div class="invalid-feedback">필수 사항입니다.</div>
+                                <input type="text" th:field="*{userId}" class="form-control"
+                                       name="userId" id="userId"
+                                       aria-describedby="userId_help_text"
+                                       value="userId" required>
+                                <div class="invalid-feedback">필수 사항입니다.</div>
                                 <button id="user_id_button" class="btn btn-dark" type="button">중복확인</button>
                             </div>
 
@@ -70,12 +74,12 @@
                         <div class="col-12">
                             <label for="nickname" class="form-label">닉네임</label>
                             <div class="input-group">
-                            <input type="text" th:field="*{nickname}" class="form-control"
-                                   name="nickname" id="nickname"
-                                   aria-describedby="nickname_help_text"
-                                   value="nickname" required>
-                            <div class="invalid-feedback">필수 사항입니다.</div>
-                            <button id="nickname_button" class="btn btn-dark" type="button">중복확인</button>
+                                <input type="text" th:field="*{nickname}" class="form-control"
+                                       name="nickname" id="nickname"
+                                       aria-describedby="nickname_help_text"
+                                       value="nickname" required>
+                                <div class="invalid-feedback">필수 사항입니다.</div>
+                                <button id="nickname_button" class="btn btn-dark" type="button">중복확인</button>
                             </div>
                         </div>
                     </div>
@@ -167,7 +171,9 @@
 
                     <hr class="col-12 my-4">
 
-                    <button type="submit" class="btn btn-dark">회원가입</button>
+                    <div id="confirm-signup">
+                        <button type="submit" class="btn btn-dark" id="confirm-button">회원가입</button>
+                    </div>
 
 
                 </form>
@@ -186,10 +192,7 @@
 
             </div>
 
-        </main>
-        <footer class="my-5 pt-5">
-
-        </footer>
+        </div>
     </div>
 
     <!-- The Modal -->
@@ -217,98 +220,98 @@
         </div>
     </div>
 
-<script th:inline="javascript">
-    $(document).ready(function () {
-        $("#user_id_button").click(function () {
-            $.ajax({
-                type: 'GET',
-                url: '/signup/checkUserId',
-                data: 'userId=' + $("#userId").val(),
-                dataType: 'json',
-                success: function (result){
-                    $(".modal-body").html(result.message);
-                    $("#emailButton1").modal();
-                    if(result.message == "이미 존재하는 아이디입니다."){
-                        $("#user_id_button").attr('disabled', false);
-                    }else{
-                        $("#user_id_button").attr('disabled', true);
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $("#user_id_button").click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/signup/checkUserId',
+                    data: 'userId=' + $("#userId").val(),
+                    dataType: 'json',
+                    success: function (result){
+                        $(".modal-body").html(result.message);
+                        $("#emailButton1").modal();
+                        if(result.message == "이미 존재하는 아이디입니다."){
+                            $("#user_id_button").attr('disabled', false);
+                        }else{
+                            $("#user_id_button").attr('disabled', true);
+                        }
+
                     }
-
-                }
+                });
             });
-        });
 
-        $("#check_password_button").click(function (){
-            $.ajax({
-                type: 'GET',
-                url: '/signup/checkPasswords',
-                data: 'password=' + $("#password").val() + '&check_password=' + $("#check_password").val(),
-                dataType: 'json',
-                success: function (result){
-                    $(".modal-body").html(result.message);
-                    $("#emailButton1").modal();
-                    if(result.message == "비밀번호가 일치합니다."){
-                        $("#check_password_button").attr('disabled', true);
-                    }else{
-                        $("#check_password_button").attr('disabled', false);
+            $("#check_password_button").click(function (){
+                $.ajax({
+                    type: 'GET',
+                    url: '/signup/checkPasswords',
+                    data: 'password=' + $("#password").val() + '&check_password=' + $("#check_password").val(),
+                    dataType: 'json',
+                    success: function (result){
+                        $(".modal-body").html(result.message);
+                        $("#emailButton1").modal();
+                        if(result.message == "비밀번호가 일치합니다."){
+                            $("#check_password_button").attr('disabled', true);
+                        }else{
+                            $("#check_password_button").attr('disabled', false);
+                        }
                     }
-                }
+                });
             });
-        });
 
-        $("#nickname_button").click(function (){
-            $.ajax({
-                type: 'GET',
-                url: '/signup/checkNickname',
-                data: 'nickname=' + $("#nickname").val(),
-                dataType: 'json',
-                success: function (result){
-                    $(".modal-body").html(result.message);
-                    $("#emailButton1").modal();
-                    if(result.message == "이미 존재하는 닉네임입니다."){
-                        $("#nickname_button").attr('disabled', false);
-                    }else{
-                        $("#nickname_button").attr('disabled', true);
+            $("#nickname_button").click(function (){
+                $.ajax({
+                    type: 'GET',
+                    url: '/signup/checkNickname',
+                    data: 'nickname=' + $("#nickname").val(),
+                    dataType: 'json',
+                    success: function (result){
+                        $(".modal-body").html(result.message);
+                        $("#emailButton1").modal();
+                        if(result.message == "이미 존재하는 닉네임입니다."){
+                            $("#nickname_button").attr('disabled', false);
+                        }else{
+                            $("#nickname_button").attr('disabled', true);
+                        }
                     }
-                }
+                });
             });
-        });
 
-        $("#email_button").click(function (){
-            $.ajax({
-                type: 'GET',
-                url: '/signup/email',
-                data: 'email=' + $("#email").val(),
-                dataType: 'json',
-                success: function (result) {
-                    $(".modal-body").html(result.message);
-                    $("#emailButton1").modal();
-                }
-            });
-        });
-
-        $("#check_certification_number_button").click(function (){
-            $.ajax({
-                type: 'GET',
-                url: '/signup/checkTokens',
-                data: 'email=' + $("#email").val() + '&certification_number=' + $("#certification_number").val(),
-                dataType: 'json',
-                success: function (result){
-                    $(".modal-body").html(result.message);
-                    $("#emailButton1").modal();
-                    if(result.message == "이메일 인증 성공."){
-                        $("#check_certification_number_button").attr('disabled', true);
-                    }else{
-                        $("#check_certification_number_button").attr('disabled', false);
+            $("#email_button").click(function (){
+                $.ajax({
+                    type: 'GET',
+                    url: '/signup/email',
+                    data: 'email=' + $("#email").val(),
+                    dataType: 'json',
+                    success: function (result) {
+                        $(".modal-body").html(result.message);
+                        $("#emailButton1").modal();
                     }
-                }
+                });
             });
+
+            $("#check_certification_number_button").click(function (){
+                $.ajax({
+                    type: 'GET',
+                    url: '/signup/checkTokens',
+                    data: 'email=' + $("#email").val() + '&certification_number=' + $("#certification_number").val(),
+                    dataType: 'json',
+                    success: function (result){
+                        $(".modal-body").html(result.message);
+                        $("#emailButton1").modal();
+                        if(result.message == "이메일 인증 성공."){
+                            $("#check_certification_number_button").attr('disabled', true);
+                        }else{
+                            $("#check_certification_number_button").attr('disabled', false);
+                        }
+                    }
+                });
+            });
+
+
         });
 
-
-    });
-
-</script>
+    </script>
 
 </div>
 

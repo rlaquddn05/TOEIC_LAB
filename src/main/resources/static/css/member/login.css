@@ -11,3 +11,24 @@
     border: #5b5e5cd0 solid 1px;
     box-shadow: 0px 0px 5px rgba(83, 199, 121, 0.25);
 }
+
+#signup-container {
+    padding-left:  10em;
+    padding-right: 10em;
+}
+
+#confirm-signup {
+    text-align: center;
+}
+
+#confirm-signup button {
+    width: 20%;
+}
+
+#check_password_button {
+    width: 5.625em;
+}
+
+#check_certification_number_button {
+    width: 5.625em;
+}
