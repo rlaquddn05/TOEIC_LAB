@@ -13,60 +13,61 @@
     <div th:class="container">
 
 
-        <!--        <div class="py-5 text-center">-->
-        <!--            <p class="lead">모의 시험</p>-->
-        <!--        </div>-->
-
         <div class="row justify-content-center">
             <div class="col-1"></div>
-            <div class="col-4">
-                <p>LC/RC 모의 시험 보기</p>
+            <div class="col-4.5">
+                <div class="center">
+                    <a><b>LC/RC 모의 시험 보기</b></a>
+                </div>
+                <br/>
                 <div class="select">
-                    <button type="button" class="btn btn-outline-primary btn-block">
-                        <a th:href="@{/test/{type}(type=${'Quarter'})}">
-                            <p>1/4 모의 시험 (50문제)</p>
-                            <p> - 전체 시험의 1/4 규모</p>
-                            <p> - 시험시간 30분</p>
-                        </a>
-                    </button>
+                    <a th:href="@{/test/{type}(type=${'Quarter'})}">
+                        <button type="button" class="btn-t btn1">
+                            <p><b>1/4 모의 시험 (50문제)</b></p>
+                            <p><b> - 전체 시험의 1/4 규모</b></p>
+                            <p><b> - 시험시간 30분</b></p>
+                        </button>
+                    </a>
                 </div>
                 <div class="select">
-                    <button type="button" class="btn btn-outline-primary btn-block">
-                        <a th:href="@{/test/{type}(type=${'Half'})}">
-                            <p>1/2 모의 시험 (100문제)</p>
-                            <p> - 전체 시험의 1/2 규모</p>
-                            <p > - 시험시간 60분</p>
-                        </a>
-                    </button>
+                    <a th:href="@{/test/{type}(type=${'Half'})}">
+                        <button type="button" class="btn-t btn1">
+                            <p><b>1/2 모의 시험 (100문제)</b></p>
+                            <p><b> - 전체 시험의 1/2 규모</b></p>
+                            <p><b> - 시험시간 60분</b></p>
+                        </button>
+                    </a>
                 </div>
                 <div class="select">
-                    <button type="button" class="btn btn-outline-primary btn-block">
-                        <a th:href="@{/test/{type}(type=${'Full'})}">
-                            <p>실전 모의 시험 (200문제)</p>
-                            <p> - 전체 시험과 동일한 규모</p>
-                            <p> - 시험시간 120분</p>
-                        </a>
-                    </button>
+                    <a th:href="@{/test/{type}(type=${'Full'})}">
+                        <button type="button" class="btn-t btn1">
+                            <p><b>실전 모의 시험 (200문제)</b></p>
+                            <p><b> - 전체 시험과 동일한 규모</b></p>
+                            <p><b> - 시험시간 120분</b></p>
+                        </button>
+                    </a>
                 </div>
             </div>
-            <div class="col-2"></div>
-            <div class="col-4">
-                <p>SPEAKING 모의 시험 보기</p>
+            <div class="col-1"></div>
+            <div class="col-4.5">
+                <div class="center">
+                    <a><b>SPEAKING 모의 시험 보기</b></a>
+                </div>
                 <div  class="select">
-                    <button type="button" class="btn btn-outline-primary btn-block" style="margin-top: 60px;">
-                        <a th:href="@{/test/{type}(type=${'SPK_Half'})}">
-                            <p>SPEAKING 1/2 모의 시험</p>
-                            <p> - 전체 시험의 1/2 규모</p>
-                            <p> - 시험시간 00분</p>
+                    <button type="button" class="btn-t btn1" style="margin-top: 120px;">
+                        <a data-toggle="modal" data-target="#service">
+                            <p><b>SPEAKING 1/2 모의 시험</b></p>
+                            <p><b> - 전체 시험의 1/2 규모</b></p>
+                            <p><b> - 시험시간 00분</b></p>
                         </a>
                     </button>
                 </div>
                 <div  class="select">
-                    <button type="button" class="btn btn-outline-primary btn-block">
-                        <a th:href="@{/test/{type}(type=${'SPK_Full'})}">
-                            <p>SPEAKING 전체 모의 시험</p>
-                            <p> - 실제 시험과 동일한 규모</p>
-                            <p> - 시험시간 00분</p>
+                    <button type="button" class="btn-t btn1">
+                        <a data-toggle="modal" data-target="#service">
+                            <p><b>SPEAKING 전체 모의 시험</b></p>
+                            <p><b> - 실제 시험과 동일한 규모</b></p>
+                            <p><b> - 시험시간 00분</b></p>
                         </a>
                     </button>
                 </div>
