@@ -549,6 +549,20 @@ public class MainController {
         if (fToeic != null) {
             model.addAttribute("fToeic", fToeic);
             model.addAttribute("fToeicComment", memberService.CreateProgressByQuestionSet(fToeic));
+            switch ((int)(Float.parseFloat(questionSetService.getPercentage(fToeic))/10)){
+                case 1 : case 2 : case 3 : case 4 :{
+                    member.setLevelType(LevelType.BEGINNER);
+                    break;
+                }
+                case 5 : case 6 : case 7: {
+                    member.setLevelType(LevelType.INTERMEDIATE);
+                    break;
+                }
+                case 8: case 9 : case 10 : {
+                    member.setLevelType(LevelType.ADVANCED);
+                }
+            }
+
         }
         if (pToeic != null) {
             model.addAttribute("pToeic", pToeic);
