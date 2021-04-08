@@ -263,48 +263,17 @@ public class ForumController {
         return "redirect:/my_vocabulary_list";
     }
 
-//    @GetMapping("/delete_word")
-//    @ResponseBody
-//    public String DeleteTest(@CurrentUser Member member, Model model, @RequestParam("word") String word){
-//        memberService.deleteWord(member, word);
-//        System.out.println(word + "삭제");
-//
-//        JsonObject jsonObject = new JsonObject();
-//        boolean result = false;
-//
-//        try {
-//            result = memberService.deleteWord(member, word);
-//            if(result) {
-//                jsonObject.addProperty("message", "단어장에서 제거하였습니다.");
-//            }
-//
-//        } catch (IllegalArgumentException e){
-//            jsonObject.addProperty("message", "잘못된정보");
-//        }
-//        model.addAttribute("member", member);
-//        return jsonObject.toString();
-////
-////        return "redirect:/my_vocabulary_list";
-//    }
-
     @RequestMapping(value="/upload_img", method = RequestMethod.POST)
     @ResponseBody
     public StringBuilder upload(@CurrentUser Member member, Model model, @RequestParam("file") MultipartFile file) throws IOException, IllegalStateException{
         StringBuilder loadText = new StringBuilder();
         FileOutputStream fos = null;
-//        int data = 0;
         System.out.println("Temp Path:" + System.getProperty("java.io.tmpdir"));
         System.out.println(file);
         try {
-//            ClassPathResource resource = new ClassPathResource("/questionPhoto/"+file+".jpg");
-//            File f = new File(String.valueOf(resource));
-//            file.transferTo(f);
             byte fileData[] = file.getBytes();
             fos = new FileOutputStream(System.getProperty("java.io.tmpdir")+file.getName()+".jpg");
             fos.write(fileData);
-//            while((data =System.in.read()) != -1){
-//
-//            }
 
         } finally {
             if (fos!= null){

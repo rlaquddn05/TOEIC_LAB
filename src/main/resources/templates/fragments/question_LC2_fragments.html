@@ -10,9 +10,13 @@
             <div th:each="question:${questionList}">
                 <!--part2-->
                 <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART2')}">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-1"><li></li></div>
+                        <span class="col-8" th:text="${question.content}"></span><br/>
+                        <div class="col-2"></div>
+                    </div>
                     <div>
-                        <span><li></li></span>
-                        <span th:text="${question.content}"></span><br/>
                         <audio controls><source type="audio/mp3" th:src="@{'/audio/' + ${question.recording}}"></audio>
                     </div>
                     <div class="form-check form-check-inline">
