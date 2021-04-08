@@ -1,21 +1,21 @@
 #submit_btn{
-    padding: 10px;
+    padding: 0.625em;
 }
 .img{
-    width: 530px;
-    height: 340px;
+    width: 33.125em;
+    height: 21.250em;
 }
 .container h3{
     text-align: center;
-    padding: 20px;
+    padding: 1.250em;
 }
 .form-check {
-    margin-left: 20px;
-    margin-top: 10px;
-    margin-right: 20px;
+    margin-left: 1.250em;
+    margin-top: 0.625em;
+    margin-right: 1.250em;
 }
 #btn{
-    margin-top: 300px;
+    margin-top: 18.750em;
 }
 
 
@@ -28,4 +28,15 @@
 .list li::before{
     counter-increment: number;
     content: counter(number)"\a0";
+}
+
+.direction {
+    padding-top: 2em;
+    padding-bottom: 1em;
+    font-size: 1.5rem;
+    font-family: "Hi Melody", sans-serif;
+}
+
+img {
+    padding-bottom: 1em;
 }

@@ -333,6 +333,10 @@ public class MainController {
 
     @GetMapping("/my_page")
     public String myPageView(@CurrentUser Member member, Model model) {
+        if (member.getGenderType() == null){
+            member.setGenderType(GenderType.MALE);
+            memberRepository.save(member);
+        }
         Member currentUser = memberRepository.findByEmail(member.getEmail());
         model.addAttribute("currentUser", currentUser);
         log.info(String.valueOf(currentUser.getGenderType()));
