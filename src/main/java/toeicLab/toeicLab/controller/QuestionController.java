@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.*;
-import toeicLab.toeicLab.repository.MemberRepository;
-import toeicLab.toeicLab.repository.QuestionSetRepository;
-import toeicLab.toeicLab.repository.ReviewNoteRepository;
+import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.service.MemberService;
 import toeicLab.toeicLab.service.QuestionService;
 import toeicLab.toeicLab.service.QuestionSetService;
@@ -30,6 +28,7 @@ public class QuestionController {
     private final MemberRepository memberRepository;
     private final ReviewNoteRepository reviewNoteRepository;
     private final MemberService memberService;
+    private final MeetingRepository meetingRepository;
 
     @GetMapping("/practice_select/{id}")
     public String practiceTest(@CurrentUser Member member, @PathVariable String id, Model model){
@@ -76,8 +75,35 @@ public class QuestionController {
             return "/view/practice_sheet";
         }
         else {
-            System.out.println("partspk : " + request.getParameter("PARTspk"));
-            return "/view/spk_sheet";
+            Meeting meeting = meetingRepository.getOne(Long.parseLong(id));
+            QuestionSet qs1 = meeting.getQuestionSet1();
+            QuestionSet qs2 = meeting.getQuestionSet2();
+            QuestionSet qs3 = meeting.getQuestionSet3();
+            QuestionSet qs4 = meeting.getQuestionSet4();
+
+            QuestionSet questionSet = new QuestionSet();
+
+            if(qs1.getMember().getId().equals(member.getId())) questionSet = qs1;
+            if(qs2.getMember().getId().equals(member.getId())) questionSet = qs2;
+            if(qs3.getMember().getId().equals(member.getId())) questionSet = qs3;
+            if(qs4.getMember().getId().equals(member.getId())) questionSet = qs4;
+
+            List<Question> questions = questionSet.getQuestions();
+            for(Question q : questions){
+                if(q.getQuestionType().toString().equals("PART1")) model.addAttribute("part1List", true);
+                else if(q.getQuestionType().toString().equals("PART2")) model.addAttribute("part2List", true);
+                else if(q.getQuestionType().toString().equals("PART3")) model.addAttribute("part3List", true);
+                else if(q.getQuestionType().toString().equals("PART4")) model.addAttribute("part4List", true);
+                else if(q.getQuestionType().toString().equals("PART5")) model.addAttribute("part5List", true);
+                else if(q.getQuestionType().toString().equals("PART6")) model.addAttribute("part6List", true);
+                else if(q.getQuestionType().toString().equals("PART7_SINGLE_PARAGRAPH")) model.addAttribute("part7sList", true);
+                else if(q.getQuestionType().toString().equals("PART7_MULTIPLE_PARAGRAPH")) model.addAttribute("part7mList", true);
+            }
+            model.addAttribute("questionList", questions);
+            model.addAttribute("questionSet", questionSet);
+            model.addAttribute("studyGroupId", meeting.getStudyGroup().getId());
+            System.out.println(meeting.getStudyGroup().getId());
+            return "/view/practice_sheet";
         }
     }
 
@@ -128,6 +154,10 @@ public class QuestionController {
                 setIdValue = Long.parseLong(value);
                 continue;
             }
+            if (param.equals("studyGroupId")) {
+                model.addAttribute("studyGroupId", value);
+                continue;
+            }
             map.put(Long.parseLong(param), value);
         }
         /*===============================================*/
@@ -149,11 +179,6 @@ public class QuestionController {
         model.addAttribute("userAnswer", map);
         model.addAttribute("member", member);
         model.addAttribute("questionSetId", questionSetId);
-
-//        if (questionSet.getQuestionSetType().toString().equals("PRACTICE") || questionSet.getQuestionSetType().toString().equals("MEETING")) {
-//            model.addAttribute("PracOrMeet", questionSetService.getPercentage(questionSet));
-//            return "/view/result_sheet";
-//        }
 
         String[] eachstrings = questionSetService.getPercentageEachOfQuestionSet(questionSet);
         model.addAttribute("eachstrings", eachstrings);
