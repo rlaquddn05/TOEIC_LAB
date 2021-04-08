@@ -86,7 +86,12 @@ public class QuestionSetService {
     }
 
     public void createMeeting(StudyGroup studyGroup, int[] numberOfQuestions, String date) {
-        QuestionSet meetingQuestionSet = new QuestionSet();
+        QuestionSet meetingQuestionSet1 = new QuestionSet();
+        QuestionSet meetingQuestionSet2 = new QuestionSet();
+        QuestionSet meetingQuestionSet3 = new QuestionSet();
+        QuestionSet meetingQuestionSet4 = new QuestionSet();
+
+
         List<Question> questionList = new ArrayList<>();
 
         int part1 = numberOfQuestions[0];
@@ -108,9 +113,21 @@ public class QuestionSetService {
         questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_SINGLE_PARAGRAPH, part7_Single));
         questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH, part7_Multiple));
 
-        meetingQuestionSet.setQuestions(questionList);
-        meetingQuestionSet.setCreatedAt(LocalDateTime.now());
-        meetingQuestionSet.setQuestionSetType(QuestionSetType.MEETING);
+        meetingQuestionSet1.setQuestions(questionList);
+        meetingQuestionSet1.setCreatedAt(LocalDateTime.now());
+        meetingQuestionSet1.setQuestionSetType(QuestionSetType.MEETING);
+
+        meetingQuestionSet2.setQuestions(questionList);
+        meetingQuestionSet2.setCreatedAt(LocalDateTime.now());
+        meetingQuestionSet2.setQuestionSetType(QuestionSetType.MEETING);
+
+        meetingQuestionSet3.setQuestions(questionList);
+        meetingQuestionSet3.setCreatedAt(LocalDateTime.now());
+        meetingQuestionSet3.setQuestionSetType(QuestionSetType.MEETING);
+
+        meetingQuestionSet4.setQuestions(questionList);
+        meetingQuestionSet4.setCreatedAt(LocalDateTime.now());
+        meetingQuestionSet4.setQuestionSetType(QuestionSetType.MEETING);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dateTime = LocalDate.parse(date, formatter);
@@ -128,22 +145,21 @@ public class QuestionSetService {
                 .date(dateTime.atStartOfDay())
                 .build();
 
+        meetingQuestionSet1.setMember(studyGroup.getMembers().get(0));
+        questionSetRepository.save(meetingQuestionSet1);
+        meeting.setQuestionSet1(meetingQuestionSet1);
 
-        meetingQuestionSet.setMember(studyGroup.getMembers().get(0));
-        questionSetRepository.save(meetingQuestionSet);
-        meeting.setQuestionSet1(meetingQuestionSet);
+        meetingQuestionSet2.setMember(studyGroup.getMembers().get(1));
+        questionSetRepository.save(meetingQuestionSet2);
+        meeting.setQuestionSet2(meetingQuestionSet2);
 
-        meetingQuestionSet.setMember(studyGroup.getMembers().get(1));
-        questionSetRepository.save(meetingQuestionSet);
-        meeting.setQuestionSet2(meetingQuestionSet);
+        meetingQuestionSet3.setMember(studyGroup.getMembers().get(2));
+        questionSetRepository.save(meetingQuestionSet3);
+        meeting.setQuestionSet3(meetingQuestionSet3);
 
-        meetingQuestionSet.setMember(studyGroup.getMembers().get(2));
-        questionSetRepository.save(meetingQuestionSet);
-        meeting.setQuestionSet3(meetingQuestionSet);
-
-        meetingQuestionSet.setMember(studyGroup.getMembers().get(3));
-        questionSetRepository.save(meetingQuestionSet);
-        meeting.setQuestionSet4(meetingQuestionSet);
+        meetingQuestionSet4.setMember(studyGroup.getMembers().get(3));
+        questionSetRepository.save(meetingQuestionSet4);
+        meeting.setQuestionSet4(meetingQuestionSet4);
 
         meetingRepository.save(meeting);
     }

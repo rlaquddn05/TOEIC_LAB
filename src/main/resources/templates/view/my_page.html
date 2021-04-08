@@ -4,25 +4,29 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout" th:with="title='my_page'">
 
-<th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/member/myPage.css}">
+<th:block layout:fragment="js">
     <script th:src="@{/js/user/form_validation.js}"></script>
     <script th:src="@{/js/user/daum_address.js}"></script>
+    <script th:src="@{/js/user/my_page.js}"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 </th:block>
 
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/member/myPage.css}">
+</th:block>
+
 <div layout:fragment="content">
-    <div class="container">
-        <main>
+    <div class="container" id="my-page-container">
+        <div class="py-5">
             <div>
                 <h2>내 정보</h2>
                 <p class="lead">회원님의 개인정보 수정하실 수 있습니다.</p>
                 <p><strong>*구글</strong>로 로그인한 회원님은 <strong>추가정보</strong>를 입력해주세요.</p>
             </div>
 
-            <div class="row g-10">
+            <div class="g-10">
                 <form th:action="@{/my_page}" th:object="${updateForm}" method="post" name="updateForm">
                     <div class="row g-3">
                         <div class="col-12">
@@ -179,19 +183,20 @@
 
                     <hr class="col-12 my-4">
 
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-dark group-btn">정보수정</button>
-                        <button type="button" class="btn btn-dark group-btn" onclick="location.href='/'">뒤로가기</button>
-                        <button type="button" id="delete_button" class="btn btn-danger group-btn">탈퇴하기</button>
+
+                    <div id="group-button" >
+                        <div class="">
+                            <button type="submit" class="btn btn-dark">정보수정</button>
+                            <button type="button" class="btn btn-dark" onclick="location.href='/'">뒤로가기</button>
+                            <button type="button" id="delete_button" class="btn btn-danger">탈퇴하기</button>
+                        </div>
                     </div>
 
                 </form>
             </div>
 
-        </main>
-        <footer class="my-5 pt-5">
+        </div>
 
-        </footer>
     </div>
 
     <!-- The Modal -->
@@ -243,39 +248,6 @@
             </div>
         </div>
     </div>
-
-    <script th:inline="javascript">
-        $(document).ready(function () {
-            $("#update_password_button").click(function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/update/password',
-                    data: 'password=' + $("#password").val() + '&userId=' + $("#userId").val(),
-                    dataType: 'json',
-                    success: function (result){
-                        $(".modal-body").html(result.message);
-                        $("#myPageButton1").modal();
-                    }
-                });
-            });
-
-            $("#delete_button").click(function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/update/delete',
-                    data: 'userId=' + $("#userId").val(),
-                    dataType: 'json',
-                    success: function (result){
-                        $(".modal-body").html(result.message);
-                        $("#myPageButton2").modal();
-                    }
-                });
-            });
-
-        });
-
-    </script>
-
 
 
 

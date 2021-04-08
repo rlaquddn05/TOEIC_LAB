@@ -1,6 +1,7 @@
 package toeicLab.toeicLab.controller;
 
 import com.google.gson.JsonObject;
+import com.sun.xml.bind.v2.util.QNameMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,6 +39,7 @@ public class MainController {
     private final QuestionService questionService;
     private final ReviewNoteRepository reviewNoteRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MeetingRepository meetingRepository;
 
     @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
@@ -366,17 +368,49 @@ public class MainController {
     public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
         Long longId = Long.parseLong(id);
         StudyGroup thisStudyGroup = studyGroupRepository.getOne(longId);
+        List<Meeting> meetings = thisStudyGroup.getMeetings();
+        List<QuestionSet> questionSets = new ArrayList<>();
+        Map<Long, String> comment = new HashMap<>();
+
+        if (meetings != null) {
+            for (Meeting meeting : meetings) {
+                if (meeting.getQuestionSet1().getMember().getId().equals(member.getId())) {
+                    questionSets.add(meeting.getQuestionSet1());
+                }
+                if (meeting.getQuestionSet2().getMember().getId().equals(member.getId())) {
+                    questionSets.add(meeting.getQuestionSet2());
+                }
+                if (meeting.getQuestionSet3().getMember().getId().equals(member.getId())) {
+                    questionSets.add(meeting.getQuestionSet3());
+                }
+                if (meeting.getQuestionSet4().getMember().getId().equals(member.getId())) {
+                    questionSets.add(meeting.getQuestionSet4());
+                }
+            }
+            model.addAttribute("questionSets", questionSets);
+
+            for(QuestionSet qs : questionSets){
+                if (!qs.getSubmittedAnswers().isEmpty()){
+                    System.out.println(qs.getSubmittedAnswers());
+                    comment.put(qs.getId(), memberService.CreateProgressByQuestionSet(qs));
+                    model.addAttribute("checkToken", qs.getId());
+                }
+                else {
+                    comment.put(qs.getId(), "스터디를 진행하면 comment 가 생성됩니다");
+                }
+            }
+            model.addAttribute("comment", comment);
+        }
+
+
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", Long.parseLong(id));
         model.addAttribute("thisStudyGroup", thisStudyGroup);
-
         model.addAttribute("member1", thisStudyGroup.getMembers().get(0));
         model.addAttribute("member2", thisStudyGroup.getMembers().get(1));
         model.addAttribute("member3", thisStudyGroup.getMembers().get(2));
         model.addAttribute("member4", thisStudyGroup.getMembers().get(3));
-
-        model.addAttribute("meetings", thisStudyGroup.getMeetings());
-
+        model.addAttribute("meetings", meetings);
         return "/view/my_studygroup_detail";
     }
 
@@ -491,12 +525,12 @@ public class MainController {
         if (member.getQuestionSetList() != null) {
             member = memberRepository.getOne(member.getId());
             List<QuestionSet> questionSetList = questionSetRepository.getAllByMember(member);
-            for (int i = 0; i < questionSetList.size(); i++) {
-                QuestionSet questionSet = questionSetList.get(i);
-                if (questionSet.getQuestionSetType().toString() == "QUARTER_TOEIC") qToeic = questionSet;
-                if (questionSet.getQuestionSetType().toString() == "HALF_TOEIC") hToeic = questionSet;
-                if (questionSet.getQuestionSetType().toString() == "FULL_TOEIC") fToeic = questionSet;
-                if (questionSet.getQuestionSetType().toString() == "PRACTICE") pToeic = questionSet;
+            for (QuestionSet qs : questionSetList) {
+                if (qs.getQuestionSetType().toString() == "QUARTER_TOEIC") qToeic = qs;
+                else if (qs.getQuestionSetType().toString() == "HALF_TOEIC") hToeic = qs;
+                else if (qs.getQuestionSetType().toString() == "FULL_TOEIC") fToeic = qs;
+                else if (qs.getQuestionSetType().toString() == "PRACTICE") pToeic = qs;
+                else continue;
             }
         }
 
