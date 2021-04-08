@@ -18,3 +18,8 @@ div .py-5 {
 .d-block {
     max-width: 100%;
 }
+
+#carouselExampleIndicators {
+    padding-right: 0.625em;
+    padding-left: 0.625em;
+}
