@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: ghlim909@gmail.com
-    password: geonho1234!
+    password: geonho0401!
     properties:
       mail:
         smtp:
@@ -39,7 +39,7 @@ spring:
       max-request-size: 100MB
 
   profiles:
-    active: test
+    active: dev
 
 #logging:
 #  level:
