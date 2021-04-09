@@ -110,16 +110,16 @@ public class QuestionService {
                 }
                 switch ((int) (Math.random() * 4)) {
                     case 0:
-                        smallSet_Multiple = new int[]{2, 2, 3};
+                        smallSet_Multiple = new int[]{0, 0, 5};
                         break;
                     case 1:
-                        smallSet_Multiple = new int[]{3, 0, 4};
+                        smallSet_Multiple = new int[]{5, 0, 2};
                         break;
                     case 2:
-                        smallSet_Multiple = new int[]{1, 3, 2};
+                        smallSet_Multiple = new int[]{0, 5, 1};
                         break;
                     case 3:
-                        smallSet_Multiple = new int[]{0, 1, 5};
+                        smallSet_Multiple = new int[]{3, 4, 0};
                         break;
                 }
                 break;
