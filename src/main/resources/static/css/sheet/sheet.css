@@ -77,3 +77,20 @@ img {
     justify-content: center;
     padding-bottom: 0.625em;
 }
+
+.row-part5 {
+    padding-bottom: 1.250em;
+    padding-left: 0.938em;
+}
+.row-part6 {
+    padding-bottom: 1.250em;
+    padding-left: 1.563em;
+}
+.row-part7 {
+    padding-bottom: 1.250em;
+    padding-left: 1.563em;
+}
+
+.radio-part {
+    text-align: left;
+}
