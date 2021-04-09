@@ -1,5 +1,6 @@
 #submit_btn{
     padding: 0.625em;
+    text-align: right;
 }
 .img{
     width: 33.125em;
@@ -37,6 +38,42 @@
     font-family: "Hi Melody", sans-serif;
 }
 
+.submit_btn {
+    text-align: right;
+}
+
 img {
     padding-bottom: 1em;
+}
+
+#content {
+    padding-bottom: 1em;
+}
+
+.form-check-part {
+    text-align: left;
+}
+
+#content-part {
+    justify-content: left;
+}
+
+.audio-part {
+    text-align: left;
+    margin-left: 0.938em;
+}
+
+.row-part3 {
+    padding-bottom: 0.625em;
+    padding-left: 1.563em;
+}
+
+.row-part4 {
+    padding-bottom: 0.625em;
+    padding-left: 1.563em;
+}
+
+.row-part2 {
+    justify-content: center;
+    padding-bottom: 0.625em;
 }

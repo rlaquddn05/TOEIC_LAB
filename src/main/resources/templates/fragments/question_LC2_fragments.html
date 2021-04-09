@@ -10,10 +10,9 @@
             <div th:each="question:${questionList}">
                 <!--part2-->
                 <div class="py-5 text-center" th:if="${question.getQuestionType().toString().equals('PART2')}">
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-1"><li></li></div>
-                        <span class="col-8" th:text="${question.content}"></span><br/>
+                    <div class="row row-part2">
+                        <div class="col-2"></div>
+                        <li><span id="content" class="col-8" th:text="${question.content}"></span><br/></li>
                         <div class="col-2"></div>
                     </div>
                     <div>
