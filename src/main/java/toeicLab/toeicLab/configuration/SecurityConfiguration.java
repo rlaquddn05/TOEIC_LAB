@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/common.css","/css/**","/images/**","/js/**","**/*.ico")
                 .permitAll()
 
-                .mvcMatchers("/",
+                .mvcMatchers("/index",
                         "/create_meeting",
                         "/lc_sheet",
                         "/rc_sheet",
