@@ -81,14 +81,14 @@ public class BulletinController {
             model.addAttribute("pagination", pagination);
 
         model.addAttribute(member);
-        return "view/bulletin";
+        return "/view/bulletin";
     }
 
     @GetMapping("/bulletin_upload")
     public String showBulletinUploadView(@CurrentUser Member member, Model model){
         model.addAttribute("member", member);
 
-        return "view/bulletin_upload";
+        return "/view/bulletin_upload";
     }
 
     @PostMapping("/bulletin_upload")
@@ -133,7 +133,7 @@ public class BulletinController {
         model.addAttribute("bulletinCommentList", bulletinCommentList);
         model.addAttribute("bulletin", bulletin);
         model.addAttribute("member", member);
-        return "view/bulletinDetail";
+        return "/view/bulletinDetail";
     }
 
     @GetMapping("/bulletinDetail/likeNumber")
@@ -217,7 +217,7 @@ public class BulletinController {
         model.addAttribute(member);
         model.addAttribute("id", id);
 
-        return "view/updateBulletin";
+        return "/view/updateBulletin";
     }
 
     @PostMapping("/updateBulletin")

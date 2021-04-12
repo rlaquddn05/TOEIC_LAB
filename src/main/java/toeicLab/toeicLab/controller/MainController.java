@@ -46,22 +46,22 @@ public class MainController {
         if (member != null) {
             model.addAttribute(member);
         }
-        return "view/index";
+        return "/view/index";
     }
 
     @GetMapping("/login")
     public String showLoginPage() {
-        return "view/login";
+        return "/view/login";
     }
 
     @GetMapping("/logout")
     public String showLogoutPage() {
-        return "view/index";
+        return "/view/index";
     }
 
     @GetMapping("/send_reset_password_link")
     public String sendResetPasswordView() {
-        return "view/send_reset_password_link";
+        return "/view/send_reset_password_link";
     }
 
     @PostMapping("/send_reset_password_link")
@@ -90,14 +90,14 @@ public class MainController {
         log.info("뷰페이지 보내줘어");
         model.addAttribute("result_code", "password.reset.send");
         log.info("뷰페이지에 result_code 담기성공");
-        return "view/notify_password";
+        return "/view/notify_password";
     }
 
     @PostMapping("/notify_password")
     public String goResetPassword(@RequestParam("token") String resetPasswordEmailToken, Model model) {
         MailDto mailByEmailCheckToken = mailRepository.findByEmailCheckToken(resetPasswordEmailToken);
         model.addAttribute("email", mailByEmailCheckToken.getEmail());
-        return "view/reset_password";
+        return "/view/reset_password";
     }
 
 
@@ -124,12 +124,12 @@ public class MainController {
 
     @GetMapping("/notify_password")
     public String notifyPasswordView() {
-        return "view/notify_password";
+        return "/view/notify_password";
     }
 
     @GetMapping("reset_password")
     public String resetPasswordView() {
-        return "view/reset_password";
+        return "/view/reset_password";
     }
 
 
@@ -138,12 +138,12 @@ public class MainController {
         memberService.resetPassword(email, password);
         log.info("비밀번호 수정 완료");
         model.addAttribute("result_code", "password.reset.success");
-        return "view/notify_password";
+        return "/view/notify_password";
     }
 
     @GetMapping("/send_find_id_link")
     public String sendFindIdView() {
-        return "view/send_find_id_link";
+        return "/view/send_find_id_link";
     }
 
     @PostMapping("/send_find_id_link")
@@ -156,20 +156,20 @@ public class MainController {
             return "view/find_id";
         }
         model.addAttribute("success_code", "find.id.success");
-        return "view/find_id";
+        return "/view/find_id";
     }
 
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute(new SignUpForm());
-        return "view/signup";
+        return "/view/signup";
     }
 
     @PostMapping("/signup")
     public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
         if (errors.hasErrors()) {
             log.info("유효성 에러 발생!");
-            return "view/signup";
+            return "/view/signup";
         }
         signUpValidator.validate(signUpForm, errors);
         log.info("유효성 검사 끝!");
@@ -342,7 +342,7 @@ public class MainController {
         log.info(String.valueOf(currentUser.getGenderType()));
         model.addAttribute("member", member);
         model.addAttribute(new UpdateForm());
-        return "view/my_page";
+        return "/view/my_page";
     }
 
     @PostMapping("/my_page")
@@ -415,7 +415,7 @@ public class MainController {
         model.addAttribute("member3", thisStudyGroup.getMembers().get(2));
         model.addAttribute("member4", thisStudyGroup.getMembers().get(3));
         model.addAttribute("meetings", meetings);
-        return "view/my_studygroup_detail";
+        return "/view/my_studygroup_detail";
     }
 
     @PostMapping("/create_meeting/{id}")
@@ -435,49 +435,49 @@ public class MainController {
     public String viewCreateMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", id);
-        return "view/create_meeting";
+        return "/view/create_meeting";
     }
 
     @GetMapping("/toeiclab_introduction")
     public String toeiclabIntroduction() {
-        return "view/toeiclab_intro";
+        return "/view/toeiclab_intro";
     }
 
     @GetMapping("/select_test")
     public String selectTest(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/select_test";
+        return "/view/select_test";
     }
 
     @GetMapping("/rc_sheet")
     public String rcSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/rc_sheet";
+        return "/view/rc_sheet";
     }
 
     @GetMapping("/lc_sheet")
     public String lcSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "practice_sheet";
+        return "/practice_sheet";
     }
 
     @GetMapping("/spk_sheet")
     public String spkSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/spk_sheet";
+        return "/view/spk_sheet";
     }
 
     @GetMapping("/spk_confirm_answer")
     public String spkConfirmAnswer(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/spk_confirm_answer";
+        return "/view/spk_confirm_answer";
     }
 
     @GetMapping("/apply_studygroup")
     public String applyStudyGroup(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         model.addAttribute(new StudyGroupApplicationForm());
-        return "view/apply_studygroup";
+        return "/view/apply_studygroup";
     }
 
     @PostMapping("/apply_studygroup")
@@ -486,7 +486,7 @@ public class MainController {
         studyGroupApplicationValidator.validate(studyGroupApplicationForm, errors);
         if (errors.hasErrors()) {
             log.info("유효성 에러 발생!");
-            return "view/apply_studygroup";
+            return "/view/apply_studygroup";
         }
         log.info("유효성 검사 끝!");
 
@@ -497,7 +497,7 @@ public class MainController {
     @GetMapping("/rc_answer_sheet")
     public String rcAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/rc_answer_sheet";
+        return "/view/rc_answer_sheet";
     }
 
     @GetMapping("/lc_answer_sheet")
@@ -509,14 +509,14 @@ public class MainController {
     @GetMapping("/spk_answer_sheet")
     public String spkAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/spk_answer_sheet";
+        return "/view/spk_answer_sheet";
     }
 
 
     @GetMapping("/schedule")
     public String schedule(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/schedule";
+        return "/view/schedule";
     }
 
     @GetMapping("/my_progress")
@@ -580,7 +580,7 @@ public class MainController {
         model.addAttribute("level", memberService.CreateLevelByAllQuestions(member));
         model.addAttribute("member", member);
 
-        return "view/my_progress";
+        return "/view/my_progress";
     }
 
 }
