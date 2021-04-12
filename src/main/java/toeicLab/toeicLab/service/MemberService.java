@@ -59,7 +59,7 @@ public class MemberService implements UserDetailsService {
             member.setGenderType(GenderType.FEMALE);
         }
 
-        member.encodePassword(passwordEncoder);
+//        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
         return member;
     }
