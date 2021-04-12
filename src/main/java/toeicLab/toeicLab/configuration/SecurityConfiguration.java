@@ -103,14 +103,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.logout()
                 .logoutUrl("/logout") // 이 경로는 이미 default
                 .invalidateHttpSession(true) // 로그아웃하면 session 이 갱신됨
-                .logoutSuccessUrl("/"); // 로그아웃이 완료된 후 어디로 갈 지
+                .logoutSuccessUrl("/index"); // 로그아웃이 완료된 후 어디로 갈 지
 
         // 로그인 기능 추가
         http.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .permitAll()
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/index")
                 .usernameParameter("userId")
                 .and()
                 .oauth2Login()

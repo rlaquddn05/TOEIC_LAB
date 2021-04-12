@@ -1,72 +1,73 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout" th:with="title='Result!'">
+      layout:decorate="layout" th:with="title='Upload_Image'">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/sheet/result_sheet.css}">
+    <link rel="stylesheet" th:href="@{/css/community/community.css}">
 </th:block>
 
 <div layout:fragment="content">
     <div class="container">
         <div class="py-5">
-            <form id="file_form" enctype="multipart/form-data">
-                <div class="custom-file">
-                    <label class="custom-file-label" for="imageFile">파일선택</label>
-                    <input type="file" class="custom-file-input" name="file" id="imageFile" accept="image/*"/>
-                    <script>
-                        $('.custom-file-input').on('change', function () {
-                            var files = $(this)[0].files;
-                            name = '';
-                            for (var i = 0; i < files.length; i++) {
-                                name += '\"' + files[i].name + '\"' + (i !== files.length - 1 ? ", " : "");
-                            }
-                            $(".custom-file-label").html(name);
+            <div class="row">
+                <form id="file_form" enctype="multipart/form-data">
+                    <div class="custom-file">
+                        <label class="custom-file-label" for="imageFile">파일선택</label>
+                        <input type="file" class="custom-file-input" name="file" id="imageFile" accept="image/*"/>
+                        <script>
+                            $('.custom-file-input').on('change', function () {
+                                var files = $(this)[0].files;
+                                name = '';
+                                for (var i = 0; i < files.length; i++) {
+                                    name += '\"' + files[i].name + '\"' + (i !== files.length - 1 ? ", " : "");
+                                }
+                                $(".custom-file-label").html(name);
+                            });
+                        </script>
+                    </div>
+                </form>
+                <div id="empty"></div>
+                <button class="btn btn-primary" id="readText" type="button">텍스트 추출</button>
+                <script th:inline="javascript">
+                    $(function (){
+                        $('#readText').on('click', function (){
+                            uploadFile();
                         });
-                    </script>
-                </div>
-            </form>
-            <button class="btn btn-primary" id="readText" type="button">텍스트 추출</button>
-            <!--                <input type="submit">-->
-            <script th:inline="javascript">
-                $(function (){
-                    $('#readText').on('click', function (){
-                        uploadFile();
                     });
-                });
 
-                function uploadFile(){
-                    var token = $("meta[name='_csrf']").attr("content");
-                    var header = $("meta[name='_csrf_header']").attr("content");
+                    function uploadFile(){
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
 
-                    var form = $('#file_form')[0];
-                    var formData = new FormData(form);
-                    console.log(formData);
-                    for (var pair of formData.entries()) {
-                        console.log(pair[0]+ ', ' + pair[1]);
-                    }
-                    $.ajax({
-                        url: '/upload_img',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        type: 'POST',
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader(header, token);
-                        },
-                        success: function (data){
-                            document.getElementById("image-to-text").innerHTML = data;
+                        var form = $('#file_form')[0];
+                        var formData = new FormData(form);
+                        console.log(formData);
+                        for (var pair of formData.entries()) {
+                            console.log(pair[0]+ ', ' + pair[1]);
                         }
-                    });
-                }
+                        $.ajax({
+                            url: '/upload_img',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            type: 'POST',
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success: function (data){
+                                document.getElementById("image-to-text").innerHTML = data;
+                            }
+                        });
+                    }
 
-            </script>
+                </script>
+            </div>
 
-
-            <br/>
-            <label for="image-to-text">사진을 읽은 결과</label><br/>
-            <textarea name="word"  id="image-to-text" class="form-control" readOnly></textarea>
-            <br/>
+                <br/>
+                <label for="image-to-text">사진을 읽은 결과</label><br/>
+                <textarea name="word"  id="image-to-text" class="form-control" readOnly></textarea>
+                <br/>
 
             <form th:action="@{/forum_upload}" method="POST">
                 <div>
@@ -178,7 +179,9 @@
                     </div>
                 </div>
                 <br/>
-                <button class="btn btn-primary" type="submit">등록하기</button>
+                <div id="upload-submit">
+                    <button class="btn btn-primary" type="submit">등록하기</button>
+                </div>
             </form>
         </div>
 

@@ -4,8 +4,8 @@
 
 <header id="header" th:fragment="header">
     <nav id="navbar" class="navbar navbar-expand-lg order-last order-lg-0 fixed-top">
-        <span><i class="fas fa-flask fa-2x" th:href="@{/}" style="color: #5fcf80"></i></span>
-        <h1 class="logo justify-content-start "><a class="logo" href="/" th:href="@{/}">토익 연구소</a></h1>
+        <span><i class="fas fa-flask fa-2x" th:href="@{/index}" style="color: #5fcf80"></i></span>
+        <h1 class="logo justify-content-start "><a class="logo" href="/" th:href="@{/index}">토익 연구소</a></h1>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/login}" sec:authorize="!isAuthenticated()">로그인</a>
                 <form class="form-inline" th:action="@{/logout}" th:method="post">
@@ -47,8 +47,9 @@
     </nav>
 </header>
 
-
-<div th:fragment="footer" id="footer" class="jumbotron text-center banner">
-    <p>&copy;2021. TOEIC Lab. All Right Reserved.</p>
-</div>
+<footer>
+    <div th:fragment="footer" id="footer" class="jumbotron text-center banner">
+        <p>&copy;2021. TOEIC Lab. All Right Reserved.</p>
+    </div>
+</footer>
 </html>

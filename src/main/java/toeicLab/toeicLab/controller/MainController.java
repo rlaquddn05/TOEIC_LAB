@@ -36,12 +36,9 @@ public class MainController {
     private final StudyGroupApplicationValidator studyGroupApplicationValidator;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupRepository studyGroupRepository;
-    private final QuestionService questionService;
-    private final ReviewNoteRepository reviewNoteRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MeetingRepository meetingRepository;
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index(@CurrentUser Member member, Model model) {
         if (member != null) {
             model.addAttribute(member);
@@ -162,7 +159,7 @@ public class MainController {
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute(new SignUpForm());
-        return "view/signup";
+        return "/view/signup";
     }
 
     @PostMapping("/signup")
@@ -458,7 +455,7 @@ public class MainController {
     @GetMapping("/lc_sheet")
     public String lcSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "practice_sheet";
+        return "/practice_sheet";
     }
 
     @GetMapping("/spk_sheet")

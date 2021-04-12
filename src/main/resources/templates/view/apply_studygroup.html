@@ -2,13 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout" th:with="title='ReviewNote'">
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+      layout:decorate="layout" th:with="title='Apply_Study_Group'">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/meeting/study_group_form.css}">
+</th:block>
+
 
 <div layout:fragment="content">
     <div th:class="container">
-
         <div class="py-4 text-center">
             <h2>스터디 신청하기</h2>
             <p class="lead">신청서를 작성하고 제출 버튼을 클릭해주세요</p>
@@ -16,7 +18,7 @@
 
         <form th:action="@{/apply_studygroup}" th:object="${studyGroupApplicationForm}" method="post" name="applyForm">
 
-            <div style="border: #37423b solid 1px; padding: 10px; OVERFLOW-Y:auto; width:100%; height:150px; margin-bottom: 10px;">
+            <div id="consent-form">
                 <h4>스터디 안내사항</h4>
                 <hr/>
                 <ol>
@@ -28,13 +30,12 @@
             </div>
 
             <div class="form-check">
-                <input type="checkbox" th:field="*{agreement}" th:value="true" class="form-check-input" id="agreement" name="agreement">
+                <input type="checkbox" th:field="*{agreement}" th:value="true" class="form-check-input" id="agreement" name="agreement" required>
                 <label class="form-check-label" for="agreement">동의합니다.</label>
             </div>
-
             <hr class="my-2">
-
-            <div style="margin-top: 10px; margin-bottom: 10px">
+            <br/>
+            <div class="component">
                 <h4>희망연령(복수응답가능)</h4>
             </div>
             <div class="row">
@@ -53,8 +54,8 @@
             </div>
 
             <hr class="my-2">
-
-            <div style="margin-top: 10px; margin-bottom: 10px">
+            <br/>
+            <div class="component">
                 <h4>희망레벨(복수응답가능)</h4>
             </div>
             <div class="row">
@@ -73,8 +74,8 @@
             </div>
 
             <hr class="my-2">
-
-            <div style="margin-top: 10px; margin-bottom: 10px">
+            <br/>
+            <div class="component">
                 <h4>희망성별(복수응답가능)</h4>
             </div>
             <div class="row">
@@ -89,8 +90,8 @@
             </div>
 
             <hr class="my-2">
-
-            <div style="margin-top: 10px; margin-bottom: 10px">
+            <br/>
+            <div class="component">
                 <h4>스터디 희망 요일(복수응답가능)</h4>
             </div>
             <div class="row">
@@ -103,7 +104,7 @@
                     <label>주말</label>
                 </div>
             </div>
-
+            <br/>
             <button class="w-100 btn btn-dark btn-lg" type="submit" onsubmit="">신청서 제출하기</button>
         </form>
     </div>
