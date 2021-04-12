@@ -36,10 +36,7 @@ public class MainController {
     private final StudyGroupApplicationValidator studyGroupApplicationValidator;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupRepository studyGroupRepository;
-    private final QuestionService questionService;
-    private final ReviewNoteRepository reviewNoteRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MeetingRepository meetingRepository;
 
     @GetMapping("/index")
     public String index(@CurrentUser Member member, Model model) {
