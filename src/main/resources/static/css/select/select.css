@@ -10,10 +10,13 @@
     padding: 3.125em;
 }
 
-p {
+button p {
     width: 18em;
 }
 
+a b, button p {
+    font-family: "Hi Melody", sans-serif;
+}
 
 .btn-t {
     border: 1px solid #72eb9679;

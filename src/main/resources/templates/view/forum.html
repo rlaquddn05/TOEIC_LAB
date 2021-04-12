@@ -4,16 +4,18 @@
       layout:decorate="layout" th:with="title='Result!'">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/sheet/result_sheet.css}">
+    <link rel="stylesheet" th:href="@{/css/community/community.css}">
 </th:block>
 
 <div layout:fragment="content">
     <div class="container">
         <div class="py-5">
             <div class="banner">
-                <p>새로운 문제를 등록하여 저희 커뮤니티를 발전 시키세요!</p>
+                <h5>새로운 문제를 등록하여 저희 커뮤니티를 발전 시키세요!</h5>
             </div>
-            <button class="btn"><a th:href="@{/forum_upload}" class="btn btn-dark">문제사진 올리기</a></button>
+            <div id="upload-btn">
+                <button class="btn"><a th:href="@{/forum_upload}" class="btn btn-dark">문제사진 올리기</a></button>
+            </div>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -26,7 +28,7 @@
                 </thead>
                 <tbody>
 
-                <tr th:each="forum : ${forumList}">
+                <tr id="forum_list" th:each="forum : ${forumList}">
                     <th scope="row" th:text="${forumStat.index + 1}">1</th>
 
                     <td th:text="${forum.getTitle}"></td>
