@@ -36,7 +36,7 @@ public class QuestionController {
         if(id.equals("lc")) model.addAttribute("practice", "lc");
         if(id.equals("spk")) model.addAttribute("practice", "spk");
         model.addAttribute("member", member);
-        return "/view/practice_select";
+        return "view/practice_select";
     }
 
     @RequestMapping("/practice/{id}")
@@ -57,7 +57,7 @@ public class QuestionController {
             questionSetRepository.save(list);
             model.addAttribute("questionList", list.getQuestions());
             model.addAttribute("questionSet", list);
-            return "/view/practice_sheet";
+            return "view/practice_sheet";
         }
         else if (("rc").equals(id)){
             int p5 = Integer.parseInt(request.getParameter("PART5"));
@@ -72,7 +72,7 @@ public class QuestionController {
             questionSetRepository.save(list);
             model.addAttribute("questionList", list.getQuestions());
             model.addAttribute("questionSet", list);
-            return "/view/practice_sheet";
+            return "view/practice_sheet";
         }
         else {
             Meeting meeting = meetingRepository.getOne(Long.parseLong(id));
@@ -103,7 +103,7 @@ public class QuestionController {
             model.addAttribute("questionSet", questionSet);
             model.addAttribute("studyGroupId", meeting.getStudyGroup().getId());
             System.out.println(meeting.getStudyGroup().getId());
-            return "/view/practice_sheet";
+            return "view/practice_sheet";
         }
     }
 
@@ -132,7 +132,7 @@ public class QuestionController {
         model.addAttribute("questionList", list.getQuestions());
         model.addAttribute("type", type);
         model.addAttribute("member", member);
-        return "/view/question/test";
+        return "view/question/test";
     }
 
     @PostMapping("/result_sheet/{questionSetId}")
@@ -183,7 +183,7 @@ public class QuestionController {
         String[] eachstrings = questionSetService.getPercentageEachOfQuestionSet(questionSet);
         model.addAttribute("eachstrings", eachstrings);
 
-        return "/view/result_sheet";
+        return "view/result_sheet";
     }
 
     @RequestMapping( "/detail/{id}")
@@ -203,7 +203,7 @@ public class QuestionController {
         model.addAttribute("member", member);
         model.addAttribute("questionSetId", questionSetId);
         model.addAttribute("userAnswer", questionSet.getSubmittedAnswers());
-        return "/view/detail";
+        return "view/detail";
     }
 
     @GetMapping("/my_review_note")
@@ -226,7 +226,7 @@ public class QuestionController {
         model.addAttribute("questionList", list);
         model.addAttribute("member", member);
         model.addAttribute("userAnswer", reviewNote.getSubmittedAnswers());
-        return "/view/my_review_note";
+        return "view/my_review_note";
     }
 
     @GetMapping("/add_review_note")
