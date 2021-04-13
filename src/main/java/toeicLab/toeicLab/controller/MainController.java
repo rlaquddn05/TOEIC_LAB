@@ -1,7 +1,6 @@
 package toeicLab.toeicLab.controller;
 
 import com.google.gson.JsonObject;
-import com.sun.xml.bind.v2.util.QNameMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +17,6 @@ import toeicLab.toeicLab.user.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.net.http.HttpRequest;
 import java.util.*;
 
 @Controller
@@ -38,7 +36,13 @@ public class MainController {
     private final StudyGroupRepository studyGroupRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/index")
+    /**
+     * [ToeicLab]의 기본페이지 입니다.
+     * @param member
+     * @param model
+     * @return view/index
+     */
+    @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
         if (member != null) {
             model.addAttribute(member);
@@ -46,21 +50,48 @@ public class MainController {
         return "view/index";
     }
 
+    @GetMapping("/index")
+    public String indexView(@CurrentUser Member member, Model model) {
+        if (member != null) {
+            model.addAttribute(member);
+        }
+        return "view/index";
+    }
+
+    /**
+     * [ToeicLab]의 로그인페이지 입니다.
+     * @return view/login
+     */
     @GetMapping("/login")
     public String showLoginPage() {
         return "view/login";
     }
 
+    /**
+     * [ToeicLab]의 로그아웃했을 경우 돌아가는 기본페이지입니다.
+     * @return view/index
+     */
     @GetMapping("/logout")
     public String showLogoutPage() {
         return "view/index";
     }
 
+    /**
+     * [ToeicLab]의 비밀번호 초기화페이지입니다.
+     * @return view/send_reset_password_link
+     */
     @GetMapping("/send_reset_password_link")
     public String sendResetPasswordView() {
         return "view/send_reset_password_link";
     }
 
+    /**
+     * 회원의 email로 전달된 token값을 가지고 올바른 token값인지 확인 후에 재설정 페이지로 넘어갑니다.
+     * @param userId
+     * @param email
+     * @param model
+     * @return view/notify_password
+     */
     @PostMapping("/send_reset_password_link")
     public String sendResetPassword(@RequestParam("userId") String userId, @RequestParam("email") String email, Model model) {
         try {
@@ -76,20 +107,30 @@ public class MainController {
             mailRepository.save(existedMail);
 
             model.addAttribute("resetPasswordEmail", mailDto);
-            log.info("이메일보내기 성공");
-
 
         } catch (IllegalArgumentException e) {
-            log.info("실패");
             model.addAttribute("error_code", "password.reset.failed");
             return "view/notify_password";
         }
-        log.info("뷰페이지 보내줘어");
         model.addAttribute("result_code", "password.reset.send");
-        log.info("뷰페이지에 result_code 담기성공");
         return "view/notify_password";
     }
 
+    /**
+     * 비밀번호 초기화 확인여부 페이지입니다.
+     * @return view/notify_password
+     */
+    @GetMapping("/notify_password")
+    public String notifyPasswordView() {
+        return "view/notify_password";
+    }
+
+    /**
+     * 재설정 token 확인 후에 재설정 페이지로 넘어갑니다.
+     * @param resetPasswordEmailToken
+     * @param model
+     * @return
+     */
     @PostMapping("/notify_password")
     public String goResetPassword(@RequestParam("token") String resetPasswordEmailToken, Model model) {
         MailDto mailByEmailCheckToken = mailRepository.findByEmailCheckToken(resetPasswordEmailToken);
@@ -118,11 +159,6 @@ public class MainController {
         return jsonObject.toString();
     }
 
-
-    @GetMapping("/notify_password")
-    public String notifyPasswordView() {
-        return "view/notify_password";
-    }
 
     @GetMapping("reset_password")
     public String resetPasswordView() {

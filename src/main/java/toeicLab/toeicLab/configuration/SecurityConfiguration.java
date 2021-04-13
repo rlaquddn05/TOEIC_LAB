@@ -45,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 .mvcMatchers("/index",
+                        "/",
                         "/create_meeting",
                         "/lc_sheet",
                         "/rc_sheet",
@@ -77,9 +78,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/forum/**",
                         "/forum_upload/**",
                         "/bulletin",
-//                        "/bulletin_upload",
-//                        "/bulletinDetail/**",
-//                        "/updateBulletin",
                         "/popup_dictionary",
                         "/popup_dictionary_find/**",
                         "/add_word_list/**",

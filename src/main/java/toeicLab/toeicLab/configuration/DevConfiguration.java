@@ -266,6 +266,7 @@ public class DevConfiguration {
                 .userId("testUser")
                 .email("a@a.a")
                 .password(passwordEncoder.encode("1234"))
+                .nickname("testUser")
                 .memberType(MemberType.USER)
                 .levelType(levelTypes[(int) (Math.random() * 3)])
                 .age((int) (Math.random() * 25) + 10)
