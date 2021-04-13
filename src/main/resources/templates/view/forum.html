@@ -1,7 +1,7 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout" th:with="title='Result!'">
+      layout:decorate="layout" th:with="title='Forum'">
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/community/community.css}">
@@ -18,24 +18,23 @@
             </div>
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <td>번호</td>
-                    <td>제목</td>
-                    <td>작성자</td>
-                    <td>날짜</td>
-                    <td>조회수</td>
+                <tr class="row">
+                    <td class="col-1">번호</td>
+                    <td class="col-7">제목</td>
+                    <td class="col-1">작성자</td>
+                    <td class="col-2">날짜</td>
+                    <td class="col=1">조회수</td>
                 </tr>
                 </thead>
                 <tbody>
 
-                <tr id="forum_list" th:each="forum : ${forumList}">
-                    <th scope="row" th:text="${forumStat.index + 1}">1</th>
-
-                    <td th:text="${forum.getTitle}"></td>
-                    <td th:text="${forum.getNickname()}"></td>
-                    <td th:text="${forum.getDate()}"></td>
-                    <td th:text="${forum.getHit()}"></td>
-                    <td> <a th:href="@{/forumDetail/{id}(id=${forum.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>
+                <tr id="forum_list" th:each="forum : ${forumList}" class="row">
+                    <th id="number" th:text="${forumStat.index + 1}" class="col-1"></th>
+                    <td id="title" class="col-7"><a th:href="@{/forumDetail/{id}(id=${forum.id})}" th:text="${forum.getTitle}" ></a></td>
+                    <td id="nickname" th:text="${forum.getNickname()}" class="col-1"></td>
+                    <td id="date" th:text="${forum.getDate()}" class="col-2"></td>
+                    <td id="hit" th:text="${forum.getHit()}" class="col-1"></td>
+<!--                    <td> <a th:href="@{/forumDetail/{id}(id=${forum.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>-->
                 </tr>
 
                 </tbody>

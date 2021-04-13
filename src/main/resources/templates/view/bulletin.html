@@ -4,39 +4,42 @@
       layout:decorate="layout" th:with="title='Bulletin'">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/sheet/result_sheet.css}">
+    <link rel="stylesheet" th:href="@{/css/community/community.css}">
 </th:block>
 
 <div layout:fragment="content">
     <div class="container">
         <div class="py-5">
             <div class="banner">
-                <p>토익관련 정보를 자유롭게 공유하는 게시판입니다.</p>
+                <h5>토익관련 정보를 자유롭게 공유하는 게시판입니다.</h5>
             </div>
-            <button class="btn"><a th:href="@{/bulletin_upload}" class="btn btn-dark">글쓰기</a></button>
+            <div id="upload-btn">
+                <button class="btn"><a th:href="@{/bulletin_upload}" class="btn btn-dark">글쓰기</a></button>
+            </div>
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <td>번호</td>
-                    <td>제목</td>
-                    <td>작성자</td>
-                    <td>날짜</td>
-                    <td>조회수</td>
-                    <td>좋아요</td>
-                    <td>상세/댓글</td>
+                <tr class="row">
+                    <td class="col-1">번호</td>
+                    <td class="col-6">제목</td>
+                    <td class="col-1">작성자</td>
+                    <td class="col-1">좋아요</td>
+                    <td class="col-1">조회수</td>
+                    <td class="col-2">날짜</td>
+<!--                    <td class="col-1">좋아요</td>-->
+<!--                    <td>상세/댓글</td>-->
                 </tr>
                 </thead>
 
                 <tbody>
-                    <tr th:each="bulletin : ${bulletinList}">
-                        <th scope="row" th:text="${bulletinStat.index + 1}">1</th>
-
-                        <td th:text="${bulletin.getTitle}"></td>
-                        <td th:text="${bulletin.getNickname()}"></td>
-                        <td th:text="${bulletin.getDate()}"></td>
-                        <td th:text="${bulletin.getHit()}"></td>
-                        <td th:text="${bulletin.getLikeNumber()}"></td>
-                        <td> <a th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>
+                    <tr id="forum_list" class="row" th:each="bulletin : ${bulletinList}" >
+                        <th id="number" class="col-1" th:text="${bulletinStat.index + 1}">1</th>
+                        <td id="title" class="col-6" ><a th:text="${bulletin.getTitle}" th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}"></a></td>
+                        <td id="nickname" class="col-1" th:text="${bulletin.getNickname()}"></td>
+                        <td id="get-like" class="col-1" th:text="${bulletin.getLikeNumber()}"></td>
+                        <td id="date" class="col-1" th:text="${bulletin.getHit()}"></td>
+                        <td id="hit" class="col-2" th:text="${bulletin.getDate()}"></td>
+<!--                        <td th:text="${bulletin.getLikeNumber()}"></td>-->
+<!--                        <td> <a th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>-->
                     </tr>
                 </tbody>
             </table>

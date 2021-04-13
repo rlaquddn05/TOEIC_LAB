@@ -1,5 +1,10 @@
-thead, .banner, .pagination {
+.banner, .pagination {
     font-family: "Gugi", sans-serif;
+}
+
+thead {
+    font-family: "Gugi", sans-serif;
+    text-align: center;
 }
 
 #upload-btn {
@@ -25,6 +30,7 @@ textarea {
 
 #readText {
     width: 10%;
+    font-family: "Gugi", sans-serif;
 }
 
 #empty {
@@ -34,4 +40,47 @@ textarea {
 #upload-submit {
     text-align: right;
     font-family: "Gugi", sans-serif;
+}
+
+#back-list {
+    text-align: right;
+    font-family: "Gugi", sans-serif;
+}
+
+#date, #hit, #number, #nickname, #get-like {
+    text-align: center;
+}
+
+#bulletin-title, #bulletin-content {
+    font-family: "Gugi", sans-serif;
+}
+
+.detail-btn {
+    text-align: end;
+}
+
+#detail-content {
+    height: 18.750em;
+    background-color: aliceblue;
+}
+
+#detail-title {
+    background-color: aliceblue;
+}
+
+.sub {
+    font-family: "Gugi", sans-serif;
+}
+
+.comment-form {
+    width: 86%;
+    height: 7.500em;
+}
+.space {
+    width: 3.5%;
+}
+.submit_comment {
+    height: 2.500em;
+    margin-top: 5.000em;
+    width: 6.250em;
 }

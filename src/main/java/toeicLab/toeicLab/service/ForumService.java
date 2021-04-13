@@ -6,6 +6,7 @@ import toeicLab.toeicLab.domain.Forum;
 import toeicLab.toeicLab.domain.Member;
 import toeicLab.toeicLab.domain.Question;
 import toeicLab.toeicLab.repository.ForumRepository;
+import toeicLab.toeicLab.user.CurrentUser;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 public class ForumService {
     private final ForumRepository forumRepository;
 
-    public void addForum(Member member, String title, Question q) {
+    public void addForum(@CurrentUser Member member, String title, Question q) {
         Forum forum = Forum.builder()
                 .title(title)
                 .nickname(member.getNickname())

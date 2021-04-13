@@ -1,76 +1,72 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout" th:with="title='Result!'">
+      layout:decorate="layout" th:with="title='Detail_Bulletin'">
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/sheet/result_sheet.css}">
-    <script th:src="@{/js/user/form_validation.js}"></script>
-    <script th:src="@{/js/user/daum_address.js}"></script>
-    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/community/community.css}">
 </th:block>
 
 <div layout:fragment="content">
     <div class="container">
         <div class="py-5">
-            <div class="btn-group">
-                <button id="likeNumber" class="btn btn-dark">좋아요</button>
-                <a th:if="${member.userId.equals(bulletin.getWriterId())}" th:href="@{/updateBulletin/{id}(id=${bulletin.id})}" class="btn btn-dark">글 수정</a>
-                <button th:if="${member.userId.equals(bulletin.getWriterId())}" id="deleteBulletin" class="btn btn-danger">글 삭제</button>
+            <div class="detail-btn">
+                <button id="goToList" class="btn btn-dark fas fa-undo" onclick="location.href='/bulletin'"></button>
+                <button id="likeNumber" class="btn btn-dark far fa-thumbs-up"></button>
+                <a th:if="${member.userId.equals(bulletin.getWriterId())}" th:href="@{/updateBulletin/{id}(id=${bulletin.id})}" class="btn btn-dark far fa-file-alt"></a>
+                <button th:if="${member.userId.equals(bulletin.getWriterId())}" id="deleteBulletin" class="btn btn-danger far fa-trash-alt"></button>
             </div>
                 <form th:action="@{/comment_upload}" method="post">
                 <div>
-                    <label for="title">글 제목</label>
+                    <label for="detail-title" class="sub">글 제목</label>
                     <input class="form-control" id="id" type="hidden" th:value="${bulletin.getId()}" name="id" readonly>
                     <input class="form-control" id="writerId" type="hidden" th:value="${bulletin.getWriterId()}" name="writerId" readonly>
-                    <input class="form-control" id="title" type="text" th:value="${bulletin.getTitle()}" name="title" readonly>
+                    <input class="form-control" id="detail-title" type="text" th:value="${bulletin.getTitle()}" name="title" readonly>
                     <br/>
 
-                    <label for="content">글 내용</label>
-                    <input class="form-control" id="content" type="textarea" th:value="${bulletin.getContent()}" name="content" readonly>
+                    <label for="detail-content" class="sub">글 내용</label>
+                    <input class="form-control" id="detail-content" type="textarea" th:value="${bulletin.getContent()}" name="content" readonly>
                 </div>
                 <br/>
 
 
-                <hr class="col-12 my-4">
+                <hr class="col-11.5 my-4">
 
-                <label for="content">댓글창</label>
+                    <h6>댓글쓰기</h6>
+                    <br/>
+                    <div class="row">
+                        <input class="form-control" id="commentWriter" type="hidden" th:value="${member.getNickname()}" name="commentWriter" readonly>
+                        <input class="form-control comment-form" id="comment" name="comment">
+                        <div class="space"></div>
+                        <button type="submit" id="uploadComment" class="btn btn-dark submit_comment">댓글등록</button>
+                    </div>
+                    <br/>
+
+                <hr class="col-11.5 my-4">
+
+                <h6>댓글목록</h6>
                 <table class="table table-striped">
                     <thead>
-                    <tr>
-                        <td>작성자</td>
-                        <td>내용</td>
-                        <td>날짜</td>
-                    </tr>
+                        <tr>
+                            <td>작성자</td>
+                            <td>내용</td>
+                            <td>날짜</td>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    <tr th:each="bulletinComment : ${bulletinCommentList}">
-                        <td th:text="${bulletinComment.getCommentWriter()}"></td>
-                        <td th:text="${bulletinComment.getComment()}"></td>
-                        <td th:text="${bulletinComment.getDate()}"></td>
-                    </tr>
+                        <tr th:each="bulletinComment : ${bulletinCommentList}">
+                            <td th:text="${bulletinComment.getCommentWriter()}"></td>
+                            <td th:text="${bulletinComment.getComment()}"></td>
+                            <td th:text="${bulletinComment.getDate()}"></td>
+                        </tr>
                     </tbody>
                 </table>
-
-
-            <hr class="col-12 my-4">
-
-                <label for="content">댓글쓰기</label>
-                <input class="form-control" id="commentWriter" type="hidden" th:value="${member.getNickname()}" name="commentWriter" readonly>
-                <input class="form-control" id="comment" type="textarea" name="comment">
-                <br/>
-
-                <button type="submit" id="uploadComment" class="btn btn-dark">댓글쓰기</button>
-
             </form>
-            <button id="goToList" class="btn btn-dark" onclick="location.href='/bulletin'">목록</button>
         </div>
-
     </div>
+
+
     <!-- The Modal -->
     <div class="modal fade" id="emailButton1">
         <div class="modal-dialog modal-sm">
