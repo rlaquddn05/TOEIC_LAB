@@ -70,7 +70,7 @@ public class ForumController {
             model.addAttribute(member);
             model.addAttribute("forumList", forumList2);
             model.addAttribute("pagination", pagination);
-            return "/view/forum";
+            return "view/forum";
         }
 
         for (int i = startIndex; i < pageCheck; i++){
@@ -90,13 +90,13 @@ public class ForumController {
         model.addAttribute("pagination", pagination);
 
         model.addAttribute(member);
-        return "/view/forum";
+        return "view/forum";
     }
 
     @GetMapping("/forum_upload")
     public String uploadQuestion(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "/view/forum_upload";
+        return "view/forum_upload";
     }
 
     @PostMapping("/forum_upload")
@@ -160,19 +160,19 @@ public class ForumController {
         model.addAttribute("questionExplanation", question.getQuestionExplanation());
 
 
-        return "/view/forum_detail";
+        return "view/forum_detail";
     }
 
     @GetMapping("/vocabulary_test")
     public String vocabularyTest(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "/view/vocabulary_test";
+        return "view/vocabulary_test";
     }
 
     @GetMapping("/popup_dictionary")
     public String popupLayout(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "/view/popup_dictionary";
+        return "view/popup_dictionary";
     }
 
     @RequestMapping("/popup_dictionary_find/{word}")
@@ -251,7 +251,7 @@ public class ForumController {
 
         model.addAttribute(member);
 
-        return "/view/my_vocabulary_list";
+        return "view/my_vocabulary_list";
     }
 
     @GetMapping("/delete_word/{word}")
