@@ -36,8 +36,8 @@
                         <td id="title" class="col-6" ><a th:text="${bulletin.getTitle}" th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}"></a></td>
                         <td id="nickname" class="col-1" th:text="${bulletin.getNickname()}"></td>
                         <td id="get-like" class="col-1" th:text="${bulletin.getLikeNumber()}"></td>
-                        <td id="date" class="col-1" th:text="${bulletin.getHit()}"></td>
-                        <td id="hit" class="col-2" th:text="${bulletin.getDate()}"></td>
+                        <td id="hit" class="col-1" th:text="${bulletin.getHit()}"></td>
+                        <td id="date" class="col-2" th:text="${bulletin.getDate()}"></td>
 <!--                        <td th:text="${bulletin.getLikeNumber()}"></td>-->
 <!--                        <td> <a th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>-->
                     </tr>

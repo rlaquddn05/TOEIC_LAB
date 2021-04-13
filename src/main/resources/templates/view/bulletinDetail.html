@@ -25,40 +25,40 @@
                     <br/>
 
                     <label for="detail-content" class="sub">글 내용</label>
-                    <input class="form-control" id="detail-content" type="textarea" th:value="${bulletin.getContent()}" name="content" readonly>
+                    <textarea class="form-control" id="detail-content" th:text="${bulletin.getContent()}" th:value="${bulletin.getContent()}" name="content" readonly></textarea>
                 </div>
                 <br/>
 
 
                 <hr class="col-11.5 my-4">
 
-                    <h6>댓글쓰기</h6>
+                    <h5 class="sub">댓글쓰기</h5>
                     <br/>
                     <div class="row">
                         <input class="form-control" id="commentWriter" type="hidden" th:value="${member.getNickname()}" name="commentWriter" readonly>
                         <input class="form-control comment-form" id="comment" name="comment">
                         <div class="space"></div>
-                        <button type="submit" id="uploadComment" class="btn btn-dark submit_comment">댓글등록</button>
+                        <button type="submit" id="uploadComment" class="btn btn-dark submit_comment sub">댓글등록</button>
                     </div>
                     <br/>
 
                 <hr class="col-11.5 my-4">
 
-                <h6>댓글목록</h6>
+                <h5 class="sub">댓글목록</h5>
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <td>작성자</td>
-                            <td>내용</td>
-                            <td>날짜</td>
+                        <tr class="row">
+                            <td class="col-1">작성자</td>
+                            <td class="col-9">내용</td>
+                            <td class="col-2">날짜</td>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <tr th:each="bulletinComment : ${bulletinCommentList}">
-                            <td th:text="${bulletinComment.getCommentWriter()}"></td>
-                            <td th:text="${bulletinComment.getComment()}"></td>
-                            <td th:text="${bulletinComment.getDate()}"></td>
+                        <tr id="bulletin-list" class="row" th:each="bulletinComment : ${bulletinCommentList}">
+                            <td class="col-1" id="nickname" th:text="${bulletinComment.getCommentWriter()}" ></td>
+                            <td class="col-9" id="title" th:text="${bulletinComment.getComment()}"></td>
+                            <td class="col-2" id="date" th:text="${bulletinComment.getDate()}" ></td>
                         </tr>
                     </tbody>
                 </table>
