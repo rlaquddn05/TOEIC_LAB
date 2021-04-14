@@ -1,0 +1,26 @@
+h1 {
+    text-align: center;
+    padding-top: 0.625em;
+    font-family: "Gugi", sans-serif;
+}
+
+.row {
+    padding-right: 0.938em;
+}
+
+#exist-null {
+    border: antiquewhite solid 1px;
+    padding: 0.938em;
+    margin-bottom: 1.250em;
+    text-align: center;
+    height: 8.750em;
+}
+
+#no-word {
+    padding:2.188em;
+}
+
+.btn-sm {
+    font-family: "Hi Melody", sans-serif;
+    font-size: 1.25rem;
+}

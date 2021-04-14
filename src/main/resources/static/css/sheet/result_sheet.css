@@ -7,3 +7,19 @@
 #part1-str, #part2-str, #part3-str, #part4-str, #part5-str, #part6-str, #part7-str {
     clear: both;
 }
+
+form button {
+    margin-left: 0.125em;
+}
+
+#home-div, #progress-div, #study-div {
+    float: right;
+    padding: 0.625em;
+    font-family: "Gugi", sans-serif;
+}
+span {
+    font-family: "Gugi", sans-serif;
+}
+.result-coll {
+    margin-bottom: 0.313em;
+}

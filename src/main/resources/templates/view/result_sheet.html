@@ -24,17 +24,16 @@
         <div class="row">
             <div class="col-12">
                 <div>
-                    <div id="part1-div" th:if="${questionType.contains('PART1')}" style="clear:both;">
+                    <div id="part1-div" th:if="${questionType.contains('PART1')}">
                         <div class="row">
                             <div class="col-2">
                                 <span>PART1</span>
-                                <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part1">결과보기</button>
+                                <button type="button" class="btn btn-sm result-coll" data-toggle="collapse" data-target="#part1">결과보기</button>
                             </div>
                             <div class="col-7">
                                 <span id="part1" class="collapse" th:each="question:${questionList}">
-                                    <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post" >
+                                    <form th:action="@{/detail/{id}(id=${question.id})}" method="post">
                                         <button th:if="${question.getQuestionType().toString().equals('PART1')}" class="btn btn-sm" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
-    <!--                                <button th:if="${question.getQuestionType().toString().equals('PART1')}" th:classappend="${userAnswer.get(question.id).equals(null)} ? 'btn btn-sm btn-secondary' : ${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-danger'">-->
                                             <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
                                             <a th:text="${question.id}"></a>
                                         </button>
@@ -48,11 +47,11 @@
                         </div>
                         <br>
                     </div>
-                    <div id="part2-div" th:if="${questionType.contains('PART2')}" style="clear:both;">
+                    <div id="part2-div" th:if="${questionType.contains('PART2')}">
                         <div class="row">
                             <div class="col-2">
                                 <span>PART2</span>
-                                <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part2">결과보기</button>
+                                <button type="button" class="btn btn-sm result-coll" data-toggle="collapse" data-target="#part2">결과보기</button>
                             </div>
                             <div class="col-7">
                                 <span id="part2" class="collapse" th:each="question:${questionList}">
@@ -75,7 +74,7 @@
                         <div class="row">
                             <div class="col-2">
                                 <span>PART3</span>
-                                <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part3">결과보기</button>
+                                <button type="button" class="btn btn-sm result-coll" data-toggle="collapse" data-target="#part3">결과보기</button>
                             </div>
                             <div class="col-7">
                                 <span id="part3" class="collapse" th:each="question:${questionList}">
@@ -98,7 +97,7 @@
                         <div class="row">
                             <div class="col-2">
                                 <span>PART4</span>
-                                <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part4">결과보기</button>
+                                <button type="button" class="btn btn-sm result-coll" data-toggle="collapse" data-target="#part4">결과보기</button>
                             </div>
                             <div class="col-7">
                                 <span id="part4" class="collapse" th:each="question:${questionList}">
@@ -121,7 +120,7 @@
                         <div class="row">
                             <div class="col-2">
                                 <span>PART5</span>
-                                <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part5">결과보기</button>
+                                <button type="button" class="btn btn-sm result-coll" data-toggle="collapse" data-target="#part5">결과보기</button>
                             </div>
                             <div class="col-7">
                                 <span id="part5" class="collapse" th:each="question:${questionList}">
@@ -144,7 +143,7 @@
                         <div class="row">
                             <div class="col-2">
                                 <span>PART6</span>
-                                <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part6">결과보기</button>
+                                <button type="button" class="btn btn-sm result-coll" data-toggle="collapse" data-target="#part6">결과보기</button>
                             </div>
                             <div class="col-7">
                                 <span id="part6" class="collapse" th:each="question:${questionList}">
@@ -167,11 +166,11 @@
                         <div class="row">
                             <div class="col-2">
                                 <span>PART7</span>
-                                <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#part7">결과보기</button>
+                                <button type="button" class="btn btn-sm result-coll" data-toggle="collapse" data-target="#part7">결과보기</button>
                             </div>
                             <div class="col-7">
                                 <span id="part7" class="collapse" th:each="question:${questionList}">
-                                    <form action="" th:action="@{/detail/{id}(id=${question.id})}" method="post">
+                                    <form th:action="@{/detail/{id}(id=${question.id})}" method="post">
                                         <button th:if="${question.getQuestionType().toString().equals('PART7_SINGLE_PARAGRAPH') || question.getQuestionType().toString().equals('PART7_MULTIPLE_PARAGRAPH')}" class="btn btn-sm btn-group" th:classappend="${question.getAnswer().equals(userAnswer.get(question.id))} ? 'btn-primary' : 'btn-danger'" th:value="${question.id}">
                                             <input th:type="hidden" th:name="questionSetId" th:value="${questionSetId}">
                                             <a th:text="${question.id}"></a>
@@ -191,11 +190,16 @@
         </div>
         <hr>
 
-        <div class="py-3 row">
-            <div class="col-7"></div>
-            <div class="col-2"><button onclick="location.href='/'">홈으로 이동</button></div>
-            <div th:if="${studyGroupId == null}" class="col-3"><button onclick="location.href='/my_progress'">학습현황으로 이동</button></div>
-            <div th:if="${studyGroupId != null}" class="col-3"><button th:onclick="'location.href = \'' + @{/my_studygroup_detail/{id}(id=${studyGroupId})} + '\''">스터디로 이동</button></div>
+        <div class="py-3">
+            <div id="home-div">
+                <button onclick="location.href='/'" class="btn btn-info">홈으로 이동</button>
+            </div>
+            <div th:if="${studyGroupId == null}" id="progress-div">
+                <button onclick="location.href='/my_progress'" class="btn btn-info">학습현황으로 이동</button>
+            </div>
+            <div th:if="${studyGroupId != null}" id="study-div">
+                <button th:onclick="'location.href = \'' + @{/my_studygroup_detail/{id}(id=${studyGroupId})} + '\''" class="btn btn-info">스터디로 이동</button>
+            </div>
         </div>
     </div>
 </div>

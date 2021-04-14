@@ -246,6 +246,9 @@ public class ForumController {
             model.addAttribute("exist", "noWordList");
         }
         Map<String, String> map = wordList.getWord();
+        if (map.isEmpty()){
+            model.addAttribute("exist", "noWord");
+        }
 
         model.addAttribute("wordList", map);
 

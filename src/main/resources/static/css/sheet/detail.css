@@ -1,0 +1,31 @@
+.img{
+    width: 33.125em;
+    height: 21.250em;
+}
+#img {
+    text-align: center;
+}
+
+.example {
+    padding-right: 1.250em;
+}
+
+#example-div {
+    padding-top: 0.625em;
+    text-align: center;
+}
+
+#db-answer {
+    padding-top: 0.938em;
+}
+
+#review-note-div, #back-div {
+    float: right;
+    padding: 0.625em;
+    font-family: "Gugi", sans-serif;
+}
+
+#audio-div {
+    text-align: center;
+    padding-bottom: 1.250em;
+}

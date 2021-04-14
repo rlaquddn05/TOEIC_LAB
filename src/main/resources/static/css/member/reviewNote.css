@@ -1,0 +1,51 @@
+.row {
+    font-family: "Hi Melody", sans-serif;
+    padding-bottom: 0.625em;
+    text-align: center;
+}
+
+.btn-sm, li {
+    font-size: 1.125rem;
+}
+
+#img-audio {
+    text-align: center;
+    padding-bottom: 0.625em;
+}
+
+.content-audio {
+    text-align: center;
+    padding-bottom: 0.625em;
+}
+
+.img{
+    width: 33.125em;
+    height: 21.250em;
+    padding-bottom: 0.625em;
+}
+
+.part5-example {
+    padding-right: 3.625em;
+}
+
+#part5-coll {
+    padding-bottom: 1.25em;
+}
+
+h1 {
+    text-align: center;
+    padding-top: 0.625em;
+    font-family: "Gugi", sans-serif;
+}
+
+#exist-null {
+    border: antiquewhite solid 1px;
+    padding: 0.938em;
+    margin-bottom: 1.250em;
+    text-align: center;
+    height: 8.750em;
+}
+
+#no-review {
+    padding:2.188em;
+}

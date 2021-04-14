@@ -36,3 +36,8 @@
     margin-bottom: 10px;
     text-align: center;
 }
+
+.level {
+    font-weight: bold;
+    font-size: 1.563rem;
+}
