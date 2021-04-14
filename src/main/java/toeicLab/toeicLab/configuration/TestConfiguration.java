@@ -294,7 +294,7 @@ public class TestConfiguration {
 
     @PostConstruct
     public void initDummyUsers() {
-        createDummyUsers();
+//        createDummyUsers();
         createTestUsers();
     }
 }
