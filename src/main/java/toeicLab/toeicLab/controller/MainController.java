@@ -414,7 +414,21 @@ public class MainController {
     public String deletePassword(@RequestParam("userId") String userId, HttpServletRequest request) {
 
         Member deletedMember = memberRepository.findByUserId(userId);
-        log.info(String.valueOf(deletedMember.getId()));
+        List<StudyGroup> sg = deletedMember.getStudyGroupList();
+        System.out.println(sg.toString());
+
+        for (int i = 0; i < sg.size(); ++i){
+            List<Member> mb = sg.get(i).getMembers();
+            for (int j =0; j< mb.size(); ++i){
+                if (mb.get(j).getId().equals(deletedMember.getId())){
+                    mb.remove(j);
+                    break;
+                }
+                sg.get(i).setMembers(mb);
+                studyGroupRepository.save(sg.get(i));
+            }
+        }
+
         memberRepository.deleteById(deletedMember.getId());
 
         boolean result = true;
@@ -465,6 +479,7 @@ public class MainController {
         Member updatedMember = memberRepository.findByUserId(updateForm.getUserId());
         updatedMember.setAge(updateForm.getAge());
         updatedMember.setContact(updateForm.getContact());
+        updatedMember.setNickname(updateForm.getNickname());
         updatedMember.setAddress(Address.builder()
                 .zipcode(updateForm.getZipcode())
                 .city(updateForm.getCity())
@@ -820,4 +835,19 @@ public class MainController {
         return "/view/my_progress";
     }
 
+    @GetMapping("/update/checkNickname")
+    @ResponseBody
+    public String checkNicknameAgain(@RequestParam("nickname") String nickname) {
+        JsonObject jsonObject = new JsonObject();
+
+        boolean result = false;
+
+        result = memberRepository.existsByNickname(nickname);
+        if (result) {
+            jsonObject.addProperty("message", "이미 존재하는 닉네임입니다.");
+        } else {
+            jsonObject.addProperty("message", "사용 가능한 닉네임입니다.");
+        }
+        return jsonObject.toString();
+    }
 }
