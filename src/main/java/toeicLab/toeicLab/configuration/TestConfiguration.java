@@ -278,7 +278,9 @@ public class TestConfiguration {
                     .levelType(levelTypes[(int) (Math.random() * 3)])
                     .age((int) (Math.random() * 25) + 10)
                     .genderType(genderTypes[(int) (Math.random() * 2)])
+                    .address(Address.builder().city("경기").street("일산").zipcode("10546").build())
                     .build();
+
             memberRepository.save(member);
 
             long value = 1;
@@ -305,9 +307,11 @@ public class TestConfiguration {
                 .email("a@a.a")
                 .password(passwordEncoder.encode("1234"))
                 .memberType(MemberType.USER)
+                .nickname("testUser")
                 .levelType(levelTypes[(int) (Math.random() * 3)])
                 .age((int) (Math.random() * 25) + 10)
                 .genderType(genderTypes[(int) (Math.random() * 2)])
+                .address(Address.builder().city("경기").street("일산").zipcode("10546").build())
                 .build();
 
         memberRepository.save(member);
