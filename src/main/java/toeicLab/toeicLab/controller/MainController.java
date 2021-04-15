@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.*;
@@ -35,6 +36,7 @@ public class MainController {
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupRepository studyGroupRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StudyGroupService studyGroupService;
 
     /**
      * [ToeicLab]의 기본페이지 입니다.
@@ -493,27 +495,29 @@ public class MainController {
         List<Meeting> meetings = thisStudyGroup.getMeetings();
         List<QuestionSet> questionSets = new ArrayList<>();
         Map<Long, String> comment = new HashMap<>();
-
+        Map<Long, QuestionSet> map = new HashMap<>();
         if (meetings != null) {
             for (Meeting meeting : meetings) {
                 if (meeting.getQuestionSet1().getMember().getId().equals(member.getId())) {
                     questionSets.add(meeting.getQuestionSet1());
+                    map.put(meeting.getId(), meeting.getQuestionSet1());
                 }
                 if (meeting.getQuestionSet2().getMember().getId().equals(member.getId())) {
                     questionSets.add(meeting.getQuestionSet2());
+                    map.put(meeting.getId(), meeting.getQuestionSet2());
                 }
                 if (meeting.getQuestionSet3().getMember().getId().equals(member.getId())) {
                     questionSets.add(meeting.getQuestionSet3());
+                    map.put(meeting.getId(), meeting.getQuestionSet3());
                 }
                 if (meeting.getQuestionSet4().getMember().getId().equals(member.getId())) {
                     questionSets.add(meeting.getQuestionSet4());
+                    map.put(meeting.getId(), meeting.getQuestionSet4());
                 }
             }
             model.addAttribute("questionSets", questionSets);
-
             for(QuestionSet qs : questionSets){
                 if (!qs.getSubmittedAnswers().isEmpty()){
-                    System.out.println(qs.getSubmittedAnswers());
                     comment.put(qs.getId(), memberService.CreateProgressByQuestionSet(qs));
                     model.addAttribute("checkToken", qs.getId());
                 }
@@ -523,16 +527,54 @@ public class MainController {
             }
             model.addAttribute("comment", comment);
         }
-
+        List<Member> memberList = thisStudyGroup.getMembers();
+        for(Member m : memberList) {
+            if (m.getId().toString().equals(thisStudyGroup.getReaderId().toString())){
+                model.addAttribute("leader", m);
+                memberList.remove(m);
+                break;
+            }
+        }
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", Long.parseLong(id));
         model.addAttribute("thisStudyGroup", thisStudyGroup);
-        model.addAttribute("member1", thisStudyGroup.getMembers().get(0));
-        model.addAttribute("member2", thisStudyGroup.getMembers().get(1));
-        model.addAttribute("member3", thisStudyGroup.getMembers().get(2));
-        model.addAttribute("member4", thisStudyGroup.getMembers().get(3));
+        model.addAttribute("member1", memberList.get(0));
+        model.addAttribute("member2", memberList.get(1));
+        model.addAttribute("member3", memberList.get(2));
         model.addAttribute("meetings", meetings);
+        model.addAttribute("map",map);
         return "view/my_studygroup_detail";
+    }
+
+
+    @GetMapping("/modify_study_leader")
+    @ResponseBody
+    public String modifyStudyLeader(@RequestParam("target") Long target, @RequestParam("group") Long group){
+        JsonObject jsonObject = new JsonObject();
+        try {
+            studyGroupService.changeLeader(group, target);
+            jsonObject.addProperty("message", "조장이 변경되었습니다.");
+        } catch (Exception e){
+            jsonObject.addProperty("message", "오류가 발생하였습니다.");
+        }
+        return jsonObject.toString();
+    }
+
+    @GetMapping("/modify_study_name")
+    @ResponseBody
+    public String modifyStudyName(@RequestParam("name") String name, @RequestParam("group") Long group){
+        JsonObject jsonObject = new JsonObject();
+        if (name.equals("")){
+            jsonObject.addProperty("message", "공란으로 변경할 수 없습니다.");
+            return jsonObject.toString();
+        }
+        try {
+            studyGroupService.changeName(group, name);
+            jsonObject.addProperty("message", "스터디 이름이 변경되었습니다.");
+        } catch (Exception e){
+            jsonObject.addProperty("message", "오류가 발생하였습니다.");
+        }
+        return jsonObject.toString();
     }
 
     /**
@@ -666,10 +708,16 @@ public class MainController {
         model.addAttribute("member", member);
         studyGroupApplicationValidator.validate(studyGroupApplicationForm, errors);
         if (errors.hasErrors()) {
+            StringBuilder sb = new StringBuilder();
+            for (FieldError error : errors.getFieldErrors()){
+                sb.append(error.getDefaultMessage() + "<br/>");
+            }
+            model.addAttribute("errorMessage", sb);
             return "view/apply_studygroup";
         }
         studyGroupApplicationService.createNewStudyGroupApplication(studyGroupApplicationForm, member);
-        return "redirect:/";
+        model.addAttribute("successMessage", "스터디 신청이 완료되었습니다.");
+        return "view/apply_studygroup";
     }
 
     /**
@@ -732,9 +780,8 @@ public class MainController {
         QuestionSet hToeic = null;
         QuestionSet fToeic = null;
         QuestionSet pToeic = null;
-
+        member = memberRepository.getOne(member.getId());
         if (member.getQuestionSetList() != null) {
-            member = memberRepository.getOne(member.getId());
             List<QuestionSet> questionSetList = questionSetRepository.getAllByMember(member);
             for (QuestionSet qs : questionSetList) {
                 if (qs.getQuestionSetType().toString() == "QUARTER_TOEIC") qToeic = qs;
@@ -744,7 +791,6 @@ public class MainController {
                 else continue;
             }
         }
-
         if (qToeic != null) {
             model.addAttribute("qToeic", qToeic);
             model.addAttribute("qToeicComment", memberService.CreateProgressByQuestionSet(qToeic));
@@ -756,26 +802,11 @@ public class MainController {
         if (fToeic != null) {
             model.addAttribute("fToeic", fToeic);
             model.addAttribute("fToeicComment", memberService.CreateProgressByQuestionSet(fToeic));
-            switch ((int)(Float.parseFloat(questionSetService.getPercentage(fToeic))/10)){
-                case 1 : case 2 : case 3 : case 4 :{
-                    member.setLevelType(LevelType.BEGINNER);
-                    break;
-                }
-                case 5 : case 6 : case 7: {
-                    member.setLevelType(LevelType.INTERMEDIATE);
-                    break;
-                }
-                case 8: case 9 : case 10 : {
-                    member.setLevelType(LevelType.ADVANCED);
-                }
-            }
-
         }
         if (pToeic != null) {
             model.addAttribute("pToeic", pToeic);
             model.addAttribute("pToeicComment", memberService.CreateProgressByQuestionSet(pToeic));
         }
-
         model.addAttribute("part1", memberService.createCommentByQuestionType(member, QuestionType.PART1));
         model.addAttribute("part2", memberService.createCommentByQuestionType(member, QuestionType.PART2));
         model.addAttribute("part3", memberService.createCommentByQuestionType(member, QuestionType.PART3));
@@ -784,10 +815,9 @@ public class MainController {
         model.addAttribute("part6", memberService.createCommentByQuestionType(member, QuestionType.PART6));
         model.addAttribute("part7s", memberService.createCommentByQuestionType(member, QuestionType.PART7_SINGLE_PARAGRAPH));
         model.addAttribute("part7m", memberService.createCommentByQuestionType(member, QuestionType.PART7_MULTIPLE_PARAGRAPH));
-        model.addAttribute("level", memberService.CreateLevelByAllQuestions(member));
+        model.addAttribute("level", member.getLevelType() == null ? "데이터가 없습니다" : member.getLevelType());
         model.addAttribute("member", member);
-
-        return "view/my_progress";
+        return "/view/my_progress";
     }
 
 }

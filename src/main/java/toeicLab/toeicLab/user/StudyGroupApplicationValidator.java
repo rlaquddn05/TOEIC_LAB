@@ -60,7 +60,7 @@ public class StudyGroupApplicationValidator implements Validator {
                     "tags",
                     "day tag not selected",
                     new Object[]{studyGroupApplicationForm.getAgreement()},
-                    "희망 날짜를 선택하셔야 합니다."
+                    "희망요일을 선택하셔야 합니다."
             );
         }
 
@@ -69,7 +69,7 @@ public class StudyGroupApplicationValidator implements Validator {
                     "tags",
                     "gender tag not selected",
                     new Object[]{studyGroupApplicationForm.getAgreement()},
-                    "희망 성별을 선택하셔야 합니다."
+                    "희망성별을 선택하셔야 합니다."
             );
         }
 

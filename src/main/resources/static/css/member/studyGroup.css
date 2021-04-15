@@ -1,0 +1,31 @@
+.btn-white-no-border{
+    border: 0;
+    background-color: white;
+}
+
+.div-font{
+    font-size: 1.5rem;
+}
+
+.btn-white{
+    background-color: white;
+}
+
+.div-padding{
+    padding: 0.8rem;
+}
+
+.div-padding-ver{
+    padding-top: 0.07rem;
+    padding-bottom: 0.07rem;
+}
+
+.div-padding-top{
+    padding-top: 0.3rem;
+}
+
+#exist-null {
+    border: antiquewhite solid 1px;
+    padding: 0.938em;
+    text-align: center;
+}

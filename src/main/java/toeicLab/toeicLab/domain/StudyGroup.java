@@ -27,4 +27,6 @@ public class StudyGroup {
     @OneToMany(mappedBy = "studyGroup")
     private List<Meeting> meetings = new ArrayList<>();
 
+    private Long readerId;
+
 }

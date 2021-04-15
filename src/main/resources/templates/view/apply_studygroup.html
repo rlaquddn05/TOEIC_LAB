@@ -30,7 +30,7 @@
             </div>
 
             <div class="form-check">
-                <input type="checkbox" th:field="*{agreement}" th:value="true" class="form-check-input" id="agreement" name="agreement" required>
+                <input type="checkbox" th:field="*{agreement}" th:value="true" class="form-check-input" id="agreement" name="agreement">
                 <label class="form-check-label" for="agreement">동의합니다.</label>
             </div>
             <hr class="my-2">
@@ -105,10 +105,75 @@
                 </div>
             </div>
             <br/>
-            <button class="w-100 btn btn-dark btn-lg" type="submit" onsubmit="">신청서 제출하기</button>
+            <button type="submit" class="w-100 btn btn-dark btn-lg">신청서 제출하기</button>
+<!--            <button type="button" class="w-100 btn btn-dark btn-lg" onclick="modal()">신청서 제출하기</button>-->
+
         </form>
     </div>
     <br>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">토익연구소 :: 에러 발생!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    <script th:inline="javascript">-->
+<!--        function modal() {-->
+<!--            $('.modal-body').html('신청서를 제출하고 메인페이지로 이동합니다.');-->
+<!--            $('#studyModal').modal('show');-->
+<!--        }-->
+<!--    </script>-->
+
+<!--    <script>-->
+<!--        function clickApply(formName) {-->
+<!--            formName.action = "/apply_studygroup";-->
+<!--            formName.method = "post";-->
+<!--            formName.submit();-->
+<!--        }-->
+<!--    </script>-->
+
+    <script th:inline="javascript">
+        window.onload = function() {
+            var error = [[${errorMessage}]];
+            var success = [[${successMessage}]];
+            if (error != null) {
+                $('.modal-body').html(error);
+                $('#errorModal').modal('show');
+            }
+            if (success != null) {
+                $('.modal-body').html(success);
+                $('#exampleModalCenter').modal('show');
+                $('#exampleModalCenter').on('hidden.bs.modal', function () {
+                    location.href='/'
+                })
+            }
+        }
+    </script>
+
+<!--    <script th:inline="javascript">-->
+<!--        window.onload = function() {-->
+<!--            var success = [[${successMessage}]];-->
+<!--            if (success != null) {-->
+<!--                // alert(message)-->
+<!--                $('.modal-body').html(success);-->
+<!--                $('#exampleModalCenter').modal('show');-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
 </div>
 
 </html>

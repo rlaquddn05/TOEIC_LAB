@@ -44,10 +44,14 @@ public class StudyGroupApplicationService {
             applicationPool.remove(0);
             StudyGroup studyGroup = matchOneStudyGroup(target, applicationPool);
             if (studyGroup.getMembers().size() == 4) {
+                Member readerMember = studyGroup.getMembers().get(0);
+                studyGroup.setReaderId(readerMember.getId());
+                studyGroup.setName("스터디그룹");
                 result.add(studyGroup);
                 studyGroupRepository.save(studyGroup);
                 for (Member member : studyGroup.getMembers()) {
                     applicationPool.remove(member.getStudyGroupApplication());
+
                 }
             }
         }

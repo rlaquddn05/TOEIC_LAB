@@ -279,6 +279,7 @@ public class TestConfiguration {
                     .age((int) (Math.random() * 25) + 10)
                     .genderType(genderTypes[(int) (Math.random() * 2)])
                     .address(Address.builder().city("경기").street("일산").zipcode("10546").build())
+                    .nickname("nickname" + i)
                     .build();
 
             memberRepository.save(member);

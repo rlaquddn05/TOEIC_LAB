@@ -309,11 +309,11 @@ public class MemberService implements UserDetailsService {
      * @param member
      * @return
      */
-    public String CreateLevelByAllQuestions(Member member) {
+    public void CreateLevelByAllQuestions(Member member) {
         int total = 0;
         int correct = 0;
         List<QuestionSet> questionSetList = questionSetRepository.getAllByMember(member);
-        if(questionSetList == null) return "레벨 산정 데이터가 없습니다.";
+        if(questionSetList == null) return;
         for (QuestionSet qs : questionSetList) {
             if (qs.getQuestionSetType().toString().equals("PRACTICE") ||qs.getQuestionSetType().toString().equals("MEETING")) continue;
             Map<Long, String> submittedAnswersForQs = qs.getSubmittedAnswers();
@@ -325,14 +325,12 @@ public class MemberService implements UserDetailsService {
                 }
             }
         }
-        if(total==0) return "데이터가 없습니다.";
-
-        String level = null;
-        if (correct * 100 / total < 30) level ="하";
-        if (correct * 100 / total >= 30 && correct * 100 / total < 80 ) level = "중";
-        if (correct * 100 / total >= 80) level = "상";
-
-        return level;
+        if(total==0) return;
+        if (correct * 100 / total < 30) member.setLevelType(LevelType.BEGINNER);
+        if (correct * 100 / total >= 30 && correct * 100 / total < 80 ) member.setLevelType(LevelType.INTERMEDIATE);
+        if (correct * 100 / total >= 80) member.setLevelType(LevelType.ADVANCED);
+        memberRepository.save(member);
+        return;
     }
 
 }

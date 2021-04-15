@@ -190,27 +190,21 @@ public class QuestionController {
             }
             map.put(Long.parseLong(param), value);
         }
-
-        System.out.println(map);
         assert questionSet != null;
         questionSet.setSubmittedAnswers(map);
         questionSetRepository.save(questionSet);
         questionSet = questionSetRepository.getOne(setIdValue);
-
         List<String> str = new ArrayList<>();
         questionService.checkTypeList(questionSet, str);
-        System.out.println(str);
-
         model.addAttribute("questionType", str);
         model.addAttribute("questionList", questionSet.getQuestions());
         model.addAttribute("questionSet", questionSet);
         model.addAttribute("userAnswer", map);
         model.addAttribute("member", member);
         model.addAttribute("questionSetId", questionSetId);
-
+        memberService.CreateLevelByAllQuestions(member);
         String[] eachstrings = questionSetService.getPercentageEachOfQuestionSet(questionSet);
         model.addAttribute("eachstrings", eachstrings);
-
         return "view/result_sheet";
     }
 
