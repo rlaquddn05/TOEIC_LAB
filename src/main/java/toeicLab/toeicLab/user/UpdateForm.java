@@ -21,6 +21,9 @@ public class UpdateForm {
     private String contact;
 
     @NotBlank
+    private String nickname;
+
+    @NotBlank
     private String zipcode;
     private String city;
     private String street;

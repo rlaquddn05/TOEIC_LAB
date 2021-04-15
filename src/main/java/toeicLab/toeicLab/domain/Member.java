@@ -59,10 +59,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<QuestionSet> questionSetList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER )
+    //    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) // 멤버 삭제시 스터디그룹도 통째로 삭제
+    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER)
     private List<StudyGroup> studyGroupList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private StudyGroupApplication studyGroupApplication;
 
     @OneToOne(mappedBy = "member")

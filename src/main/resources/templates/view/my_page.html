@@ -7,9 +7,8 @@
 <th:block layout:fragment="js">
     <script th:src="@{/js/user/form_validation.js}"></script>
     <script th:src="@{/js/user/daum_address.js}"></script>
-    <script th:src="@{/js/user/my_page.js}"></script>
+<!--    <script th:src="@{/js/user/my_page.js}"></script>-->
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 </th:block>
 
@@ -48,33 +47,48 @@
                         <div class="col-12">
                             <label for="password" class="form-label">비밀번호</label>
                             <div class="input-group">
-                                <input type="password" class="form-control"
+                                <input th:disabled="${member.provider=='google'}" type="password" class="form-control"
                                        name="password" id="password"
                                        aria-describedby="password_help_text"
                                        th:value="${currentUser.getPassword()}"
                                        placeholder="미등록"
                                        required>
                                 <div class="invalid-feedback">필수 사항입니다.</div>
-                                <button type="button" id="update_password_button" class="btn btn-dark">등록 / 변경</button>
+                                <button type="button" id="update_password_button" class="btn btn-dark" th:disabled="${member.provider=='google'}">등록 / 변경</button>
                             </div>
                         </div>
                     </div>
 
-
                     <div class="row g-3">
                         <div class="col-12">
-                            <label for="nickname" class="form-label">닉네임 / 이름</label>
-                            <input type="text" class="form-control"
-                                   name="nickname" id="nickname"
-                                   aria-describedby="nickname_help_text"
-                                   th:value="${currentUser.getNickname()}" readonly="readonly">
-                            <div class="invalid-feedback">필수 사항입니다.</div>
-                            <small id="nickname_help_text"
-                                   class="form-text text-muted">
-                                회원님의 닉네임 / 이름입니다.
-                            </small>
+                            <label for="nickname" class="form-label">닉네임</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control"
+                                       name="nickname" id="nickname"
+                                       aria-describedby="nickname_help_text"
+                                       th:value="${currentUser.getNickname()}" required>
+                                <div class="invalid-feedback">필수 사항입니다.</div>
+                                <button id="nickname-button" class="btn btn-dark" type="button">중복확인</button>
+                            </div>
                         </div>
                     </div>
+
+                    <script th:inline="javascript">
+                        $(document).ready(function (){
+                            $("#nickname-button").click(function (){
+                                $.ajax({
+                                   method: 'GET',
+                                   url: '/update/checkNickname',
+                                   data: 'nickname=' + $('#nickname').val(),
+                                   dataType: 'json',
+                                   success: function (result) {
+                                       $('.modal-body').html(result.message);
+                                       $('#show-modal').modal('show');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
 
                     <div class="row g-3">
                         <div class="col-12" th:if="${currentUser.getGenderType().toString().equals('MALE')}">
@@ -185,10 +199,10 @@
 
 
                     <div id="group-button" >
-                        <div class="">
+                        <div>
                             <button type="submit" class="btn btn-dark">정보수정</button>
                             <button type="button" class="btn btn-dark" onclick="location.href='/'">뒤로가기</button>
-                            <button type="button" id="delete_button" class="btn btn-danger" onclick="location.href='/'">탈퇴하기</button>
+                            <button type="button" id="delete_button" class="btn btn-danger">탈퇴하기</button>
                         </div>
                     </div>
 
@@ -198,28 +212,55 @@
         </div>
 
     </div>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $("#update_password_button").click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/update/password',
+                    data: 'password=' + $("#password").val() + '&userId=' + $("#userId").val(),
+                    dataType: 'json',
+                    success: function (result) {
+                        $(".modal-body").html(result.message);
+                        $("#show-modal").modal();
+                    }
+                });
+            });
+
+            $("#delete_button").click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/update/delete',
+                    data: 'userId=' + $("#userId").val(),
+                    dataType: 'json',
+                    success: function (result) {
+                        $(".modal-body").html(result.message);
+                        $("#myPageButton2").modal();
+                    }
+                });
+            });
+        });
+    </script>
+
+
 
     <!-- The Modal -->
-    <div class="modal fade" id="myPageButton1">
-        <div class="modal-dialog modal-sm">
+    <div class="modal fade" id="show-modal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-
-                <!-- Modal Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title">알림</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">토익 연구소</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-
-                <!-- Modal body -->
                 <div class="modal-body">
                     ...
                 </div>
-
-                <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn info" data-dismiss="modal">확인</button>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">닫기</button>
                 </div>
-
             </div>
         </div>
     </div>

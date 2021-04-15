@@ -25,4 +25,21 @@ $(document).ready(function () {
         });
     });
 
+    $("#nickname_button").click(function (){
+        $.ajax({
+            type: 'GET',
+            url: '/signup/checkNickname',
+            data: 'nickname=' + $("#nickname").val(),
+            dataType: 'json',
+            success: function (result){
+                $(".modal-body").html(result.message);
+                $("#myPageButton1").modal();
+                // if(result.message == "이미 존재하는 닉네임입니다."){
+                //     $("#nickname_button").attr('disabled', false);
+                // }else{
+                //     $("#nickname_button").attr('disabled', true);
+                // }
+            }
+        });
+    });
 });

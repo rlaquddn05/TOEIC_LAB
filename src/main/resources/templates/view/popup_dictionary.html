@@ -50,12 +50,10 @@
                 $.ajax({
                     type: 'GET',
                     url: '/popup_dictionary_find/'+ $("#inputWord").val().toString(),
-                    // data: "word=" + $("#inputWord").val(),
                     dataType: 'json',
                     success: function(data){
                         var word = JSON.stringify(data.word);
                         var meaning = JSON.stringify(data.meaning);
-                        // alert(word +" : " + meaning);
                         $('input[name=word]').attr('value',word);
                         $('input[name=mean]').attr('value',meaning);
                     },
