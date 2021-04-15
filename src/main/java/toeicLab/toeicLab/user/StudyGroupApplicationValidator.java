@@ -30,46 +30,46 @@ public class StudyGroupApplicationValidator implements Validator {
 
         if (studyGroupApplicationForm.getAgreement() == null) {
             errors.rejectValue(
-                    "agreement",  // 문제가 있는 필드의 이름
-                    "must agree", // 에러 코드 : 내 맘대로
-                    new Object[]{studyGroupApplicationForm.getAgreement()}, // MessageFormat 에 바인딩할 에러메시지들
-                    "이용약관에 동의하셔야 합니다." // 기본 메시지
+                    "agreement",
+                    "must agree",
+                    new Object[]{studyGroupApplicationForm.getAgreement()},
+                    "이용약관에 동의하셔야 합니다."
             );
         }
 
         if (value % 2 != 0 && value % 3 != 0 && value % 5 != 0) {
             errors.rejectValue(
-                    "tags",  // 문제가 있는 필드의 이름
-                    "age tag not selected", // 에러 코드 : 내 맘대로
-                    new Object[]{studyGroupApplicationForm.getAgreement()}, // MessageFormat 에 바인딩할 에러메시지들
-                    "희망연령을 선택하셔야 합니다." // 기본 메시지
+                    "tags",
+                    "age tag not selected",
+                    new Object[]{studyGroupApplicationForm.getAgreement()},
+                    "희망연령을 선택하셔야 합니다."
             );
         }
 
         if (value % 7 != 0 && value % 11 != 0 && value % 13 != 0) {
             errors.rejectValue(
-                    "tags",  // 문제가 있는 필드의 이름
-                    "level tag not selected", // 에러 코드 : 내 맘대로
-                    new Object[]{studyGroupApplicationForm.getAgreement()}, // MessageFormat 에 바인딩할 에러메시지들
-                    "희망레벨을 선택하셔야 합니다." // 기본 메시지
+                    "tags",
+                    "level tag not selected",
+                    new Object[]{studyGroupApplicationForm.getAgreement()},
+                    "희망레벨을 선택하셔야 합니다."
             );
         }
 
         if (value % 17 != 0 && value % 19 != 0) {
             errors.rejectValue(
-                    "tags",  // 문제가 있는 필드의 이름
-                    "day tag not selected", // 에러 코드 : 내 맘대로
-                    new Object[]{studyGroupApplicationForm.getAgreement()}, // MessageFormat 에 바인딩할 에러메시지들
-                    "희망 날짜를 선택하셔야 합니다." // 기본 메시지
+                    "tags",
+                    "day tag not selected",
+                    new Object[]{studyGroupApplicationForm.getAgreement()},
+                    "희망 날짜를 선택하셔야 합니다."
             );
         }
 
         if (value % 23 != 0 && value % 29 != 0) {
             errors.rejectValue(
-                    "tags",  // 문제가 있는 필드의 이름
-                    "gender tag not selected", // 에러 코드 : 내 맘대로
-                    new Object[]{studyGroupApplicationForm.getAgreement()}, // MessageFormat 에 바인딩할 에러메시지들
-                    "희망 성별을 선택하셔야 합니다." // 기본 메시지
+                    "tags",
+                    "gender tag not selected",
+                    new Object[]{studyGroupApplicationForm.getAgreement()},
+                    "희망 성별을 선택하셔야 합니다."
             );
         }
 

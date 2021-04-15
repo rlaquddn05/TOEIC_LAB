@@ -37,42 +37,38 @@ public class ForumController {
     private final QuestionRepository questionRepository;
     private final VisionService visionService;
 
+    /**
+     * 현재 문제등록에 게시되어있는 게시물들을 보여주는 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @param page
+     * @return view/forum
+     */
     @GetMapping("/forum")
     public String forum(@CurrentUser Member member, Model model, @RequestParam(defaultValue = "1") int page) {
-        // 총 게시물 수
         List<Forum> forumList = forumRepository.findAll();
 
         int size = forumList.size();
-        log.info("리스트의 개수");
-        log.info(String.valueOf(size));
         int totalListCnt = size;
 
-        // 생성인자로  총 게시물 수, 현재 페이지를 전달
         Pagination pagination = new Pagination(totalListCnt, page);
 
-        // DB select start index
         int startIndex = pagination.getStartIndex();
-        // 페이지 당 보여지는 게시글의 최대 개수
         int pageSize = pagination.getPageSize();
-
         int pageCheck = startIndex + pageSize;
 
-        log.info("pageCheck=" + pageCheck);
         List<Forum> forumList2 = new ArrayList<>();
 
         if(totalListCnt == 0){
-            log.info("마지막페이지=" + pagination.getEndPage());
-            // ============================전체페이지가 1일때 설정============================
             pagination.setEndPage(1);
             pagination.setNextBlock(1);
             pagination.setTotalPageCnt(1);
-            // ===========================================================================
+
             model.addAttribute(member);
             model.addAttribute("forumList", forumList2);
             model.addAttribute("pagination", pagination);
             return "view/forum";
         }
-
         for (int i = startIndex; i < pageCheck; i++){
             Forum forum = forumList.get(i);
 
@@ -81,24 +77,44 @@ public class ForumController {
             if(i == (totalListCnt-1)){
                 pageCheck = totalListCnt-1;
             }
-
         }
 
-        log.info(String.valueOf(startIndex));
         model.addAttribute(member);
         model.addAttribute("forumList", forumList2);
         model.addAttribute("pagination", pagination);
-
-        model.addAttribute(member);
         return "view/forum";
     }
 
+    /**
+     * 문제등록을 할 수 있는 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/forum_upload
+     */
     @GetMapping("/forum_upload")
     public String uploadQuestion(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/forum_upload";
     }
 
+    /**
+     * 사용자가 이미지를 통해 추출한 데이터들을 게시글의 정보로 저장합니다.
+     * @param member
+     * @param model
+     * @param title
+     * @param questionType
+     * @param content
+     * @param content2
+     * @param content3
+     * @param question
+     * @param exampleA
+     * @param exampleB
+     * @param exampleC
+     * @param exampleD
+     * @param answer
+     * @param solution
+     * @return redirect:/forum
+     */
     @PostMapping("/forum_upload")
     public String addQuestion(@CurrentUser Member member, Model model, @RequestParam String title,
                               @RequestParam String questionType, @RequestParam(required = false) String content,
@@ -108,7 +124,6 @@ public class ForumController {
                               @RequestParam String exampleD, @RequestParam String answer,
                               @RequestParam String solution) {
 
-
         Question q = questionService.createQuestion(questionType, content, content2, content3, question, exampleA, exampleB,
                 exampleC, exampleD, answer, solution);
 
@@ -117,20 +132,24 @@ public class ForumController {
         return "redirect:/forum";
     }
 
+    /**
+     * 사용자가 선택한 게시글의 상세보기 페이지로 이동합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @return view/forum_detail
+     */
     @GetMapping("/forumDetail/{id}")
     public String forumDetailView(@CurrentUser Member member, @PathVariable Long id, Model model) {
-        log.info("상세보기");
-        log.info(String.valueOf(id));
         Forum forum = forumRepository.findById(id).orElse(null);
-
         long hit = forum.getHit();
         hit++;
         forum.setHit(hit);
         forumRepository.save(forum);
-        log.info("조회수 증가 성공!");
 
         Question question = questionRepository.findById(forum.getQuestionId()).orElse(null);
         assert question != null;
+
         QuestionType type = question.getQuestionType();
         if (type==QuestionType.PART1||type==QuestionType.PART2||type==QuestionType.PART3||type==QuestionType.PART4) {
             model.addAttribute("content",((LC) question).getContent());
@@ -150,7 +169,6 @@ public class ForumController {
             model.addAttribute("exampleC", ((RC) question).getExampleC());
             model.addAttribute("exampleD", ((RC) question).getExampleD());
             model.addAttribute("solution", ((RC) question).getSolution());
-
         }
         model.addAttribute("forum", forum);
         model.addAttribute("member", member);
@@ -159,47 +177,59 @@ public class ForumController {
         model.addAttribute("answer", question.getAnswer());
         model.addAttribute("questionExplanation", question.getQuestionExplanation());
 
-
         return "view/forum_detail";
     }
 
+    /**
+     * 단어시험 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/vocabulary_test
+     */
     @GetMapping("/vocabulary_test")
     public String vocabularyTest(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/vocabulary_test";
     }
 
+    /**
+     * 기존 페이지에 팝업사전(새 창)을 띄웁니다.
+     * @param member
+     * @param model
+     * @return view/popup_dictionary
+     */
     @GetMapping("/popup_dictionary")
     public String popupLayout(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/popup_dictionary";
     }
 
+    /**
+     * 단어검색시 한글은 영어로 영어는 한글로 검색한 결과를 보여줍니다.(네이버 검색 페이지 실시간 크롤링)
+     * @param word
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/popup_dictionary_find/{word}")
     @ResponseBody
     public String dictionary(@PathVariable String word) throws Exception {
         String result;
         System.out.println(word);
-        String[] splittedWord = word.split("");
-        if (Pattern.matches("[a-zA-Z]", splittedWord[0])) {
-            log.info("영어 -> 한국어");
+        String[] splitedWord = word.split("");
+        if (Pattern.matches("[a-zA-Z]", splitedWord[0])) {
             String loweredWord = word.toLowerCase();
             String url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=" + loweredWord + "뜻";
             Document document = Jsoup.connect(url).get();
             Elements element = document.getElementsByAttributeValue("class", "mean api_txt_lines");
             String cut = element.get(0).text();
-//            int index = cut.indexOf("(");
-//            result = cut.substring(0, index);
             result = cut;
 
             return "{" + "\"" + "word" + "\"" + ":" + "\"" + word + "\"" + "," + "\"" + "meaning" + "\"" + ":" + "\"" + result + "\"" + "}";
 
         } else {
-            log.info("한국어 -> 영어");
             String url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" + word + "영어로";
             Document document = Jsoup.connect(url).get();
             Elements element = document.getElementsByAttributeValue("class", "mean api_txt_lines");
-            log.info(element.get(0).text());
             String cut = element.get(0).text();
             result = cut;
 
@@ -208,18 +238,20 @@ public class ForumController {
 
     }
 
+    /**
+     * 검색한 단어를 단어장에 추가합니다.
+     * @param member
+     * @param word
+     * @param meaning
+     * @return
+     */
     @RequestMapping("/add_word_list")
     @ResponseBody
     public String addWordList(@CurrentUser Member member, @RequestParam("word") String word, @RequestParam("meaning") String meaning) {
-//    public String addWordList (Member member, HttpServletRequest request){
         String w = word.replaceAll("\"", " ").trim();
         String m = meaning.replaceAll("\"", " ").trim();
         JsonObject jsonObject = new JsonObject();
         boolean result = false;
-//        String word = request.getParameter("word");
-//        String meaning = request.getParameter("meaning");
-        System.out.println(w);
-        System.out.println(m);
 
         try {
             result = memberService.addWordList(member, w, m);
@@ -228,7 +260,6 @@ public class ForumController {
             } else {
                 jsonObject.addProperty("message", "단어장에 이미 존재합니다.");
             }
-
         } catch (IllegalArgumentException e) {
             jsonObject.addProperty("message", "잘못된정보");
         }
@@ -236,43 +267,60 @@ public class ForumController {
         return jsonObject.toString();
     }
 
-
+    /**
+     * 사용자가 추가한 단어들을 볼 수 있는 단어장페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/my_vocabulary_list
+     */
     @GetMapping("/my_vocabulary_list")
     public String myVocabularyList(@CurrentUser Member member, Model model) {
         Word wordList = wordRepository.findByMember(member);
-        System.out.println(wordList);
         if (wordList == null) {
             wordList = new Word();
             model.addAttribute("exist", "noWordList");
         }
         Map<String, String> map = wordList.getWord();
+
         if (map.isEmpty()){
             model.addAttribute("exist", "noWord");
         }
-
         model.addAttribute("wordList", map);
-
         model.addAttribute(member);
 
         return "view/my_vocabulary_list";
     }
 
+    /**
+     * 단어장에서 사용자가 선택한 단어를 삭제합니다.
+     * @param member
+     * @param model
+     * @param word
+     * @return redirect:/my_vocabulary_list
+     */
     @GetMapping("/delete_word/{word}")
     public String DeleteTest(@CurrentUser Member member, Model model, @PathVariable String word) {
         memberService.deleteWord(member, word);
-        System.out.println(word + "삭제");
-
         model.addAttribute("member", member);
+
         return "redirect:/my_vocabulary_list";
     }
 
+    /**
+     * 사용자가 추출하려는 문제의 이미지를 업로드합니다.
+     * @param member
+     * @param model
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws IllegalStateException
+     */
     @RequestMapping(value="/upload_img", method = RequestMethod.POST)
     @ResponseBody
     public StringBuilder upload(@CurrentUser Member member, Model model, @RequestParam("file") MultipartFile file) throws IOException, IllegalStateException{
         StringBuilder loadText = new StringBuilder();
         FileOutputStream fos = null;
-        System.out.println("Temp Path:" + System.getProperty("java.io.tmpdir"));
-        System.out.println(file);
+
         try {
             byte fileData[] = file.getBytes();
             fos = new FileOutputStream(System.getProperty("java.io.tmpdir")+file.getName()+".jpg");

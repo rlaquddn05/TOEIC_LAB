@@ -28,36 +28,32 @@ public class BulletinController {
     private final BulletinCommentRepository bulletinCommentRepository;
     private final MemberRepository memberRepository;
 
+    /**
+     * 현재 게시판에 등록되어 있는 글 제목, 작성자, 일시, 내용, 조회수, 좋아요 정보를 전부 가져옵니다.
+     * @param member
+     * @param model
+     * @param page
+     * @return view/bulletin
+     */
     @GetMapping("/bulletin")
     public String bulletin(Member member, Model model, @RequestParam(defaultValue = "1") int page) {
 
-            // 총 게시물 수
             List<Bulletin> bulletinList = bulletinRepository.findAll();
             int size = bulletinList.size();
-            log.info("리스트의 개수");
-            log.info(String.valueOf(size));
             int totalListCnt = size;
-
-            // 생성인자로  총 게시물 수, 현재 페이지를 전달
             Pagination pagination = new Pagination(totalListCnt, page);
 
-            // DB select start index
             int startIndex = pagination.getStartIndex();
-            // 페이지 당 보여지는 게시글의 최대 개수
             int pageSize = pagination.getPageSize();
-
             int pageCheck = startIndex + pageSize;
 
-            log.info("pageCheck=" + pageCheck);
             List<Bulletin> bulletinList2 = new ArrayList<>();
 
             if(totalListCnt == 0){
-                log.info("마지막페이지=" + pagination.getEndPage());
-                // ============================전체페이지가 1일때 설정============================
                 pagination.setEndPage(1);
                 pagination.setNextBlock(1);
                 pagination.setTotalPageCnt(1);
-                // ===========================================================================
+
                 model.addAttribute(member);
                 model.addAttribute("bulletinList", bulletinList2);
                 model.addAttribute("pagination", pagination);
@@ -66,7 +62,6 @@ public class BulletinController {
 
             for (int i = startIndex; i < pageCheck; i++){
                 Bulletin bulletin = bulletinList.get(i);
-
                 bulletinList2.add(bulletin);
 
                 if(i == (totalListCnt-1)){
@@ -74,8 +69,6 @@ public class BulletinController {
                 }
 
             }
-
-            log.info(String.valueOf(startIndex));
             model.addAttribute(member);
             model.addAttribute("bulletinList", bulletinList2);
             model.addAttribute("pagination", pagination);
@@ -84,6 +77,12 @@ public class BulletinController {
         return "view/bulletin";
     }
 
+    /**
+     * 사용자가 선택한 게시물의 수정페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/bulletin_upload
+     */
     @GetMapping("/bulletin_upload")
     public String showBulletinUploadView(@CurrentUser Member member, Model model){
         model.addAttribute("member", member);
@@ -91,11 +90,17 @@ public class BulletinController {
         return "view/bulletin_upload";
     }
 
+    /**
+     * 사용자가 입력한 내용들로 게시판의 내용을 저장합니다.
+     * @param member
+     * @param model
+     * @param title
+     * @param content
+     * @param memberId
+     * @return redirect:/bulletin
+     */
     @PostMapping("/bulletin_upload")
     public String uploadBulletin(@CurrentUser Member member , Model model, String title, String content, String memberId){
-        log.info("글쓰기");
-        log.info(String.valueOf(memberId));
-
         Member needMemberNickname = memberRepository.findByUserId(memberId);
         String nickname = needMemberNickname.getNickname();
 
@@ -113,22 +118,24 @@ public class BulletinController {
         return "redirect:/bulletin";
     }
 
+    /**
+     * 사용자가 선택한 게시판의 게시물의 상세보기 페이지로 이동합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @return view/bulletinDetail
+     */
     @GetMapping("/bulletinDetail/{id}")
     public String bulletinDetailView(@CurrentUser Member member, @PathVariable Long id, Model model){
-        log.info("상세보기");
-        log.info(String.valueOf(id));
-
         Bulletin bulletin = bulletinRepository.findById(id).orElse(null);
         assert bulletin != null;
-        log.info(bulletin.getContent());
+
         long hit = bulletin.getHit();
         hit++;
         bulletin.setHit(hit);
         bulletinRepository.save(bulletin);
-        log.info("조회수 증가 성공!");
 
         List<BulletinComment> bulletinCommentList = bulletinCommentRepository.findAllByBulletinId(id);
-        log.info(bulletin.getWriterId());
 
         model.addAttribute("bulletinCommentList", bulletinCommentList);
         model.addAttribute("bulletin", bulletin);
@@ -136,6 +143,13 @@ public class BulletinController {
         return "view/bulletinDetail";
     }
 
+    /**
+     * 사용자가 게시물의 좋아요를 눌렀을 경우 좋아요 수를 1 증가시키거나 취소합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/bulletinDetail/likeNumber")
     @ResponseBody
     public String likeNumber(@CurrentUser Member member, @RequestParam("id") String id, Model model){
@@ -150,12 +164,10 @@ public class BulletinController {
             jsonObject.addProperty("message", "좋아요 취소!");
             bulletin.getLikeSets().remove(member.getUserId());
             num--;
-            log.info("좋아요 취소");
         }else{
             jsonObject.addProperty("message", "좋아요!");
             bulletin.getLikeSets().add(member.getUserId());
             num++;
-            log.info("좋아요 추가");
         }
         bulletin.setLikeNumber(num);
         bulletinRepository.save(bulletin);
@@ -163,12 +175,20 @@ public class BulletinController {
         return jsonObject.toString();
     }
 
+    /**
+     * 사용자가 게시물에 입력한 댓글을 저장합니다.
+     * @param member
+     * @param comment
+     * @param commentWriter
+     * @param id
+     * @param model
+     * @return redirect:/bulletinDetail/" + bulletin.getId()
+     */
     @PostMapping("/comment_upload")
     public String uploadComment(@CurrentUser Member member, @RequestParam("comment") String comment,
                                 @RequestParam("commentWriter") String commentWriter, @RequestParam("id") String id, Model model){
         Bulletin bulletin = bulletinRepository.findById(Long.valueOf(id)).orElse(null);
         assert bulletin != null;
-        // 그냥 바로 아이디 넣어도 됨...
         long bulletinId = bulletin.getId();
 
         BulletinComment bulletinComment = BulletinComment.builder()
@@ -180,9 +200,15 @@ public class BulletinController {
         model.addAttribute(member);
         bulletinCommentRepository.save(bulletinComment);
 
-        return "redirect:/bulletinDetail/"+bulletin.getId();
+        return "redirect:/bulletinDetail/" + bulletin.getId();
     }
 
+    /**
+     * 사용자가 선택한 게시판의 게시물을 삭제합니다.
+     * @param id
+     * @param writerId
+     * @return
+     */
     @GetMapping("/bulletinDetail/deleteBulletin")
     @ResponseBody
     public String deleteBulletin(@RequestParam("id")String id, @RequestParam("writerId")String writerId){
@@ -198,18 +224,20 @@ public class BulletinController {
             long deleteId = bulletinComment.getId();
             bulletinCommentRepository.deleteById(deleteId);
         }
-
-
         jsonObject.addProperty("message", "글 삭제 성공!");
 
         return jsonObject.toString();
     }
 
+    /**
+     * 사용자가 선택한 게시물의 수정페이지로 이동동합니다.
+     * @param id
+    * @param member
+     * @param model
+     * @return view/updateBulletin
+     */
     @GetMapping("/updateBulletin/{id}")
     public String updateBulletinView(@PathVariable Long id, @CurrentUser Member member, Model model ){
-        log.info("글 수정 시작");
-        log.info(String.valueOf(id));
-
         Bulletin bulletin = bulletinRepository.findById(Long.valueOf(id)).orElse(null);
         assert bulletin != null;
 
@@ -220,6 +248,15 @@ public class BulletinController {
         return "view/updateBulletin";
     }
 
+    /**
+     * 사용자가 새로 입력한 내용들로 기존 게시판의 내용을 수정합니다.
+     * @param id
+     * @param title
+     * @param content
+     * @param model
+     * @param member
+     * @return redirect:/bulletin
+     */
     @PostMapping("/updateBulletin")
     public String updateBulletin(long id, String title, String content, Model model, Member member){
         Bulletin updateBulletin = bulletinRepository.findById(id).orElse(null);
@@ -228,7 +265,6 @@ public class BulletinController {
         updateBulletin.setTitle(title);
         updateBulletin.setContent(content);
         bulletinRepository.save(updateBulletin);
-        log.info("글 수정 성공!");
 
         model.addAttribute(member);
         return "redirect:/bulletin";

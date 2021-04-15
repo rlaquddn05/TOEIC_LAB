@@ -15,7 +15,6 @@ public class StudyGroup {
     @Id @GeneratedValue
     private Long id;
 
-    //방의 이름(필요없다면 버려도된다.)
     private String name;
 
     @ManyToMany

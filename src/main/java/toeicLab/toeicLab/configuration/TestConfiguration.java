@@ -51,7 +51,10 @@ public class TestConfiguration {
     private int smallSetId = 1;
     private final VisionService visionService;
 
-
+    /**
+     * PART1 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart1() throws IOException {
         for (int i = 1; i <= PART1_NUMBER; i++) {
             LC lc = new LC();
@@ -68,6 +71,10 @@ public class TestConfiguration {
         }
     }
 
+    /**
+     * PART2 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart2() throws IOException {
         for (int i = 1; i <= PART2_NUMBER; i++) {
             LC lc = new LC();
@@ -83,6 +90,10 @@ public class TestConfiguration {
         }
     }
 
+    /**
+     * PART3 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart3() throws IOException {
         for (int i = 1; i <= PART3_NUMBER_OF_SMALL_SETS; i++) {
             for (int j = 1; j <= 3; j++) {
@@ -101,11 +112,13 @@ public class TestConfiguration {
                 questionRepository.save(lc);
             }
             smallSetId++;
-
-
         }
     }
 
+    /**
+     * PART4 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart4() throws IOException {
         for (int i = 1; i <= PART4_NUMBER_OF_SMALL_SETS; i++) {
             for (int j = 1; j <= 3; j++) {
@@ -124,11 +137,13 @@ public class TestConfiguration {
                 questionRepository.save(lc);
             }
             smallSetId++;
-
-
         }
     }
 
+    /**
+     * PART5 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart5() throws IOException {
         Resource resource = new ClassPathResource("part6.CSV");
         List<RC> part5 = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
@@ -149,6 +164,10 @@ public class TestConfiguration {
         questionRepository.saveAll(part5);
     }
 
+    /**
+     * PART6 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart6() throws IOException {
         for (int i = 1; i <= PART6_NUMBER_OF_SMALL_SETS; i++) {
             for (int j = 1; j <= 4; j++) {
@@ -166,10 +185,13 @@ public class TestConfiguration {
                 questionRepository.save(rc);
             }
             smallSetId++;
-
         }
     }
 
+    /**
+     * PART7(단일지문) 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart7_single() throws IOException {
         for (int i = 1; i <= PART7_SINGLE_NUMBER_OF_SMALL_SETS; i++) {
             int smallSetType = (int) (Math.random() * 3 + 3);
@@ -187,10 +209,13 @@ public class TestConfiguration {
                 questionRepository.save(rc);
             }
             smallSetId++;
-
         }
     }
 
+    /**
+     * PART7(복합지문) 문제들을 생성합니다.
+     * @throws IOException
+     */
     public void initPart7_multiple() throws IOException {
         for (int i = 1; i <= PART7_MULTIPLE_NUMBER_OF_SMALL_SETS; i++) {
             int smallSetType = (int) (Math.random() * 3 + 3);
@@ -215,12 +240,22 @@ public class TestConfiguration {
         }
     }
 
+    /**
+     * 문제들을 lorem을 통해 무작위로 생성합니다.
+     * @return
+     * @throws IOException
+     */
     public String aRandomSentence() throws IOException {
         Resource resource = new ClassPathResource("lorem-ipsum.txt");
         List<String> sentences = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8);
         return sentences.get((int) (Math.random() * (sentences.size())));
     }
 
+    /**
+     * 무작위의 문단들을 생성합니다.
+     * @return
+     * @throws IOException
+     */
     public String aRandomParagraph() throws IOException {
         StringBuilder paragraph = new StringBuilder();
         int num_of_sentence_in_paragraph = (int) (Math.random() * 5) + 5;
@@ -230,6 +265,9 @@ public class TestConfiguration {
         return paragraph.toString();
     }
 
+    /**
+     * DummyUser를 여러명 생성합니다.
+     */
     public void createDummyUsers() {
         for (int i = 1; i <= NUMBER_OF_DUMMY_USERS; i++) {
             Member member = Member.builder()
@@ -256,9 +294,11 @@ public class TestConfiguration {
                     .build();
             studyGroupApplicationRepository.save(studyGroupApplication);
         }
-        log.info("DummyUsers created.");
     }
 
+    /**
+     * TestUser를 생성합니다.
+     */
     public void createTestUsers() {
         Member member = Member.builder()
                 .userId("testUser")
@@ -271,15 +311,20 @@ public class TestConfiguration {
                 .build();
 
         memberRepository.save(member);
-        log.info("a@a.a created.");
     }
 
+    /**
+     * 스터디 그룹을 무작위로 매칭합니다.
+     */
     @PostConstruct
     public void testMatchStudyGroup() {
         studyGroupApplicationService.matchStudyGroups();
     }
 
-
+    /**
+     * 프로그램 실행시 PART1 ~ 7까지 문제들을 미리 생성합니다.
+     * @throws IOException
+     */
     @PostConstruct
     public void initQuestions() throws IOException {
         initPart1();
@@ -292,9 +337,12 @@ public class TestConfiguration {
         initPart7_multiple();
     }
 
+    /**
+     * TestUser와 DummyUser들을 생성합니다.
+     */
     @PostConstruct
     public void initDummyUsers() {
-//        createDummyUsers();
+        createDummyUsers();
         createTestUsers();
     }
 }

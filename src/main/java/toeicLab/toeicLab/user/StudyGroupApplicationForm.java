@@ -5,9 +5,6 @@ import toeicLab.toeicLab.domain.StudyGroupApplicationTag;
 
 @Data
 public class StudyGroupApplicationForm {
-
     private String agreement;
-
     private StudyGroupApplicationTag[] tags;
-
 }

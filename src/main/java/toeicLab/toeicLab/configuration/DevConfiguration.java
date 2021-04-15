@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import toeicLab.toeicLab.controller.ForumController;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
@@ -17,7 +15,6 @@ import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
 import toeicLab.toeicLab.service.VisionService;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -46,7 +43,6 @@ public class DevConfiguration {
     private static final int PART2_NUMBER = 100;
     private static final int PART3_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART4_NUMBER_OF_SMALL_SETS = 100;
-    //    private final int PART5_NUMBER= 10;
     private static final int PART6_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;

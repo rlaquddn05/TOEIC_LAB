@@ -1,13 +1,8 @@
 package toeicLab.toeicLab.domain;
 
 import lombok.*;
-import org.hibernate.mapping.ToOne;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

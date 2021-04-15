@@ -1,8 +1,6 @@
 package toeicLab.toeicLab.domain;
 
 import lombok.*;
-import org.apache.catalina.LifecycleState;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

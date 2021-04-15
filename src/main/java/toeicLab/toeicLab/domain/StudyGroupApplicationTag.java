@@ -5,7 +5,7 @@ public enum StudyGroupApplicationTag {
     LEVEL_BEGINNER(7), LEVEL_INTERMEDIATE(11), LEVEL_ADVANCED(13),
     WEEKDAY(17), WEEKEND(19),
     MALE(23), FEMALE(29),
-    NONE(1); // 임시로 1, 모든 값들의 곱
+    NONE(1);
 
     int primary;
 

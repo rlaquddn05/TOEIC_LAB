@@ -15,6 +15,12 @@ import java.time.LocalDateTime;
 public class ForumService {
     private final ForumRepository forumRepository;
 
+    /**
+     * 사용자가 입력한 문제등록 관련 정보들을 게시글 양식으로 DB에 저장한다.
+     * @param member
+     * @param title
+     * @param q
+     */
     public void addForum(@CurrentUser Member member, String title, Question q) {
         Forum forum = Forum.builder()
                 .title(title)
@@ -25,7 +31,5 @@ public class ForumService {
                 .questionId(q.getId())
                 .build();
         forumRepository.save(forum);
-
-
     }
 }

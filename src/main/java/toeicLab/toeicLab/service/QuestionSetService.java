@@ -1,8 +1,6 @@
 package toeicLab.toeicLab.service;
 
-import com.sun.xml.bind.v2.util.QNameMap;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
@@ -23,10 +21,10 @@ public class QuestionSetService {
 
     private final int[] PART1 = {3, 6, 6};
     private final int[] PART2 = {4, 8, 25};
-    private final int[] PART3 = {3, 6, 13}; // set수, set당 3문제
-    private final int[] PART4 = {3, 6, 10}; // set수, set당 3문제
+    private final int[] PART3 = {3, 6, 13};
+    private final int[] PART4 = {3, 6, 10};
     private final int[] PART5 = {4, 8, 30};
-    private final int[] PART6 = {2, 4, 4}; // set수, set당 4문제
+    private final int[] PART6 = {2, 4, 4};
 
     private final QuestionSetRepository questionSetRepository;
     private final QuestionService questionService;
@@ -34,6 +32,12 @@ public class QuestionSetService {
     private final StudyGroupRepository studyGroupRepository;
     private final QuestionRepository questionRepository;
 
+    /**
+     * 모의고사 형태로 문제를 형성한다.
+     * @param member
+     * @param questionSetType
+     * @return result
+     */
     public QuestionSet createToeicSet(Member member, QuestionSetType questionSetType) {
         QuestionSet result = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
@@ -54,7 +58,15 @@ public class QuestionSetService {
         return result;
     }
 
-
+    /**
+     * LC문제들을 형성한다.
+     * @param member
+     * @param p1
+     * @param p2
+     * @param p3
+     * @param p4
+     * @return result
+     */
     public QuestionSet createPracticeLC(Member member, int p1, int p2, int p3, int p4) {
         QuestionSet result = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
@@ -66,9 +78,19 @@ public class QuestionSetService {
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
         result.setQuestionSetType(QuestionSetType.PRACTICE);
+
         return result;
     }
 
+    /**
+     * RC문제들을 형성한다.
+     * @param member
+     * @param p5
+     * @param p6
+     * @param p7s
+     * @param p7m
+     * @return result
+     */
     public QuestionSet createPracticeRC(Member member, int p5, int p6, int p7s, int p7m) {
         QuestionSet result = new QuestionSet();
         List<Question> questionList = new ArrayList<>();
@@ -82,15 +104,21 @@ public class QuestionSetService {
         result.setCreatedAt(LocalDateTime.now());
         result.setMember(member);
         result.setQuestionSetType(QuestionSetType.PRACTICE);
+
         return result;
     }
 
+    /**
+     * 스터디를 형성한다.
+     * @param studyGroup
+     * @param numberOfQuestions
+     * @param date
+     */
     public void createMeeting(StudyGroup studyGroup, int[] numberOfQuestions, String date) {
         QuestionSet meetingQuestionSet1 = new QuestionSet();
         QuestionSet meetingQuestionSet2 = new QuestionSet();
         QuestionSet meetingQuestionSet3 = new QuestionSet();
         QuestionSet meetingQuestionSet4 = new QuestionSet();
-
 
         List<Question> questionList = new ArrayList<>();
 
@@ -102,7 +130,6 @@ public class QuestionSetService {
         int part6 = numberOfQuestions[5];
         int part7_Single = numberOfQuestions[6];
         int part7_Multiple = numberOfQuestions[7];
-
 
         questionList.addAll(questionService.createQuestionList(QuestionType.PART1, part1));
         questionList.addAll(questionService.createQuestionList(QuestionType.PART2, part2));
@@ -170,8 +197,12 @@ public class QuestionSetService {
 
     }
 
+    /**
+     * 원하는 PART의 문제를 형성한다.
+     * @param select_form
+     * @return result
+     */
     public int[] selectFormToArray(String[] select_form) {
-
         int[] result = new int[8];
 
         for (int i = 1; i < select_form.length; i = i + 3) {
@@ -206,6 +237,11 @@ public class QuestionSetService {
         return result;
     }
 
+    /**
+     * 제출된 정답의 개수에 따라 정답률을 계산한다.
+     * @param questionSet
+     * @return %
+     */
     public String getPercentage(QuestionSet questionSet) {
         int correctCount = 0;
         int totalCount = questionSet.getQuestions().size();
@@ -220,6 +256,11 @@ public class QuestionSetService {
         return str + "%";
     }
 
+    /**
+     * 각 문제세트에 따라 각각의 정답률을 계산하고 comment를 제공한다.
+     * @param questionSet
+     * @return comment
+     */
     public String[] getPercentageEachOfQuestionSet(QuestionSet questionSet) {
         String[] comments = new String[8];
 

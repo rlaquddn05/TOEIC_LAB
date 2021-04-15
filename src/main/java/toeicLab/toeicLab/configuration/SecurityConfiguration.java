@@ -4,14 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import toeicLab.toeicLab.configuration.oauth.PrincipalOauth2UserService;
@@ -26,24 +22,29 @@ import javax.sql.DataSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final DataSource dataSource;
-
-    private final MemberService memberService;
-
     private final PrincipalOauth2UserService principalOauth2UserService;
 
-    @Bean // 로그인 유지 (persistence_logins) 레파지토리 빈으로 등록
+    /**
+     * 로그인 유지 기능입니다.
+     * @return repository
+     */
+    @Bean
     public PersistentTokenRepository tokenRepository(){
         JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
         repository.setDataSource(dataSource);
         return repository;
     }
 
+    /**
+     * 사용자에게 로그인시 보여주는 페이지와 로그아웃 상태에서 볼 수 있는 페이지를 나타냅니다.
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/common.css","/css/**","/images/**","/js/**","**/*.ico")
                 .permitAll()
-
                 .mvcMatchers("/index",
                         "/",
                         "/create_meeting",
@@ -93,17 +94,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest().authenticated();
 
-        // 로그인 유지 기능 추가
-//        http.rememberMe()
-//                .userDetailsService(memberService);
-
-        // 로그아웃 기능 추가
         http.logout()
-                .logoutUrl("/logout") // 이 경로는 이미 default
-                .invalidateHttpSession(true) // 로그아웃하면 session 이 갱신됨
-                .logoutSuccessUrl("/index"); // 로그아웃이 완료된 후 어디로 갈 지
+                .logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .logoutSuccessUrl("/index");
 
-        // 로그인 기능 추가
         http.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
@@ -115,8 +110,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService);
-
     }
-
 }
 

@@ -24,11 +24,18 @@ public class StudyGroupApplicationService {
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
     private final StudyGroupRepository studyGroupRepository;
 
-
+    /**
+     * 사용자들이 제출한 스터디그룹 신청서를 조회한다.
+     * @return
+     */
     public List<StudyGroupApplication> getStudyGroupApplicationList() {
         return studyGroupApplicationRepository.findAllByMatching(false);
     }
 
+    /**
+     * 서로 조건이 충족하는 4개의 신청서가 모이면 스터디 그룹을 형성한다.
+     * @return result
+     */
     public List<StudyGroup> matchStudyGroups() {
         List<StudyGroupApplication> applicationPool = getStudyGroupApplicationList();
         List<StudyGroup> result = new ArrayList<>();
@@ -41,13 +48,18 @@ public class StudyGroupApplicationService {
                 studyGroupRepository.save(studyGroup);
                 for (Member member : studyGroup.getMembers()) {
                     applicationPool.remove(member.getStudyGroupApplication());
-
                 }
             }
         }
         return result;
     }
 
+    /**
+     * 사용자가 제출한 신청서의 체크 된 항목들을 조회한다.
+     * @param target
+     * @param applicationPool
+     * @return result
+     */
     public StudyGroup matchOneStudyGroup(StudyGroupApplication target, List<StudyGroupApplication> applicationPool) {
         List<StudyGroupApplication> list1 = findAgeMatches(target, applicationPool);
         List<StudyGroupApplication> list2 = findLevelMatches(target, list1);
@@ -73,6 +85,12 @@ public class StudyGroupApplicationService {
         return gcd.intValue();
     }
 
+    /**
+     * 사용자가 제출한 신청서의 날짜를 조회한다.
+     * @param application
+     * @param list2
+     * @return result
+     */
     private List<StudyGroupApplication> findDayMatches(StudyGroupApplication application, List<StudyGroupApplication> list2) {
         List<StudyGroupApplication> result = new ArrayList<>();
         list2.remove(0);
@@ -94,6 +112,12 @@ public class StudyGroupApplicationService {
         return result;
     }
 
+    /**
+     * 사용자가 제출한 신청서의 성별을 조회한다.
+     * @param application
+     * @param list3
+     * @return result
+     */
     private List<StudyGroupApplication> findGenderMatches(StudyGroupApplication application, List<StudyGroupApplication> list3) {
         List<StudyGroupApplication> result = new ArrayList<>();
         list3.remove(0);
@@ -112,12 +136,16 @@ public class StudyGroupApplicationService {
                 if (count == result.size()) {
                     result.add(list3.get(i));
                 }
-
             }
         }
         return result;
     }
 
+    /**
+     * 신청서에 체크 된 나이에 값을 부여한다.
+     * @param application
+     * @return tagValue
+     */
     private int getTagValueFromAge(StudyGroupApplication application) {
         int tagValue = StudyGroupApplicationTag.AGE_10S.get()
                 * StudyGroupApplicationTag.AGE_20S.get()
@@ -140,6 +168,12 @@ public class StudyGroupApplicationService {
         return tagValue;
     }
 
+    /**
+     * 사용자가 제출한 신청서의 나이를 조회한다.
+     * @param target
+     * @param applicationPool
+     * @return result
+     */
     private List<StudyGroupApplication> findAgeMatches(StudyGroupApplication target, List<StudyGroupApplication> applicationPool) {
         List<StudyGroupApplication> result = new ArrayList<>();
         result.add(target);
@@ -169,6 +203,12 @@ public class StudyGroupApplicationService {
         return result;
     }
 
+    /**
+     * 사용자가 제출한 신청서의 레벨을 조회한다.
+     * @param application
+     * @param list1
+     * @return result
+     */
     private List<StudyGroupApplication> findLevelMatches(StudyGroupApplication application, List<StudyGroupApplication> list1) {
         List<StudyGroupApplication> result = new ArrayList<>();
         list1.remove(0);
@@ -198,6 +238,11 @@ public class StudyGroupApplicationService {
         return result;
     }
 
+    /**
+     * 조건이 맞는 새로운 스터디 그룹을 형성한다.
+     * @param studyGroupApplicationForm
+     * @param member
+     */
     public void createNewStudyGroupApplication(StudyGroupApplicationForm studyGroupApplicationForm, Member member) {
         int value=1;
         for (StudyGroupApplicationTag t : studyGroupApplicationForm.getTags()){

@@ -17,11 +17,20 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
+    /**
+     * 문제 DB에 있는 문제들을 조회한다.
+     * @return QuestionList
+     */
     public List<Question> getList() {
-
         return questionRepository.findAll();
     }
 
+    /**
+     * 무작위로 문제의 개수와 문제를 추출한다.
+     * @param questionType
+     * @param numberOfQuestions
+     * @return result
+     */
     public List<Question> createQuestionList(QuestionType questionType, int numberOfQuestions) {
         List<Question> allQuestionList = questionRepository.findAllByQuestionType(questionType);
         List<Question> result = new ArrayList<>();
@@ -38,6 +47,12 @@ public class QuestionService {
         return result;
     }
 
+    /**
+     * 문제에 따라 다른 보기들을 형성한다.
+     * @param questionType
+     * @param numberOfSmallSets
+     * @return result
+     */
     public List<Question> createQuestionListWithSmallSet(QuestionType questionType, int numberOfSmallSets) {
         List<Question> allQuestionList = questionRepository.findAllByQuestionType(questionType);
         List<Question> result = new ArrayList<>();
@@ -52,12 +67,17 @@ public class QuestionService {
         return result;
     }
 
+    /**
+     * PART7 유형에서 단일지문과 복합지문에 따라 문제를 형성한다.
+     * @param questionSetType
+     * @return result
+     */
     public List<Question> createPart7ByQuestionSetType(QuestionSetType questionSetType) {
         int[] smallSet_Single = new int[3];
         int[] smallSet_Multiple = new int[3];
 
         switch (questionSetType.get()) {
-            case 0: // quarter
+            case 0:
                 switch ((int) (Math.random() * 2)) {
                     case 0:
                         smallSet_Single = new int[]{0, 1, 1};
@@ -70,7 +90,7 @@ public class QuestionService {
                 }
                 break;
 
-            case 1: // half
+            case 1:
                 switch ((int) (Math.random() * 3)) {
                     case 0:
                         smallSet_Single = new int[]{1, 1, 2};
@@ -87,7 +107,7 @@ public class QuestionService {
                 }
                 break;
 
-            case 2: // full
+            case 2:
                 switch ((int) (Math.random() * 6)) {
                     case 0:
                         smallSet_Single = new int[]{0, 1, 5};
@@ -135,6 +155,14 @@ public class QuestionService {
         return result;
     }
 
+    /**
+     * PART7 유형에서 종류와 개수를 통해 문제들을 형성한다.
+     * @param questionType
+     * @param numberOfSmallSetType3
+     * @param numberOfSmallSetType4
+     * @param numberOfSmallSetType5
+     * @return result
+     */
     public List<Question> createPart7byQuestionTypeAndNumber(QuestionType questionType, int numberOfSmallSetType3,
                                                              int numberOfSmallSetType4, int numberOfSmallSetType5) {
         List<Question> result = new ArrayList<>();
@@ -168,6 +196,12 @@ public class QuestionService {
         return result;
     }
 
+    /**
+     * 문제의 종류에 따라 원하는 개수만큼 문제를 형성한다.
+     * @param questionType
+     * @param num
+     * @return result
+     */
     public List<Question> createQuestionByQuestionTypeAndNumber(QuestionType questionType, int num) {
         List<Question> result = new ArrayList<>();
 
@@ -182,6 +216,12 @@ public class QuestionService {
 
         return result;
     }
+
+    /**
+     * QuestionSet에 따라 PART별로 문제들을 형성한다.
+     * @param questionSet
+     * @param str
+     */
     public void checkTypeList(QuestionSet questionSet, List<String> str) {
         for (Question q : questionSet.getQuestions()){
             if(q.getQuestionType().toString().equals("PART1")){
@@ -240,12 +280,31 @@ public class QuestionService {
         }
     }
 
+    /**
+     * 문제의 id값을 통해 DB에서 문제를 찾아온다.
+     * @param id
+     * @return optional.orElse(null)
+     */
     public Question findQuestion(Long id) {
         Optional<Question> optional= questionRepository.findById(id);
         return optional.orElse(null);
     }
 
-
+    /**
+     * 전체 문제들을 형성한다.
+     * @param questionType
+     * @param content
+     * @param content2
+     * @param content3
+     * @param question
+     * @param exampleA
+     * @param exampleB
+     * @param exampleC
+     * @param exampleD
+     * @param answer
+     * @param solution
+     * @return result
+     */
     public Question createQuestion(String questionType, String content, String content2, String content3, String question, String exampleA, String exampleB, String exampleC, String exampleD, String answer, String solution) {
         QuestionType type=null;
         Question result = new Question();
@@ -281,7 +340,6 @@ public class QuestionService {
                 } else type = QuestionType.PART7_SINGLE_PARAGRAPH;
                 break;
             }
-
         }
 
         if (type==QuestionType.PART1||type==QuestionType.PART2||type==QuestionType.PART3||type==QuestionType.PART4){
@@ -310,7 +368,6 @@ public class QuestionService {
             rc.setQuestionExplanation(question);
             result = questionRepository.save(rc);
         }
-
 
         return result;
     }

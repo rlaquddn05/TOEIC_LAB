@@ -22,8 +22,4 @@ public class UserRecording {
     private QuestionSet questionSet;
 
     private String text;
-
-    //////////////////////////////
-//    Member member
-
 }

@@ -129,7 +129,7 @@ public class MainController {
      * 재설정 token 확인 후에 재설정 페이지로 넘어갑니다.
      * @param resetPasswordEmailToken
      * @param model
-     * @return
+     * @return view/reset_password
      */
     @PostMapping("/notify_password")
     public String goResetPassword(@RequestParam("token") String resetPasswordEmailToken, Model model) {
@@ -138,7 +138,12 @@ public class MainController {
         return "view/reset_password";
     }
 
-
+    /**
+     * 비밀번호 초기화 시 이메일로 전송된 token과 생성 된 token을 확인합니다.
+     * @param resetPasswordEmail
+     * @param resetPasswordEmailToken
+     * @return
+     */
     @GetMapping("/reset/checkTokens")
     @ResponseBody
     public String resetCheckTokens(@RequestParam("resetPasswordEmail") String resetPasswordEmail,
@@ -159,13 +164,22 @@ public class MainController {
         return jsonObject.toString();
     }
 
-
+    /**
+     * 비밀번호 초기화 페이지로 이동합니다.
+     * @return view/reset_password
+     */
     @GetMapping("reset_password")
     public String resetPasswordView() {
         return "view/reset_password";
     }
 
-
+    /**
+     * 새로 입력받은 비밀번호를 저장합니다.
+     * @param email
+     * @param password
+     * @param model
+     * @return view/notify_password
+     */
     @PostMapping("/reset_password")
     public String resetPassword(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
         memberService.resetPassword(email, password);
@@ -174,11 +188,21 @@ public class MainController {
         return "view/notify_password";
     }
 
+    /**
+     * 아이디 찾기 페이지로 이동합니다.
+     * @return
+     */
     @GetMapping("/send_find_id_link")
     public String sendFindIdView() {
         return "view/send_find_id_link";
     }
 
+    /**
+     * 입력받은 이메일로 조회하여 일치하는 아이디를 찾아냅니다.
+     * @param email
+     * @param model
+     * @return view/find_id
+     */
     @PostMapping("/send_find_id_link")
     public String sendFindId(String email, Model model) {
         try {
@@ -192,12 +216,23 @@ public class MainController {
         return "view/find_id";
     }
 
+    /**
+     * [ToeicLab]의 회원가입페이지로 이동합니다.
+     * @param model
+     * @return view/signup
+     */
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute(new SignUpForm());
         return "/view/signup";
     }
 
+    /**
+     * 회원가입 시 입력받은 정보들의 유효성검사를 한 뒤에 회원정보에 저장합니다.
+     * @param signUpForm
+     * @param errors
+     * @return redirect:/index
+     */
     @PostMapping("/signup")
     public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
         if (errors.hasErrors()) {
@@ -214,6 +249,11 @@ public class MainController {
         return "redirect:/index";
     }
 
+    /**
+     * 사용자가 입력한 이메일로 token을 전송합니다.
+     * @param email
+     * @return
+     */
     @GetMapping("/signup/email")
     @ResponseBody
     public String sendEmailCheckToken(@RequestParam("email") String email) {
@@ -241,6 +281,12 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    /**
+     * 이메일로 전송받은 token값과 기존의 token값을 비교하여 이메일 인증절차를 진행합니다.
+     * @param email
+     * @param certification_number
+     * @return
+     */
     @GetMapping("/signup/checkTokens")
     @ResponseBody
     public String checkTokens(@RequestParam("email") String email, @RequestParam("certification_number") String certification_number) {
@@ -261,6 +307,11 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    /**
+     * 사용자가 입력한 아이디의 사용여부를 판단합니다.
+     * @param userId
+     * @return
+     */
     @GetMapping("/signup/checkUserId")
     @ResponseBody
     public String checkUserId(@RequestParam("userId") String userId) {
@@ -273,15 +324,17 @@ public class MainController {
 
         if (result) {
             jsonObject.addProperty("message", "이미 존재하는 아이디입니다.");
-//            jsonObject.addProperty("message",false);
         } else {
             jsonObject.addProperty("message", "사용 가능한 아이디입니다.");
-//            jsonObject.addProperty("message",true);
-
         }
         return jsonObject.toString();
     }
 
+    /**
+     * 사용자가 입력한 닉네임의 사용여부를 판단합니다.
+     * @param nickname
+     * @return
+     */
     @GetMapping("/signup/checkNickname")
     @ResponseBody
     public String checkNickname(@RequestParam("nickname") String nickname) {
@@ -299,6 +352,12 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    /**
+     * 입력한 비밀번호와 재입력한 비밀번호의 일치여부를 판단합니다.
+     * @param password
+     * @param check_password
+     * @return
+     */
     @GetMapping("/signup/checkPasswords")
     @ResponseBody
     public String checkPasswords(@RequestParam("password") String password, @RequestParam("check_password") String check_password) {
@@ -316,6 +375,12 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    /**
+     * 기존의 비밀번호 위에 새로운 비밀번호를 저장하여 수정합니다.
+     * @param password
+     * @param userId
+     * @return
+     */
     @GetMapping("/update/password")
     @ResponseBody
     public String updatePassword(@RequestParam("password") String password, @RequestParam("userId") String userId) {
@@ -336,6 +401,12 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    /**
+     * 사용자의 아이디를 조회하여 회원정보를 삭제합니다(탈퇴).
+     * @param userId
+     * @param request
+     * @return
+     */
     @GetMapping("/update/delete")
     @ResponseBody
     public String deletePassword(@RequestParam("userId") String userId, HttpServletRequest request) {
@@ -359,11 +430,15 @@ public class MainController {
                 session.invalidate();
             }
         }
-
         return jsonObject.toString();
     }
 
-
+    /**
+     * 현재 로그인한 사용자의 정보를 조회하여 마이페이지에 불러옵니다.
+     * @param member
+     * @param model
+     * @return view/my_page
+     */
     @GetMapping("/my_page")
     public String myPageView(@CurrentUser Member member, Model model) {
         if (member.getGenderType() == null){
@@ -378,10 +453,13 @@ public class MainController {
         return "view/my_page";
     }
 
+    /**
+     * 기존의 회원정보에서 수정된 사항으로 회원정보를 수정합니다.
+     * @param updateForm
+     * @return redirect:/my_page
+     */
     @PostMapping("/my_page")
     public String myPageSubmit(UpdateForm updateForm) {
-        log.info("회원정보수정 시작");
-
         Member updatedMember = memberRepository.findByUserId(updateForm.getUserId());
         updatedMember.setAge(updateForm.getAge());
         updatedMember.setContact(updateForm.getContact());
@@ -401,6 +479,13 @@ public class MainController {
         return "redirect:/my_page";
     }
 
+    /**
+     * 사용자가 매칭된 여러 스터디 그룹중 본인이 선택한 스터디그룹에 대해 확인합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @return view/my_studygroup_detail
+     */
     @GetMapping("/my_studygroup_detail/{id}")
     public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
         Long longId = Long.parseLong(id);
@@ -439,7 +524,6 @@ public class MainController {
             model.addAttribute("comment", comment);
         }
 
-
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", Long.parseLong(id));
         model.addAttribute("thisStudyGroup", thisStudyGroup);
@@ -451,6 +535,15 @@ public class MainController {
         return "view/my_studygroup_detail";
     }
 
+    /**
+     * 사용자가 매칭된 여러 스터디 그룹중 본인이 선택한 스터디그룹에 대해 확인합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @param date
+     * @param select_form
+     * @return redirect:/my_studygroup_detail/{id}
+     */
     @PostMapping("/create_meeting/{id}")
     public String myStudyGroupDetailPost(@CurrentUser Member member, @PathVariable String id, Model model, String date,
                                          String[] select_form) {
@@ -464,6 +557,13 @@ public class MainController {
         return "redirect:/my_studygroup_detail/{id}";
     }
 
+    /**
+     * [ToeicLab]스터디생성 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @param id
+     * @return view/crete_meeting
+     */
     @GetMapping("/create_meeting/{id}")
     public String viewCreateMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {
         model.addAttribute("member", member);
@@ -471,41 +571,81 @@ public class MainController {
         return "view/create_meeting";
     }
 
+    /**
+     * [ToeicLab]의 소개페이지로 이동합니다.
+     * @return view/toeiclab_intro
+     */
     @GetMapping("/toeiclab_introduction")
     public String toeiclabIntroduction() {
         return "view/toeiclab_intro";
     }
 
+    /**
+     * [ToeicLab]의 모의고사 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/select_test
+     */
     @GetMapping("/select_test")
     public String selectTest(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/select_test";
     }
 
+    /**
+     * [ToeicLab]의 RC문제풀이 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/re_sheet
+     */
     @GetMapping("/rc_sheet")
     public String rcSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/rc_sheet";
     }
 
+    /**
+     * [ToeicLab]의 LC문제풀이 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/practice_sheet
+     */
     @GetMapping("/lc_sheet")
     public String lcSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "/practice_sheet";
+        return "view/practice_sheet";
     }
 
+    /**
+     * [ToeicLab]의 SPK문제풀이 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/spk_sheet
+     */
     @GetMapping("/spk_sheet")
     public String spkSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/spk_sheet";
     }
 
+    /**
+     * [ToeicLab]의 SPK문제확인 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/spk_confirm_answer
+     */
     @GetMapping("/spk_confirm_answer")
     public String spkConfirmAnswer(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/spk_confirm_answer";
     }
 
+    /**
+     * [ToeicLab]의 스터디 그룹 신청 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/apply_studygroup
+     */
     @GetMapping("/apply_studygroup")
     public String applyStudyGroup(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
@@ -513,45 +653,79 @@ public class MainController {
         return "view/apply_studygroup";
     }
 
+    /**
+     * 회원이 선택한 신청서를 제출합니다.
+     * @param model
+     * @param member
+     * @param studyGroupApplicationForm
+     * @param errors
+     * @return view/apply_studygroup
+     */
     @PostMapping("/apply_studygroup")
     public String SubmitStudyGroupApplication(Model model, @CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors) {
         model.addAttribute("member", member);
         studyGroupApplicationValidator.validate(studyGroupApplicationForm, errors);
         if (errors.hasErrors()) {
-            log.info("유효성 에러 발생!");
             return "view/apply_studygroup";
         }
-        log.info("유효성 검사 끝!");
-
         studyGroupApplicationService.createNewStudyGroupApplication(studyGroupApplicationForm, member);
         return "redirect:/";
     }
 
+    /**
+     * RC정답 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/rc_answer_sheet
+     */
     @GetMapping("/rc_answer_sheet")
     public String rcAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/rc_answer_sheet";
     }
 
+    /**
+     * LC정답 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/detail
+     */
     @GetMapping("/lc_answer_sheet")
     public String lcAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "detail";
+        return "view/detail";
     }
 
+    /**
+     * SPK정답 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/spk_answer_sheet
+     */
     @GetMapping("/spk_answer_sheet")
     public String spkAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/spk_answer_sheet";
     }
 
-
+    /**
+     * 일정 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/schedule
+     */
     @GetMapping("/schedule")
     public String schedule(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         return "view/schedule";
     }
 
+    /**
+     * 사용자가 문제풀이를 한 뒤에 자신의 학습현황 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/my_progress
+     */
     @GetMapping("/my_progress")
     public String myProgress(@CurrentUser Member member, Model model) {
         QuestionSet qToeic = null;

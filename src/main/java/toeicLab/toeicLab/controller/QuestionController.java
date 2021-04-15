@@ -30,6 +30,13 @@ public class QuestionController {
     private final MemberService memberService;
     private final MeetingRepository meetingRepository;
 
+    /**
+     * 사용자가 선택한 연습문제(LR/RC/SPK)페이지로 이동합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @return view/practice_select
+     */
     @GetMapping("/practice_select/{id}")
     public String practiceTest(@CurrentUser Member member, @PathVariable String id, Model model){
         if(id.equals("rc")) model.addAttribute("practice", "rc");
@@ -39,6 +46,14 @@ public class QuestionController {
         return "view/practice_select";
     }
 
+    /**
+     * 선택한 유형의 문제를 PART별로 입력한 개수만큼 가져옵니다.
+     * @param member
+     * @param id
+     * @param request
+     * @param model
+     * @return view/practice_sheet
+     */
     @RequestMapping("/practice/{id}")
     @Transactional
     public String test(@CurrentUser Member member, @PathVariable String id, HttpServletRequest request, Model model){
@@ -107,6 +122,13 @@ public class QuestionController {
         }
     }
 
+    /**
+     * 사용자가 원하는 세트의 모의고사를 풀 수 있는 페이지로 이동합니다.
+     * @param member
+     * @param type
+     * @param model
+     * @return view/question/test
+     */
     @GetMapping("/test/{type}")
     @Transactional
     public String test1 (@CurrentUser Member member, @PathVariable String type, Model model){
@@ -135,6 +157,14 @@ public class QuestionController {
         return "view/question/test";
     }
 
+    /**
+     * 사용자가 푼 문제의 결과를 보여줍니다.
+     * @param member
+     * @param request
+     * @param questionSetId
+     * @param model
+     * @return view/result_sheet
+     */
     @PostMapping("/result_sheet/{questionSetId}")
     public String resultSheet(@CurrentUser Member member, HttpServletRequest request, @PathVariable Long questionSetId, Model model) {
         QuestionSet questionSet = null;
@@ -160,18 +190,16 @@ public class QuestionController {
             }
             map.put(Long.parseLong(param), value);
         }
-        /*===============================================*/
+
         System.out.println(map);
         assert questionSet != null;
         questionSet.setSubmittedAnswers(map);
         questionSetRepository.save(questionSet);
         questionSet = questionSetRepository.getOne(setIdValue);
 
-        /*=================================PART 걸러내기===============================*/
         List<String> str = new ArrayList<>();
         questionService.checkTypeList(questionSet, str);
         System.out.println(str);
-        /*============================================================================*/
 
         model.addAttribute("questionType", str);
         model.addAttribute("questionList", questionSet.getQuestions());
@@ -186,19 +214,24 @@ public class QuestionController {
         return "view/result_sheet";
     }
 
+    /**
+     * 사용자가 푼 문제들의 상세보기 페이지로 이동합니다.
+     * @param member
+     * @param id
+     * @param request
+     * @param model
+     * @return view/detail
+     */
     @RequestMapping( "/detail/{id}")
     public String lcAnswerSheet(@CurrentUser Member member, @PathVariable Long id, HttpServletRequest request, Model model) {
-        System.out.println(request.getParameter("questionSetId"));
         long questionSetId = Long.parseLong(request.getParameter("questionSetId"));
         QuestionSet questionSet = questionSetRepository.getOne(questionSetId);
 
-        log.info("id: " + id);
         Question question= questionService.findQuestion(id);
 
         if(member!=null){
             member = memberRepository.findByEmail(member.getEmail());
         }
-        System.out.println(questionSet.getSubmittedAnswers());
         model.addAttribute("question", question);
         model.addAttribute("member", member);
         model.addAttribute("questionSetId", questionSetId);
@@ -206,6 +239,12 @@ public class QuestionController {
         return "view/detail";
     }
 
+    /**
+     * 사용자가 추가한 문제들을 볼 수 있는 오답노트페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/my_review_note
+     */
     @GetMapping("/my_review_note")
     public String myReviewNote(@CurrentUser Member member, Model model) {
         ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
@@ -229,6 +268,13 @@ public class QuestionController {
         return "view/my_review_note";
     }
 
+    /**
+     * 사용자가 원하는 문제를 오답노트에 추가합니다.
+     * @param member
+     * @param id
+     * @param answer
+     * @return
+     */
     @GetMapping("/add_review_note")
     @ResponseBody
     public String AddReviewNote(@CurrentUser Member member, @RequestParam("id") Long id, @RequestParam("answer") String answer){
@@ -249,6 +295,12 @@ public class QuestionController {
         return jsonObject.toString();
     }
 
+    /**
+     * 사용자가 선택한 문제를 오답노트에서 삭제합니다.
+     * @param member
+     * @param id
+     * @return
+     */
     @GetMapping("/delete_review_note")
     @ResponseBody
     public String TestReviewNote(@CurrentUser Member member, @RequestParam("id") Long id){

@@ -15,7 +15,6 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.user.MemberUser;
 import toeicLab.toeicLab.user.SignUpForm;
-import toeicLab.toeicLab.user.UpdateForm;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -34,7 +33,11 @@ public class MemberService implements UserDetailsService {
     private final WordRepository wordRepository;
     private final QuestionSetService questionSetService;
 
-
+    /**
+     * 회원가입시 사용자가 입력한 정보를 DB에 저장한다.
+     * @param signUpForm
+     * @return
+     */
     public Member createNewMember(SignUpForm signUpForm) {
         Member member = Member.builder()
                 .userId(signUpForm.getUserId())
@@ -64,40 +67,46 @@ public class MemberService implements UserDetailsService {
         return member;
     }
 
+    /**
+     * 사용자가 입력한 아이디와 비밀번호의 유무와 일치여부를 DB에서 확인한다.
+     * @param userId
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member member = memberRepository.findByUserId(userId);
-        log.info("[ToeicLab]으로 로그인" + member.getUserId());
 
         if(member == null) {
             throw new UsernameNotFoundException(userId);
         }
-        log.info(member.getUserId());
         return new MemberUser(member);
     }
 
+    /**
+     * 자동으로 로그인을 유지하는 기능
+     * @param member
+     */
     public void autologin(Member member) {
-
         MemberUser memberUser = new MemberUser(member);
 
-        // 인증 토큰 생성
-        // SecurityContext 가 인증 유저를 관리 (현재 로그인 중인 유저들의 정보)
-        // 유저 구분은 AuthenticationToken 으로 관리됨.
-        // Token 구조 : username, password, role 으로 구성됨.
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(
-                        memberUser, //member.getEmail(),  // username
-                        memberUser.getMember().getPassword(), // password
-                        memberUser.getAuthorities() // authorities (권한들 (Collection 객체))
+                        memberUser,
+                        memberUser.getMember().getPassword(),
+                        memberUser.getAuthorities()
                 );
 
-        // SecurityContext 에 token 저장
         SecurityContext ctx = SecurityContextHolder.getContext();
         ctx.setAuthentication(token);
-
     }
 
-
+    /**
+     * 비밀번호 초기화시 사용자의 아이디를 확인한 후 등록된 이메일로 token을 전송한다.
+     * @param userId
+     * @param email
+     * @return
+     */
     public Member sendResetPasswordEmail(String userId, String email) {
         Member member = memberRepository.findByUserId(userId);
 
@@ -114,6 +123,11 @@ public class MemberService implements UserDetailsService {
         return member;
     }
 
+    /**
+     * 사용자에게 입력받은 새로운 비밀번호를 저장한다.(비밀번호 초기화)
+     * @param email
+     * @param password
+     */
     public void resetPassword(String email, String password) {
         Member member = memberRepository.findByEmail(email);
         member.setPassword("{noop}" + password);
@@ -121,7 +135,11 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
     }
 
-
+    /**
+     * 입력받은 이메일로 사용자의 아이디를 DB에서 조회한다.
+     * @param email
+     * @return
+     */
     public Member sendFindIdByEmail(String email) {
         Member member = memberRepository.findByEmail(email);
         if(member == null){
@@ -130,6 +148,13 @@ public class MemberService implements UserDetailsService {
         return member;
     }
 
+    /**
+     * 사용자가 추가하고 싶은 문제를 오답노트에 저장한다.
+     * @param member
+     * @param questionId
+     * @param answer
+     * @return
+     */
     @Transactional
     public boolean addReviewNote(Member member, Long questionId, String answer) {
         Question question = questionRepository.getOne(questionId);
@@ -154,6 +179,11 @@ public class MemberService implements UserDetailsService {
         }
     }
 
+    /**
+     * 사용자가 삭제하고 싶은 문제를 오답노트에서 삭제한다.
+     * @param member
+     * @param questionId
+     */
     public void deleteReviewNote(Member member, Long questionId) {
         Question question = questionRepository.getOne(questionId);
         ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
@@ -172,8 +202,13 @@ public class MemberService implements UserDetailsService {
         return;
     }
 
+    /**
+     * 사용자가 맞추고 틀린 문제를 통해 정답률을 도출한다.
+     * @param member
+     * @param questionType
+     * @return
+     */
     public int[] numberOfCorrectAndWrongAnswersByQuestionType(Member member, QuestionType questionType) {
-
         List<QuestionSet> questionSets = questionSetRepository.getAllByMember(member);
         int correctCount = 0;
         int totalCount = 0;
@@ -193,16 +228,19 @@ public class MemberService implements UserDetailsService {
         return new int[]{correctCount, totalCount - correctCount};
     }
 
-
-
+    /**
+     * 사용자가 추가하고 싶은 단어를 단어장에 추가한다.
+     * @param member
+     * @param word
+     * @param meaning
+     * @return
+     */
     public boolean addWordList(Member member, String word, String meaning) {
         Word wordList = wordRepository.findByMember(member);
         if (wordList == null){
             wordList = new Word();
             wordList.setMember(member);
         }
-        System.out.println(word);
-        System.out.println(meaning);
         Map<String, String> map = wordList.getWord();
         for (Map.Entry<String, String> m : map.entrySet()) {
             if (m.getKey().contains(word)) {
@@ -215,6 +253,11 @@ public class MemberService implements UserDetailsService {
         return true;
     }
 
+    /**
+     * 사용자가 삭제하고 싶은 단어를 단어장에서 삭제한다.
+     * @param member
+     * @param word
+     */
     public void deleteWord(Member member, String word) {
         Word wordList = wordRepository.findByMember(member);
         Map<String, String> map = wordList.getWord();
@@ -223,17 +266,12 @@ public class MemberService implements UserDetailsService {
         wordRepository.save(wordList);
     }
 
-
-//    public boolean deleteWord(Member member, String word) {
-//        Word wordList = wordRepository.findByMember(member);
-//        Map<String, String> map = wordList.getWord();
-//        map.remove(word);
-//        wordList.setWord(map);
-//        wordRepository.save(wordList);
-//        return true;
-//    }
-
-
+    /**
+     * 사용자의 정답률에 따라 comment를 생성하고 보여준다.
+     * @param member
+     * @param questionType
+     * @return
+     */
     public String createCommentByQuestionType(Member member, QuestionType questionType) {
         String comment = "생성된 코멘트가 없습니다";
         int[] correctAndWrong = numberOfCorrectAndWrongAnswersByQuestionType(member, questionType);
@@ -255,13 +293,22 @@ public class MemberService implements UserDetailsService {
         return comment;
     }
 
-
+    /**
+     * 문제별로 사용자의 진행상황을 보여준다.
+     * @param questionSet
+     * @return
+     */
     public String CreateProgressByQuestionSet(QuestionSet questionSet){
         String date = questionSet.getCreatedAt().format(DateTimeFormatter.ofPattern("yy년MM월dd일HH시"));
         String percentage = questionSetService.getPercentage(questionSet);
         return date + "에 실시한 학습의 정답률 : " + percentage;
     }
 
+    /**
+     * 사용자가 푼 문제를 통해 사용자의 레벨을 계산하고 보여준다.
+     * @param member
+     * @return
+     */
     public String CreateLevelByAllQuestions(Member member) {
         int total = 0;
         int correct = 0;
@@ -279,7 +326,6 @@ public class MemberService implements UserDetailsService {
             }
         }
         if(total==0) return "데이터가 없습니다.";
-
 
         String level = null;
         if (correct * 100 / total < 30) level ="하";
