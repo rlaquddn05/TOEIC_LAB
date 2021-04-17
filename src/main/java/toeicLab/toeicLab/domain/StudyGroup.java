@@ -24,7 +24,7 @@ public class StudyGroup {
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     private List<Member> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studyGroup")
+    @OneToMany(mappedBy = "studyGroup", cascade = CascadeType.REMOVE)
     private List<Meeting> meetings = new ArrayList<>();
 
     private Long readerId;
