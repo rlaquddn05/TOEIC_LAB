@@ -19,7 +19,7 @@
             <li class="nav-item"><a class="nav-link" href="/" th:href="@{/my_progress}" sec:authorize="isAuthenticated()">학습현황</a></li>
             <li class="nav-item dropdown" sec:authorize="isAuthenticated()"><a class="nav-link" href="#"><span>내 스터디그룹</span><i class="fas fa-chevron-down"></i></a>
                 <ul>
-                    <li class="dropdown-item" th:each="std:${member.getStudyGroupList()}" ><a class="nav-link" href="#" th:text="${std.id}" th:href="@{/my_studygroup_detail/{id}(id=${std.id})}">스터디 목록</a></li>
+                    <li class="dropdown-item" th:each="std:${member.getStudyGroupList()}" ><a class="nav-link" href="#" th:text="${std.name}" th:href="@{/my_studygroup_detail/{id}(id=${std.id})}">스터디 목록</a></li>
                 </ul>
             </li>
 

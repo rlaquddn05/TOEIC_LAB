@@ -34,7 +34,7 @@ public class TestConfiguration {
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
     private final QuestionSetService questionSetService;
-    private static final int NUMBER_OF_DUMMY_USERS = 500;
+    private static final int NUMBER_OF_DUMMY_USERS = 100;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private static final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
@@ -317,6 +317,14 @@ public class TestConfiguration {
 
         memberRepository.save(member);
     }
+    /**
+     * TestUser와 DummyUser들을 생성합니다.
+     */
+    @PostConstruct
+    public void initDummyUsers() {
+        createDummyUsers();
+        createTestUsers();
+    }
 
     /**
      * 스터디 그룹을 무작위로 매칭합니다.
@@ -342,12 +350,4 @@ public class TestConfiguration {
         initPart7_multiple();
     }
 
-    /**
-     * TestUser와 DummyUser들을 생성합니다.
-     */
-    @PostConstruct
-    public void initDummyUsers() {
-        createDummyUsers();
-        createTestUsers();
-    }
 }

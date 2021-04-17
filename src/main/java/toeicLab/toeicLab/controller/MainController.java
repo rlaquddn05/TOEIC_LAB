@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -403,51 +404,89 @@ public class MainController {
         return jsonObject.toString();
     }
 
-    /**
-     * 사용자의 아이디를 조회하여 회원정보를 삭제합니다(탈퇴).
-     * @param userId
-     * @param request
-     * @return
-     */
-    @GetMapping("/update/delete")
-    @ResponseBody
-    public String deletePassword(@RequestParam("userId") String userId, HttpServletRequest request) {
-
-        Member deletedMember = memberRepository.findByUserId(userId);
-        List<StudyGroup> sg = deletedMember.getStudyGroupList();
-        System.out.println(sg.toString());
-
-        for (int i = 0; i < sg.size(); ++i){
-            List<Member> mb = sg.get(i).getMembers();
-            for (int j =0; j< mb.size(); ++i){
-                if (mb.get(j).getId().equals(deletedMember.getId())){
-                    mb.remove(j);
-                    break;
-                }
-                sg.get(i).setMembers(mb);
-                studyGroupRepository.save(sg.get(i));
-            }
-        }
-
-        memberRepository.deleteById(deletedMember.getId());
-
-        boolean result = true;
-        result = memberRepository.existsById(deletedMember.getId());
-        JsonObject jsonObject = new JsonObject();
-
-        if (result) {
-            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴실패...");
-
-        } else {
-            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴했습니다.");
-            HttpSession session= request.getSession(false);
-            SecurityContextHolder.clearContext();
-            if(session != null) {
-                session.invalidate();
-            }
-        }
-        return jsonObject.toString();
-    }
+//    /**
+//     * 사용자의 아이디를 조회하여 회원정보를 삭제합니다(탈퇴).
+//     * @param userId
+//     * @param request
+//     * @return
+//     */
+//    @GetMapping("/update/delete")
+//    @ResponseBody
+//    public String deletePassword(@RequestParam("userId") String userId, HttpServletRequest request) {
+//
+//        Member deletedMember = memberRepository.findByUserId(userId);
+//        List<StudyGroup> sg = deletedMember.getStudyGroupList();
+//        List <QuestionSet> newSet = new ArrayList<>();
+//        for (int i = 0; i < sg.size(); ++i) {
+//            List<Meeting> meet = sg.get(i).getMeetings();
+//            for (int j = 0; j < meet.size(); ++j) {
+//                List<QuestionSet> set = meet.get(j).getQuestionSets();
+//                for (int k = 0; k < set.size(); ++k) {
+//                    if (set.get(k).getQuestionSetType().equals(QuestionSetType.MEETING) && set.get(k).getMember().getId().equals(deletedMember.getId())) {
+//                        meet.get(j).getQuestionSets().remove(set.get(k));
+//                        questionSetRepository.deleteById(set.get(k).getId());
+//                    } else {
+//                        newSet.add(set.get(k));
+//                    }
+//                }
+//                meet.get(j).setQuestionSets(newSet);
+//                sg.get(i).setMeetings(meet);
+//            }
+//            studyGroupRepository.save(sg.get(i));
+//        }
+//
+//        for (int i = 0; i < sg.size(); ++i) {
+//            List<Member> mb = sg.get(i).getMembers();
+//            for (int g = 0; g < mb.size(); ++g){
+//                if (mb.size() == 1){
+//                    sg.get(i).getMembers().remove(mb.get(g));
+//                    studyGroupRepository.deleteById(sg.get(i).getId());
+//                    break;
+//                }
+//                if (mb.get(g).getId().equals(deletedMember.getId())){
+//                    mb.remove(mb.get(g));
+//                    sg.get(i).setMembers(mb);
+//                    if (mb.get(g).getId().equals(sg.get(i).getReaderId())){
+//                        sg.get(i).setReaderId(mb.get(0).getId());
+//                    }
+//                }
+//                studyGroupRepository.save(sg.get(i));
+//                break;
+//            }
+//        }
+////        List <QuestionSet> questionSetList = questionSetRepository.findAll();
+////        questionSetList.removeIf(qs -> qs.getMember().getId().equals(deletedMember.getId()));
+////        for (QuestionSet m : questionSetList){
+////            questionSetRepository.save(m);
+////        }
+//
+////        List <QuestionSet> deleteList = deletedMember.getQuestionSetList();
+////        for (QuestionSet q : questionSetList){
+////            for (QuestionSet qs : deleteList){
+////                if (q.getId() == qs.getId()){
+////                    questionSetList.remove(q);
+////                }
+////            }
+////        }
+//        memberRepository.deleteById(deletedMember.getId());
+//
+//        boolean result = true;
+//        result = memberRepository.existsById(deletedMember.getId());
+//        JsonObject jsonObject = new JsonObject();
+//
+//        if (result) {
+//            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴실패...");
+//
+//        } else {
+//            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴했습니다.");
+//            HttpSession session= request.getSession(false);
+//            SecurityContextHolder.clearContext();
+//            if(session != null) {
+//                session.invalidate();
+//            }
+//        }
+//        return jsonObject.toString();
+//    }
 
     /**
      * 현재 로그인한 사용자의 정보를 조회하여 마이페이지에 불러옵니다.
@@ -497,12 +536,62 @@ public class MainController {
     }
 
     /**
-     * 사용자가 매칭된 여러 스터디 그룹중 본인이 선택한 스터디그룹에 대해 확인합니다.
-     * @param member
-     * @param id
-     * @param model
-     * @return view/my_studygroup_detail
+     * 사용자의 아이디를 조회하여 회원정보를 삭제합니다(탈퇴).
+     * @param userId
+     * @param request
+     * @return
      */
+    @GetMapping("/update/delete")
+    @ResponseBody
+    public String deletePassword(@RequestParam("userId") String userId, HttpServletRequest request) {
+
+        Member deletedMember = memberRepository.findByUserId(userId);
+        List<StudyGroup> sg = deletedMember.getStudyGroupList();
+
+        for (StudyGroup studyGroup : sg) {
+            for (int j = 0; j < studyGroup.getMembers().size(); ++j) {
+                if (studyGroup.getMembers().size() == 1) {
+                    studyGroupRepository.deleteById(studyGroup.getId());
+                    break;
+                }
+                if (studyGroup.getReaderId().equals(deletedMember.getId()) && studyGroup.getMembers().get(j).getId().equals(deletedMember.getId())) {
+                    studyGroup.setReaderId(studyGroup.getMembers().get(j + 1).getId());
+                    studyGroupRepository.save(studyGroup);
+                }
+            }
+        }
+
+        for (StudyGroup s : sg){
+            if (s.getMembers().size() > 1){
+                for (Meeting meeting : s.getMeetings()) {
+                    meeting.getQuestionSets().removeIf(qs -> qs.getMember().getId().equals(deletedMember.getId()));
+                }
+                s.getMembers().remove(deletedMember);
+                studyGroupRepository.save(s);
+            }
+
+        }
+
+        memberRepository.deleteById(deletedMember.getId());
+
+        boolean result = true;
+        result = memberRepository.existsById(deletedMember.getId());
+        JsonObject jsonObject = new JsonObject();
+
+        if (result) {
+            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴실패...");
+
+        } else {
+            jsonObject.addProperty("message", "[ToeicLab]을 탈퇴했습니다.");
+            HttpSession session= request.getSession(false);
+            SecurityContextHolder.clearContext();
+            if(session != null) {
+                session.invalidate();
+            }
+        }
+        return jsonObject.toString();
+    }
+
     @GetMapping("/my_studygroup_detail/{id}")
     public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
         Long longId = Long.parseLong(id);
@@ -512,24 +601,22 @@ public class MainController {
         Map<Long, String> comment = new HashMap<>();
         Map<Long, QuestionSet> map = new HashMap<>();
         if (meetings != null) {
-            for (Meeting meeting : meetings) {
-                if (meeting.getQuestionSet1().getMember().getId().equals(member.getId())) {
-                    questionSets.add(meeting.getQuestionSet1());
-                    map.put(meeting.getId(), meeting.getQuestionSet1());
-                }
-                if (meeting.getQuestionSet2().getMember().getId().equals(member.getId())) {
-                    questionSets.add(meeting.getQuestionSet2());
-                    map.put(meeting.getId(), meeting.getQuestionSet2());
-                }
-                if (meeting.getQuestionSet3().getMember().getId().equals(member.getId())) {
-                    questionSets.add(meeting.getQuestionSet3());
-                    map.put(meeting.getId(), meeting.getQuestionSet3());
-                }
-                if (meeting.getQuestionSet4().getMember().getId().equals(member.getId())) {
-                    questionSets.add(meeting.getQuestionSet4());
-                    map.put(meeting.getId(), meeting.getQuestionSet4());
-                }
+            for (Meeting m : meetings){
+               for(QuestionSet qs : m.getQuestionSets()){
+                   if (qs.getMember().getId().equals(member.getId())){
+                       questionSets.add(qs);
+                       map.put(m.getId(), qs);
+                   }
+               }
             }
+//            for (int i = 0; i < meetings.size(); ++i) {
+//                if (meetings.get(i).getQuestionSets().get(i).getMember().getId().equals(member.getId())){
+//                    questionSets.add(meetings.get(i).getQuestionSets().get(i));
+//                    map.put(meetings.get(i).getId(), meetings.get(i).getQuestionSets().get(i));
+//                }
+//            }
+
+            //=========================================================================
             model.addAttribute("questionSets", questionSets);
             for(QuestionSet qs : questionSets){
                 if (!qs.getSubmittedAnswers().isEmpty()){
@@ -550,16 +637,20 @@ public class MainController {
                 break;
             }
         }
+
+        model.addAttribute("memberList", memberList);
+
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", Long.parseLong(id));
         model.addAttribute("thisStudyGroup", thisStudyGroup);
-        model.addAttribute("member1", memberList.get(0));
-        model.addAttribute("member2", memberList.get(1));
-        model.addAttribute("member3", memberList.get(2));
         model.addAttribute("meetings", meetings);
         model.addAttribute("map",map);
         return "view/my_studygroup_detail";
     }
+
+
+
+
 
 
     @GetMapping("/modify_study_leader")

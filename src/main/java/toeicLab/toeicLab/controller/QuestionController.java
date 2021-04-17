@@ -91,17 +91,24 @@ public class QuestionController {
         }
         else {
             Meeting meeting = meetingRepository.getOne(Long.parseLong(id));
-            QuestionSet qs1 = meeting.getQuestionSet1();
-            QuestionSet qs2 = meeting.getQuestionSet2();
-            QuestionSet qs3 = meeting.getQuestionSet3();
-            QuestionSet qs4 = meeting.getQuestionSet4();
+            List<QuestionSet> qsList = meeting.getQuestionSets();
+
+//            QuestionSet qs1 = meeting.getQuestionSet1();
+//            QuestionSet qs2 = meeting.getQuestionSet2();
+//            QuestionSet qs3 = meeting.getQuestionSet3();
+//            QuestionSet qs4 = meeting.getQuestionSet4();
 
             QuestionSet questionSet = new QuestionSet();
 
-            if(qs1.getMember().getId().equals(member.getId())) questionSet = qs1;
-            if(qs2.getMember().getId().equals(member.getId())) questionSet = qs2;
-            if(qs3.getMember().getId().equals(member.getId())) questionSet = qs3;
-            if(qs4.getMember().getId().equals(member.getId())) questionSet = qs4;
+            for (QuestionSet qs : qsList){
+                if (qs.getMember().getId().equals(member.getId())){
+                    questionSet = qs;
+                }
+            }
+//            if(qs1.getMember().getId().equals(member.getId())) questionSet = qs1;
+//            if(qs2.getMember().getId().equals(member.getId())) questionSet = qs2;
+//            if(qs3.getMember().getId().equals(member.getId())) questionSet = qs3;
+//            if(qs4.getMember().getId().equals(member.getId())) questionSet = qs4;
 
             List<Question> questions = questionSet.getQuestions();
             for(Question q : questions){

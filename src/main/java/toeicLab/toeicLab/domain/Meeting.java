@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter @Builder
@@ -19,14 +21,18 @@ public class Meeting {
 
     private LocalDateTime date;
 
-    @OneToOne
-    private QuestionSet questionSet1;
-    @OneToOne
-    private QuestionSet questionSet2;
-    @OneToOne
-    private QuestionSet questionSet3;
-    @OneToOne
-    private QuestionSet questionSet4;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<QuestionSet> questionSets = new ArrayList<>();
+
+//    @OneToOne
+//    private QuestionSet questionSet1;
+//    @OneToOne
+//    private QuestionSet questionSet2;
+//    @OneToOne
+//    private QuestionSet questionSet3;
+//    @OneToOne
+//    private QuestionSet questionSet4;
 
     private Integer count;
 

@@ -73,9 +73,9 @@
             <div class="col-9">
                 <a class="col-1" th:text="${leader.nickname}"></a><button class="btn-white-no-border" data-toggle="collapse" data-target="#modify_leader"><i class="fas fa-crown"></i></button>
                 <div th:if="${member.id == leader.id}" id="modify_leader" class="collapse div-padding">
-                    <button class="btn-white" type="button" th:onclick="|javascript:a('${member1.id}')|" th:text="${member1.nickname + '으로 조장 변경'}"></button>
-                    <button class="btn-white" type="button" th:onclick="|javascript:a('${member2.id}')|" th:text="${member2.nickname + '으로 조장 변경'}"></button>
-                    <button class="btn-white" type="button" th:onclick="|javascript:a('${member3.id}')|" th:text="${member3.nickname + '으로 조장 변경'}"></button>
+                    <button th:each="member:${memberList}" class="btn-white" type="button" th:onclick="|javascript:a('${member.id}')|" th:text="${member.nickname + '으로 조장 변경'}"></button>
+<!--                    <button class="btn-white" type="button" th:onclick="|javascript:a('${member2.id}')|" th:text="${member2.nickname + '으로 조장 변경'}"></button>-->
+<!--                    <button class="btn-white" type="button" th:onclick="|javascript:a('${member3.id}')|" th:text="${member3.nickname + '으로 조장 변경'}"></button>-->
                 </div>
             </div>
         </div>
@@ -85,9 +85,9 @@
                 <a>팀원</a>
             </div>
             <div class="col-9">
-                <a class="col-1" th:text="${member1.nickname}"></a>
-                <a class="col-1" th:text="${member2.nickname}"></a>
-                <a class="col-1" th:text="${member3.nickname}"></a>
+                <a class="col-1" th:each="member:${memberList}" th:text="${member.nickname}"></a>
+<!--                <a class="col-1" th:text="${member2.nickname}"></a>-->
+<!--                <a class="col-1" th:text="${member3.nickname}"></a>-->
             </div>
         </div>
 
@@ -137,8 +137,12 @@
                 </form>
             </div>
         </div>
-        <hr class="col-8"/>
 
+
+        <div>
+            <button type="button" class="btn">탈퇴</button>
+        </div>
+        <hr class="col-8"/>
 
 
 

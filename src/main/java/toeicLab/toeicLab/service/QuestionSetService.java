@@ -115,11 +115,6 @@ public class QuestionSetService {
      * @param date
      */
     public void createMeeting(StudyGroup studyGroup, int[] numberOfQuestions, String date) {
-        QuestionSet meetingQuestionSet1 = new QuestionSet();
-        QuestionSet meetingQuestionSet2 = new QuestionSet();
-        QuestionSet meetingQuestionSet3 = new QuestionSet();
-        QuestionSet meetingQuestionSet4 = new QuestionSet();
-
         List<Question> questionList = new ArrayList<>();
 
         int part1 = numberOfQuestions[0];
@@ -140,56 +135,42 @@ public class QuestionSetService {
         questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_SINGLE_PARAGRAPH, part7_Single));
         questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH, part7_Multiple));
 
-        meetingQuestionSet1.setQuestions(questionList);
-        meetingQuestionSet1.setCreatedAt(LocalDateTime.now());
-        meetingQuestionSet1.setQuestionSetType(QuestionSetType.MEETING);
+        List <QuestionSet> questionSets = new ArrayList<>();
+//        Meeting meeting = Meeting.builder()
+////                    .count(count)
+//                .studyGroup(studyGroup)
+//                .build();
+        Meeting meeting = new Meeting();
+        meeting.setStudyGroup(studyGroup);
 
-        meetingQuestionSet2.setQuestions(questionList);
-        meetingQuestionSet2.setCreatedAt(LocalDateTime.now());
-        meetingQuestionSet2.setQuestionSetType(QuestionSetType.MEETING);
+        for (int i = 0; i < studyGroup.getMembers().size(); ++i){
+            QuestionSet meetingQuestionSet = new QuestionSet();
 
-        meetingQuestionSet3.setQuestions(questionList);
-        meetingQuestionSet3.setCreatedAt(LocalDateTime.now());
-        meetingQuestionSet3.setQuestionSetType(QuestionSetType.MEETING);
+            meetingQuestionSet.setQuestions(questionList);
+            meetingQuestionSet.setCreatedAt(LocalDateTime.now());
+            meetingQuestionSet.setQuestionSetType(QuestionSetType.MEETING);
 
-        meetingQuestionSet4.setQuestions(questionList);
-        meetingQuestionSet4.setCreatedAt(LocalDateTime.now());
-        meetingQuestionSet4.setQuestionSetType(QuestionSetType.MEETING);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate dateTime = LocalDate.parse(date, formatter);
+            meeting.setDate(dateTime.atStartOfDay());
+//            studyGroup = studyGroupRepository.findById(studyGroup.getId()).orElse(null);
+//            int count = 0;
+//            assert studyGroup != null;
+//            if (studyGroup.getMeetings() != null) {
+//                count = studyGroup.getMeetings().size() + 1;
+//            }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dateTime = LocalDate.parse(date, formatter);
 
-        studyGroup = studyGroupRepository.findById(studyGroup.getId()).orElse(null);
-        int count = 0;
-        assert studyGroup != null;
-        if (studyGroup.getMeetings() != null) {
-            count = studyGroup.getMeetings().size() + 1;
+
+            meetingQuestionSet.setMember(studyGroup.getMembers().get(i));
+            questionSetRepository.save(meetingQuestionSet);
+
+            questionSets.add(meetingQuestionSet);
+            meeting.setQuestionSets(questionSets);
+            meetingRepository.save(meeting);
         }
-
-        Meeting meeting = Meeting.builder()
-                .count(count)
-                .studyGroup(studyGroup)
-                .date(dateTime.atStartOfDay())
-                .build();
-
-        meetingQuestionSet1.setMember(studyGroup.getMembers().get(0));
-        questionSetRepository.save(meetingQuestionSet1);
-        meeting.setQuestionSet1(meetingQuestionSet1);
-
-        meetingQuestionSet2.setMember(studyGroup.getMembers().get(1));
-        questionSetRepository.save(meetingQuestionSet2);
-        meeting.setQuestionSet2(meetingQuestionSet2);
-
-        meetingQuestionSet3.setMember(studyGroup.getMembers().get(2));
-        questionSetRepository.save(meetingQuestionSet3);
-        meeting.setQuestionSet3(meetingQuestionSet3);
-
-        meetingQuestionSet4.setMember(studyGroup.getMembers().get(3));
-        questionSetRepository.save(meetingQuestionSet4);
-        meeting.setQuestionSet4(meetingQuestionSet4);
-
-        meetingRepository.save(meeting);
     }
+
 
     public QuestionSet findQuestionSet(Long setId) {
         Optional<QuestionSet> optional = questionSetRepository.findById(setId);

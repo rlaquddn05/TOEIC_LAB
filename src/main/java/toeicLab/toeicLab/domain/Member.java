@@ -56,7 +56,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private LevelType levelType;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<QuestionSet> questionSetList = new ArrayList<>();
 
     //    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) // 멤버 삭제시 스터디그룹도 통째로 삭제

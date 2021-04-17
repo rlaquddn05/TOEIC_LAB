@@ -46,7 +46,7 @@ public class StudyGroupApplicationService {
             if (studyGroup.getMembers().size() == 4) {
                 Member readerMember = studyGroup.getMembers().get(0);
                 studyGroup.setReaderId(readerMember.getId());
-                studyGroup.setName("스터디그룹");
+                studyGroup.setName(readerMember.getId().toString());
                 result.add(studyGroup);
                 studyGroupRepository.save(studyGroup);
                 for (Member member : studyGroup.getMembers()) {
