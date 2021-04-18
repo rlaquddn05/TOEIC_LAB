@@ -519,6 +519,40 @@ public class MainController {
         List<QuestionSet> questionSets = new ArrayList<>();
         Map<Long, String> comment = new HashMap<>();
         Map<Long, QuestionSet> map = new HashMap<>();
+
+        List<String> content = thisStudyGroup.getContent();
+        Map <Integer, String> newMap = new HashMap<>();
+        if (content.size() > 0){
+            model.addAttribute("commentList", content);
+        }
+//        if (content.size() > 0){
+//            for (int i =0; i<content.size(); ++i){
+//                newMap.put(i+1, content.get(i));
+//            }
+//            model.addAttribute("commentMap", newMap);
+//        }
+
+
+//        List<String> writer = thisStudyGroup.getWriter();
+//        List<String> content = thisStudyGroup.getContent();
+//        Map <Integer, HashMap<String, String>> newMap = new HashMap<>();
+//        if (writer.size() > 0){
+//            for (int i =0; i<writer.size(); ++i){
+//                newMap.put(i+1, new HashMap<>());
+//                newMap.get(i+1).put(writer.get(i), content.get(i));
+//            }
+//            model.addAttribute("commentMap", newMap);
+//        }
+//        for (Map.Entry<Integer, HashMap<String, String>> m : newMap.entrySet()){
+//            for (String mt : m.getValue().keySet()){
+//                if (m.getValue().get(member.getNickname()).equals(m.getValue().get(mt))){
+//                    System.out.println(mt);
+//                }
+//            }
+//            m.getValue().get(member.getNickname()); // comment
+//        }
+
+
         if (meetings != null) {
             for (Meeting m : meetings){
                 for(QuestionSet qs : m.getQuestionSets()){
@@ -553,6 +587,18 @@ public class MainController {
         model.addAttribute("meetings", meetings);
         model.addAttribute("map",map);
         return "view/my_studygroup_detail";
+    }
+
+    @PostMapping("/upComment")
+    public String uploadCommentGroup(@CurrentUser Member member, @RequestParam("comment") String comment, @RequestParam("studyGroupId") long id, Model model){
+        StudyGroup studyGroup = studyGroupRepository.getOne(id);
+        String message = member.getNickname() + ":: " + comment;
+        List<String> cm = studyGroup.getContent();
+        cm.add(message);
+        studyGroup.setContent(cm);
+        studyGroupRepository.save(studyGroup);
+        model.addAttribute(member);
+        return "redirect:/my_studygroup_detail/"+id;
     }
 
     @GetMapping("/secession_studyGroup")

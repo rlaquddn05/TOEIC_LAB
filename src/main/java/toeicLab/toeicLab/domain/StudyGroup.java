@@ -2,6 +2,7 @@ package toeicLab.toeicLab.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,5 +29,8 @@ public class StudyGroup {
     private List<Meeting> meetings = new ArrayList<>();
 
     private Long readerId;
+
+    @ElementCollection
+    private List<String> content = new ArrayList<>();
 
 }
