@@ -42,10 +42,48 @@
             });
         }
 
-        function c(){
-            alert($('#leader').val())
+        function c(test){
+            $.ajax({
+                type: 'GET',
+                url: '/secession_studyGroup',
+                data: {id:test},
+                dataType: 'json',
+                success: function (result){
+                    $('.modal-body').html(result.message);
+                    $('#exampleModalCenter').modal('show');
+                    $('#exampleModalCenter').on('hidden.bs.modal', function () {
+                        location.href='/'
+                    })
+                }
+            });
+        }
+
+        function check(){
+            $('.modal-body').html('정말로 해당 그룹을 탈퇴하시겠습니까?');
+            $('#check_modal').modal('show');
         }
     </script>
+
+    <div class="modal fade" id="check_modal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">토익 연구소 :: 스터디</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" th:onclick="|javascript:c('${thisStudyGroup.id}')|">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="py-3 row">
@@ -140,7 +178,9 @@
 
 
         <div>
-            <button type="button" class="btn">탈퇴</button>
+<!--            <button type="button" class="btn" th:onclick="|javascript:check('${thisStudyGroup.id}')|">탈퇴</button>-->
+            <button type="button" class="btn" onclick="check()">탈퇴</button>
+
         </div>
         <hr class="col-8"/>
 

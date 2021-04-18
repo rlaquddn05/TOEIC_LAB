@@ -38,6 +38,7 @@ public class MainController {
     private final StudyGroupRepository studyGroupRepository;
     private final PasswordEncoder passwordEncoder;
     private final StudyGroupService studyGroupService;
+    private final MeetingRepository meetingRepository;
 
     /**
      * [ToeicLab]의 기본페이지 입니다.
@@ -509,6 +510,7 @@ public class MainController {
         return jsonObject.toString();
     }
 
+
     @GetMapping("/my_studygroup_detail/{id}")
     public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
         Long longId = Long.parseLong(id);
@@ -519,31 +521,21 @@ public class MainController {
         Map<Long, QuestionSet> map = new HashMap<>();
         if (meetings != null) {
             for (Meeting m : meetings){
-               for(QuestionSet qs : m.getQuestionSets()){
-                   if (qs.getMember().getId().equals(member.getId())){
-                       questionSets.add(qs);
-                       map.put(m.getId(), qs);
-                   }
-               }
+                for(QuestionSet qs : m.getQuestionSets()){
+                    if (qs.getMember().getId().equals(member.getId())){
+                        questionSets.add(qs);
+                        map.put(m.getId(), qs);
+                        if (!qs.getSubmittedAnswers().isEmpty()){
+                            comment.put(qs.getId(), memberService.CreateProgressByQuestionSet(qs));
+                            model.addAttribute("checkToken", qs.getId());
+                        }
+                        else {
+                            comment.put(qs.getId(), "스터디를 진행하면 comment 가 생성됩니다");
+                        }
+                    }
+                }
             }
-//            for (int i = 0; i < meetings.size(); ++i) {
-//                if (meetings.get(i).getQuestionSets().get(i).getMember().getId().equals(member.getId())){
-//                    questionSets.add(meetings.get(i).getQuestionSets().get(i));
-//                    map.put(meetings.get(i).getId(), meetings.get(i).getQuestionSets().get(i));
-//                }
-//            }
-
-            //=========================================================================
             model.addAttribute("questionSets", questionSets);
-            for(QuestionSet qs : questionSets){
-                if (!qs.getSubmittedAnswers().isEmpty()){
-                    comment.put(qs.getId(), memberService.CreateProgressByQuestionSet(qs));
-                    model.addAttribute("checkToken", qs.getId());
-                }
-                else {
-                    comment.put(qs.getId(), "스터디를 진행하면 comment 가 생성됩니다");
-                }
-            }
             model.addAttribute("comment", comment);
         }
         List<Member> memberList = thisStudyGroup.getMembers();
@@ -556,7 +548,6 @@ public class MainController {
         }
 
         model.addAttribute("memberList", memberList);
-
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", Long.parseLong(id));
         model.addAttribute("thisStudyGroup", thisStudyGroup);
@@ -565,19 +556,58 @@ public class MainController {
         return "view/my_studygroup_detail";
     }
 
-
-
-
-
-
-    @GetMapping("/modify_study_leader")
+    @GetMapping("/secession_studyGroup")
     @ResponseBody
-    public String modifyStudyLeader(@RequestParam("target") Long target, @RequestParam("group") Long group){
+    @Transactional
+    public String secessionStudyGroup(@CurrentUser Member member, @RequestParam("id") Long id){
         JsonObject jsonObject = new JsonObject();
+
+        Member deletedMember = memberRepository.getOne(member.getId());
+        StudyGroup studyGroup = studyGroupRepository.getOne(id);
+        System.out.println(studyGroup.getId());
+
         try {
-            studyGroupService.changeLeader(group, target);
-            jsonObject.addProperty("message", "조장이 변경되었습니다.");
+//            studyGroupService.signOutStudyGroup(member, studyGroup);
+
+
+            if (studyGroup.getMembers().size() == 1){
+                studyGroupRepository.delete(studyGroup);
+
+            }
+            else {
+                System.out.println("1");
+                if (!studyGroup.getMeetings().isEmpty()){
+                    for (Meeting meeting : studyGroup.getMeetings()) {
+
+
+                        List<QuestionSet> targetQuestionSets = new ArrayList<>();
+
+                        for(QuestionSet questionSet : meeting.getQuestionSets()) {
+                            if(questionSet.getMember().equals(deletedMember)){
+                                targetQuestionSets.add(questionSet);
+                            }
+                        }
+                        for (QuestionSet questionSet : targetQuestionSets){
+                            meeting.getQuestionSets().remove(questionSet);
+                            questionSetRepository.delete(questionSet);
+                        }
+
+                        meetingRepository.save(meeting);
+                    }
+                }
+                List<Member> members = studyGroup.getMembers();
+                members.remove(deletedMember);
+                if (studyGroup.getReaderId().equals(deletedMember.getId())) {
+                    studyGroup.setReaderId(members.get(0).getId());
+                }
+
+            }
+            deletedMember.getStudyGroupList().remove(studyGroup);
+
+
+            jsonObject.addProperty("message", "스터디그룹을 탈퇴했습니다.");
         } catch (Exception e){
+            System.out.println(e.toString());
             jsonObject.addProperty("message", "오류가 발생하였습니다.");
         }
         return jsonObject.toString();
@@ -594,6 +624,19 @@ public class MainController {
         try {
             studyGroupService.changeName(group, name);
             jsonObject.addProperty("message", "스터디 이름이 변경되었습니다.");
+        } catch (Exception e){
+            jsonObject.addProperty("message", "오류가 발생하였습니다.");
+        }
+        return jsonObject.toString();
+    }
+
+    @GetMapping("/modify_study_leader")
+    @ResponseBody
+    public String modifyStudyLeader(@RequestParam("target") Long target, @RequestParam("group") Long group){
+        JsonObject jsonObject = new JsonObject();
+        try {
+            studyGroupService.changeLeader(group, target);
+            jsonObject.addProperty("message", "조장이 변경되었습니다.");
         } catch (Exception e){
             jsonObject.addProperty("message", "오류가 발생하였습니다.");
         }
