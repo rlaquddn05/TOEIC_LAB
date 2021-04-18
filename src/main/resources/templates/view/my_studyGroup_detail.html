@@ -164,14 +164,14 @@
                 <button class="btn-white"><a th:href="@{/practice/{id}(id=${meeting.id})}">스터디시작하기</a></button>
             </div>
             <div class="col-7">
-                <form th:if="${checkToken == map.get(meeting.id).id}" th:action="@{/result_sheet/{questionSetId}(questionSetId=${map.get(meeting.id).id})}" th:method="post">
+                <form th:if="${comment.get(map.get(meeting.id).id) != null}" th:action="@{/result_sheet/{questionSetId}(questionSetId=${map.get(meeting.id).id})}" th:method="post">
                     <input type="hidden" th:name="questionSetId" th:value="${map.get(meeting.id).id}">
                     <input type="hidden" th:each="map2:${map.get(meeting.id).submittedAnswers}" th:name="${map2.getKey()}" th:value="${map2.getValue()}">
                     <input type="hidden" th:name="studyGroupId" th:value="${studyGroupId}">
                     <button type="submit" class="btn-white-no-border"><a th:text="${comment.get(map.get(meeting.id).id)}"></a></button>
                 </form>
-                <form th:if="${checkToken != map.get(meeting.id).id}">
-                    <button type="button" class="btn-white-no-border"><a th:text="${comment.get(map.get(meeting.id).id)}"></a></button>
+                <form th:if="${comment.get(map.get(meeting.id).id) == null}">
+                    <button type="button" class="btn-white-no-border"><a>스터디를 완료하면 comment 가 생성됩니다</a></button>
                 </form>
             </div>
         </div>

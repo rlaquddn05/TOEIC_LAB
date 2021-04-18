@@ -404,7 +404,7 @@ public class MainController {
         }
         return jsonObject.toString();
     }
-    
+
 
     /**
      * 현재 로그인한 사용자의 정보를 조회하여 마이페이지에 불러옵니다.
@@ -527,10 +527,9 @@ public class MainController {
                         map.put(m.getId(), qs);
                         if (!qs.getSubmittedAnswers().isEmpty()){
                             comment.put(qs.getId(), memberService.CreateProgressByQuestionSet(qs));
-                            model.addAttribute("checkToken", qs.getId());
                         }
                         else {
-                            comment.put(qs.getId(), "스터디를 진행하면 comment 가 생성됩니다");
+                            comment.put(qs.getId(), null);
                         }
                     }
                 }
