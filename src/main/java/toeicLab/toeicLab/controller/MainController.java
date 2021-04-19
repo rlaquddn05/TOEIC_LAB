@@ -513,6 +513,7 @@ public class MainController {
 
     @GetMapping("/my_studygroup_detail/{id}")
     public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
+        System.out.println(userId);
         Long longId = Long.parseLong(id);
         StudyGroup thisStudyGroup = studyGroupRepository.getOne(longId);
         List<Meeting> meetings = thisStudyGroup.getMeetings();
