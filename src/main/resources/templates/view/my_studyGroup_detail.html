@@ -98,11 +98,11 @@
     </div>
 
     <div class="container">
-        <div class="row">
-        <div class="col-9">
-        <div class="py-3 row">
-            <div class="col-2"></div>
-            <div class="col-3">
+        <div class="row" id="all-body">
+        <div class="col-1"></div>
+        <div class="col-8" id="study-main">
+        <div class="py-3 row" id="team-name">
+            <div class="col-7">
                 <h3>
                     <b th:text="${thisStudyGroup.name}"></b>
                     <button class="btn-white-no-border" th:if="${member.id == leader.id}">
@@ -112,42 +112,41 @@
                     </button>
                 </h3>
             </div>
-            <div id="modify_study_name" class="col-7 collapse div-padding-top">
+            <div id="modify_study_name" class="col-5 collapse div-padding-top">
                 <input type="text" maxlength="6" minlength="1" id="name" placeholder="6글자 이하로 수정">
                 <button class="btn-white" onclick="b()">확인</button>
             </div>
         </div>
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-1">
+            <div class="col-1 top-member">
                 <a>조장</a>
             </div>
-            <div class="col-9">
+            <div class="col-11">
                 <a class="col-1" th:text="${leader.nickname}"></a><button class="btn-white-no-border" data-toggle="collapse" data-target="#modify_leader"><i class="fas fa-crown"></i></button>
                 <div th:if="${member.id == leader.id}" id="modify_leader" class="collapse div-padding">
-                    <button th:each="member:${memberList}" class="btn-white" type="button" th:onclick="|javascript:a('${member.id}')|" th:text="${member.nickname + '으로 조장 변경'}"></button>
+                    <button id="std-member" th:each="member:${memberList}" class="btn-white btn-sm" type="button" th:onclick="|javascript:a('${member.id}')|" th:text="${member.nickname + '으로 조장 변경'}"></button>
 <!--                    <button class="btn-white" type="button" th:onclick="|javascript:a('${member2.id}')|" th:text="${member2.nickname + '으로 조장 변경'}"></button>-->
 <!--                    <button class="btn-white" type="button" th:onclick="|javascript:a('${member3.id}')|" th:text="${member3.nickname + '으로 조장 변경'}"></button>-->
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-2"></div>
-            <div class="col-1">
+
+            <div class="col-1 top-member">
                 <a>팀원</a>
             </div>
-            <div class="col-9">
+            <div class="col-11">
                 <a class="col-1" th:each="member:${memberList}" th:text="${member.nickname}"></a>
 <!--                <a class="col-1" th:text="${member2.nickname}"></a>-->
 <!--                <a class="col-1" th:text="${member3.nickname}"></a>-->
             </div>
         </div>
 
-        <hr class="col-8"/>
+        <hr class="col-11"/>
 
-        <div class="py-3 row">
-            <div class="col-2"></div>
-            <div class="col-2">
+        <div class="py-3 row" id="study-info">
+
+            <div class="col-4">
                 <h3>
                     <b>스터디</b>
                     <button class="btn-white-no-border" th:if="${member.id == leader.id}">
@@ -158,7 +157,7 @@
                 </h3>
             </div>
             <div id="create_study" class="col-8 collapse div-padding-top">
-                <button class="btn-white">
+                <button class="btn btn-light btn-sm">
                     <a th:href="@{/create_meeting/{id}(id=${id})}">스터디 일정 및 문제 설정 페이지로 이동</a>
                 </button>
             </div>
@@ -170,14 +169,15 @@
                 <br>
                 <a>조장이 스터디를 생성할 수 있습니다.</a>
             </div>
+            <div class="col-1"></div>
         </div>
         <div class="row div-padding-ver" th:each="meeting:${meetings}">
-            <div class="col-2"></div>
-            <div class="col-3">
+
+            <div class="col-4" id="start-study">
                 <a th:text="${meeting.date.toLocalDate()}"></a>
-                <button class="btn-white"><a th:href="@{/practice/{id}(id=${meeting.id})}">스터디시작하기</a></button>
+                <button id="start-btn" class="btn-light btn-sm"><a th:href="@{/practice/{id}(id=${meeting.id})}">스터디시작하기</a></button>
             </div>
-            <div class="col-7">
+            <div class="col-8">
                 <form th:if="${comment.get(map.get(meeting.id).id) != null}" th:action="@{/result_sheet/{questionSetId}(questionSetId=${map.get(meeting.id).id})}" th:method="post">
                     <input type="hidden" th:name="questionSetId" th:value="${map.get(meeting.id).id}">
                     <input type="hidden" th:each="map2:${map.get(meeting.id).submittedAnswers}" th:name="${map2.getKey()}" th:value="${map2.getValue()}">
@@ -191,45 +191,47 @@
         </div>
 
 
-        <div>
-<!--            <button type="button" class="btn" th:onclick="|javascript:check('${thisStudyGroup.id}')|">탈퇴</button>-->
-            <button type="button" class="btn" onclick="check()">탈퇴</button>
 
-        </div>
-        <hr class="col-8"/>
         </div>
 
         <div class="col-3">
-            <div><p>서로 소통하는 댓글을 남기세요!!</p></div>
-            <div>
-<!--                <div style="overflow:auto; width:100%; height:350px;" class="row" id="chatContent">-->
-<!--                    <div class="col-4" th:text="${map.getValue().getKey()}"></div>-->
-<!--                    <div class="col-8" th:text="${map.getValue().getValue()}"></div>-->
-<!--                    <div class="col-12" th:each="map:${commentList}" th:text="${map}"></div>-->
-<!--                    <div></div>-->
-<!--                    <a></a>-->
-<!--                </div>-->
-                <div style="overflow: auto; width:100%; height:350px;" id="chatContent">
-                    <div class="row" th:each="comment:${commentList}">
-                        <a class="col-4" th:text="${comment.getWriterNick()}"></a>
-                        <a class="col-8" th:text="${comment.getContent()}"></a>
+            <div id="comment-box">
+                <div id="comment-header"><p>서로 소통하는 댓글을 남기세요!!</p></div>
+                <div>
+    <!--                <div style="overflow:auto; width:100%; height:350px;" class="row" id="chatContent">-->
+    <!--                    <div class="col-4" th:text="${map.getValue().getKey()}"></div>-->
+    <!--                    <div class="col-8" th:text="${map.getValue().getValue()}"></div>-->
+    <!--                    <div class="col-12" th:each="map:${commentList}" th:text="${map}"></div>-->
+    <!--                    <div></div>-->
+    <!--                    <a></a>-->
+    <!--                </div>-->
+                    <div style="" id="chatContent">
+                        <div class="row" th:each="comment:${commentList}" id="content-row">
+                            <span class="col-4" th:text="${comment.getWriterNick()}"></span>
+                            <span class="col-8" id="content" th:text="${comment.getContent()}"></span>
+                        </div>
+
                     </div>
 
+
                 </div>
+                <script>
+                    <!-- 채팅 스크롤 하단으로 보내기 -->
+                    $('#chatContent').scrollTop($('#chatContent')[0].scrollHeight);
 
-
+                </script>
+                <div>
+    <!--                <form th:action="@{/upComment}" method="post">-->
+    <!--                    <input type="hidden" th:name="studyGroupId" th:value="${thisStudyGroup.id}">-->
+                    <input type="text" name="comment" id="comment">
+                    <button type="button" onclick="add()" class="btn btn-info btn-sm">등록</button>
+    <!--                </form>-->
+                </div>
             </div>
-            <script>
-                <!-- 채팅 스크롤 하단으로 보내기 -->
-                $('#chatContent').scrollTop($('#chatContent')[0].scrollHeight);
+            <div id="out-btn">
+                <!--            <button type="button" class="btn" th:onclick="|javascript:check('${thisStudyGroup.id}')|">탈퇴</button>-->
+                <button type="button" class="btn btn-danger" onclick="check()">스터디 그룹 탈퇴</button>
 
-            </script>
-            <div>
-<!--                <form th:action="@{/upComment}" method="post">-->
-<!--                    <input type="hidden" th:name="studyGroupId" th:value="${thisStudyGroup.id}">-->
-                <input type="text" name="comment" id="comment">
-                <button type="button" onclick="add()">등록</button>
-<!--                </form>-->
             </div>
 
         </div>

@@ -1,12 +1,14 @@
 .RC-LC-Box{
-    padding: 5px;
+    padding: 0.313em;
+    font-family: "Hi Melody", sans-serif;
+    font-size: 1.25rem;
+;
 }
 #create-meeting {
-    padding: 30px;
+    padding: 1.875em;
 }
 
 #create-meeting .py-5{
-    border: #71b35e solid 1px;
     text-align: center;
 }
 
@@ -15,9 +17,36 @@
 }
 
 #time{
-    padding: 20px 60px;
+    padding-left: 2.375em;
+    padding-right: 2.375em;
+    padding-bottom: 1.875em;
+    font-family: "Gugi", sans-serif;
+    font-size: 1.25rem;
 }
 
-#sub-btn{
-    padding: 20px 60px;
+
+h1 {
+    font-family: "Hi Melody", sans-serif;
+    font-size: 3rem;
+}
+
+#LRC, #SPK {
+    width: 80%;
+    min-height: 15.750em;
+    box-shadow: 0px 0px 10px rgba(9, 153, 40, 0.212);
+    border-radius: 0.5em;
+}
+
+#LRC-row, #SPK-row {
+    justify-content: center;
+}
+
+.btn-outline-primary {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#SPK-box {
+    padding-top: 1.250em;
 }

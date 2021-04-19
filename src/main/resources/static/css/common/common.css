@@ -12,6 +12,11 @@ a {
   text-decoration: none;
 }
 
+nav a:hover {
+  color: #86db9f;
+  text-decoration: none;
+}
+
 a:hover {
   color: #86db9f;
   text-decoration: none;
