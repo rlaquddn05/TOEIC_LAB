@@ -39,6 +39,7 @@ public class MainController {
     private final PasswordEncoder passwordEncoder;
     private final StudyGroupService studyGroupService;
     private final MeetingRepository meetingRepository;
+    private final CommentRepository commentRepository;
 
     /**
      * [ToeicLab]의 기본페이지 입니다.
@@ -442,6 +443,19 @@ public class MainController {
                 .city(updateForm.getCity())
                 .street(updateForm.getStreet())
                 .build());
+        if (!updatedMember.getStudyGroupList().isEmpty()){
+            List<StudyGroup> studyGroupList = updatedMember.getStudyGroupList();
+            for (StudyGroup sg : studyGroupList){
+                List<Comment> commentList = sg.getComments();
+                for (Comment comment : commentList){
+                    if (comment.getWriterId().equals(updatedMember.getId())) {
+                        comment.setWriterNick(updatedMember.getNickname());
+                        commentRepository.save(comment);
+                    }
+                }
+                studyGroupRepository.save(sg);
+            }
+        }
         if (updateForm.getGender().equals("male")) {
             updatedMember.setGenderType(GenderType.MALE);
         } else if (updateForm.getGender().equals("female")) {
@@ -519,40 +533,6 @@ public class MainController {
         List<QuestionSet> questionSets = new ArrayList<>();
         Map<Long, String> comment = new HashMap<>();
         Map<Long, QuestionSet> map = new HashMap<>();
-
-        List<String> content = thisStudyGroup.getContent();
-        Map <Integer, String> newMap = new HashMap<>();
-        if (content.size() > 0){
-            model.addAttribute("commentList", content);
-        }
-//        if (content.size() > 0){
-//            for (int i =0; i<content.size(); ++i){
-//                newMap.put(i+1, content.get(i));
-//            }
-//            model.addAttribute("commentMap", newMap);
-//        }
-
-
-//        List<String> writer = thisStudyGroup.getWriter();
-//        List<String> content = thisStudyGroup.getContent();
-//        Map <Integer, HashMap<String, String>> newMap = new HashMap<>();
-//        if (writer.size() > 0){
-//            for (int i =0; i<writer.size(); ++i){
-//                newMap.put(i+1, new HashMap<>());
-//                newMap.get(i+1).put(writer.get(i), content.get(i));
-//            }
-//            model.addAttribute("commentMap", newMap);
-//        }
-//        for (Map.Entry<Integer, HashMap<String, String>> m : newMap.entrySet()){
-//            for (String mt : m.getValue().keySet()){
-//                if (m.getValue().get(member.getNickname()).equals(m.getValue().get(mt))){
-//                    System.out.println(mt);
-//                }
-//            }
-//            m.getValue().get(member.getNickname()); // comment
-//        }
-
-
         if (meetings != null) {
             for (Meeting m : meetings){
                 for(QuestionSet qs : m.getQuestionSets()){
@@ -586,20 +566,28 @@ public class MainController {
         model.addAttribute("thisStudyGroup", thisStudyGroup);
         model.addAttribute("meetings", meetings);
         model.addAttribute("map",map);
+
+        List<Comment> commentList = thisStudyGroup.getComments();
+
+
+        model.addAttribute("commentList", commentList);
+
+
+
         return "view/my_studygroup_detail";
     }
 
-    @PostMapping("/upComment")
-    public String uploadCommentGroup(@CurrentUser Member member, @RequestParam("comment") String comment, @RequestParam("studyGroupId") long id, Model model){
-        StudyGroup studyGroup = studyGroupRepository.getOne(id);
-        String message = member.getNickname() + ":: " + comment;
-        List<String> cm = studyGroup.getContent();
-        cm.add(message);
-        studyGroup.setContent(cm);
-        studyGroupRepository.save(studyGroup);
-        model.addAttribute(member);
-        return "redirect:/my_studygroup_detail/"+id;
-    }
+//    @PostMapping("/upComment")
+//    public String uploadCommentGroup(@CurrentUser Member member, @RequestParam("comment") String comment, @RequestParam("studyGroupId") long id, Model model){
+//        StudyGroup studyGroup = studyGroupRepository.getOne(id);
+//        String message = member.getNickname() + ":: " + comment;
+//        List<String> cm = studyGroup.getContent();
+//        cm.add(message);
+//        studyGroup.setContent(cm);
+//        studyGroupRepository.save(studyGroup);
+//        model.addAttribute(member);
+//        return "redirect:/my_studygroup_detail/"+id;
+//    }
 
     @GetMapping("/secession_studyGroup")
     @ResponseBody
@@ -655,6 +643,34 @@ public class MainController {
             System.out.println(e.toString());
             jsonObject.addProperty("message", "오류가 발생하였습니다.");
         }
+        return jsonObject.toString();
+    }
+
+    @GetMapping("/add_comment")
+    @ResponseBody
+    @Transactional
+    public String addComment(@CurrentUser Member member, @RequestParam("content") String content, @RequestParam("group") Long group){
+        JsonObject jsonObject = new JsonObject();
+        Member thisMember = memberRepository.getOne(member.getId());
+        if (content.equals("")){
+            jsonObject.addProperty("message", "공란은 추가할 수 없습니다.");
+            return jsonObject.toString();
+        }
+        try {
+            StudyGroup studyGroup = studyGroupRepository.getOne(group);
+            Comment comment = new Comment();
+            comment.setWriterId(thisMember.getId());
+            comment.setWriterNick(thisMember.getNickname());
+            comment.setContent(content);
+            commentRepository.save(comment);
+            studyGroup.getComments().add(comment);
+            studyGroupRepository.save(studyGroup);
+            jsonObject.addProperty("message", content + group);
+        } catch (Exception e){
+            System.out.println(e.toString());
+            jsonObject.addProperty("message", "오류가 발생하였습니다.");
+        }
+
         return jsonObject.toString();
     }
 

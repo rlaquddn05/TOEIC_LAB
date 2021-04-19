@@ -30,7 +30,10 @@ public class StudyGroup {
 
     private Long readerId;
 
-    @ElementCollection
-    private List<String> content = new ArrayList<>();
+//    @ElementCollection
+//    private List<String> content = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
 }
