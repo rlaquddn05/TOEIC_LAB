@@ -6,6 +6,9 @@
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/sheet/detail.css}">
 </th:block>
+<th:block layout:fragment="js">
+    <script type="text/javascript" th:src="@{/js/question/detail.js}"></script>
+</th:block>
 
 <div layout:fragment="content">
     <div class="container">
@@ -63,25 +66,6 @@
                 <button id="addReview" class="btn btn-warning"> 오답노트 추가</button>
             </div>
         </div>
-
-        <script th:inline="javascript">
-            $(document).ready(function (){
-                $("#addReview").click(function (){
-                    $.ajax({
-                        type: 'GET',
-                        url: '/add_review_note',
-                        data: {"id":[[${question.id}]],"answer":[[${userAnswer.get(question.id)}]]},
-                        dataType: 'json',
-                        success: function (result){
-                            $('.modal-body').html(result.message);
-                            $('#exampleModalCenter').modal('show');
-                        }
-                    });
-                });
-            });
-        </script>
-
-
     </div>
 </div>
 

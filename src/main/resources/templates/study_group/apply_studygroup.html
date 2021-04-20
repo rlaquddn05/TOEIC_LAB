@@ -8,6 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/meeting/study_group_form.css}">
 </th:block>
 
+<th:block layout:fragment="js">
+    <!--<script type="text/javascript" th:src="@{/js/group/apply.js}"></script>-->
+</th:block>
 
 <div layout:fragment="content">
     <div th:class="container">
@@ -104,7 +107,6 @@
             </div>
             <br/>
             <button type="submit" class="w-100 btn btn-dark btn-lg">신청서 제출하기</button>
-<!--            <button type="button" class="w-100 btn btn-dark btn-lg" onclick="modal()">신청서 제출하기</button>-->
 
         </form>
     </div>
@@ -147,16 +149,6 @@
         }
     </script>
 
-<!--    <script th:inline="javascript">-->
-<!--        window.onload = function() {-->
-<!--            var success = [[${successMessage}]];-->
-<!--            if (success != null) {-->
-<!--                // alert(message)-->
-<!--                $('.modal-body').html(success);-->
-<!--                $('#exampleModalCenter').modal('show');-->
-<!--            }-->
-<!--        }-->
-<!--    </script>-->
 </div>
 
 </html>

@@ -18,6 +18,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
+    <script type="text/javascript" th:src="@{/js/function/popup.js}"></script>
+
     <link th:href="@{/css/common/common.css}" rel="stylesheet">
 
     <!-- fontawesome -->
@@ -36,18 +38,7 @@
 
 <th:block th:replace="common_fragments::footer"></th:block>
 
-<script type="text/javascript">
-    function popupOpen(){
 
-        var popUrl = "/popup_dictionary"; //팝업창에 출력될 페이지 URL
-        // var popUrl = "/popup_dictionary_aa/"+ $("#popup2").val(); //팝업창에 출력될 페이지 URL
-
-        var popOption = "width=420, height=420, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
-
-        window.open(popUrl,"",popOption);
-
-    }
-</script>
 
 <!--------------------------------Modal------------------------------------>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
