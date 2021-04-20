@@ -126,7 +126,6 @@ public class QuestionController {
             model.addAttribute("questionList", questions);
             model.addAttribute("questionSet", questionSet);
             model.addAttribute("studyGroupId", meeting.getStudyGroup().getId());
-            System.out.println(meeting.getStudyGroup().getId());
             return "question/practice_sheet";
         }
     }

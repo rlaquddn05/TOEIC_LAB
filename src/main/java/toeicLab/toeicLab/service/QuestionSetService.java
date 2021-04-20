@@ -7,7 +7,6 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MeetingRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.QuestionSetRepository;
-import toeicLab.toeicLab.repository.StudyGroupRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,7 +28,6 @@ public class QuestionSetService {
     private final QuestionSetRepository questionSetRepository;
     private final QuestionService questionService;
     private final MeetingRepository meetingRepository;
-    private final StudyGroupRepository studyGroupRepository;
     private final QuestionRepository questionRepository;
 
     /**
@@ -136,10 +134,6 @@ public class QuestionSetService {
         questionList.addAll(questionService.createQuestionByQuestionTypeAndNumber(QuestionType.PART7_MULTIPLE_PARAGRAPH, part7_Multiple));
 
         List <QuestionSet> questionSets = new ArrayList<>();
-//        Meeting meeting = Meeting.builder()
-////                    .count(count)
-//                .studyGroup(studyGroup)
-//                .build();
         Meeting meeting = new Meeting();
         meeting.setStudyGroup(studyGroup);
 
@@ -153,14 +147,6 @@ public class QuestionSetService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate dateTime = LocalDate.parse(date, formatter);
             meeting.setDate(dateTime.atStartOfDay());
-//            studyGroup = studyGroupRepository.findById(studyGroup.getId()).orElse(null);
-//            int count = 0;
-//            assert studyGroup != null;
-//            if (studyGroup.getMeetings() != null) {
-//                count = studyGroup.getMeetings().size() + 1;
-//            }
-
-
 
             meetingQuestionSet.setMember(studyGroup.getMembers().get(i));
             questionSetRepository.save(meetingQuestionSet);
@@ -169,13 +155,6 @@ public class QuestionSetService {
             meeting.setQuestionSets(questionSets);
             meetingRepository.save(meeting);
         }
-    }
-
-
-    public QuestionSet findQuestionSet(Long setId) {
-        Optional<QuestionSet> optional = questionSetRepository.findById(setId);
-        return optional.orElse(null);
-
     }
 
     /**

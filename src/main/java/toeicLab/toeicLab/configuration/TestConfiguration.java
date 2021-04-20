@@ -11,7 +11,6 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
-import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
 import toeicLab.toeicLab.service.VisionService;
 
@@ -33,7 +32,6 @@ public class TestConfiguration {
     private final QuestionRepository questionRepository;
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private final QuestionSetService questionSetService;
     private static final int NUMBER_OF_DUMMY_USERS = 150;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
@@ -44,12 +42,10 @@ public class TestConfiguration {
     private static final int PART2_NUMBER = 100;
     private static final int PART3_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART4_NUMBER_OF_SMALL_SETS = 100;
-    //    private final int PART5_NUMBER= 10;
     private static final int PART6_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
     private int smallSetId = 1;
-    private final VisionService visionService;
 
     /**
      * PART1 문제들을 생성합니다.

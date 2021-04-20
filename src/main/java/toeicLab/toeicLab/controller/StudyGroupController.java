@@ -135,7 +135,6 @@ public class StudyGroupController {
 
         Member deletedMember = memberRepository.getOne(member.getId());
         StudyGroup studyGroup = studyGroupRepository.getOne(id);
-        System.out.println(studyGroup.getId());
 
         try {
             if (studyGroup.getMembers().size() == 1){

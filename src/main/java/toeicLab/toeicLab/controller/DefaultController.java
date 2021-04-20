@@ -20,6 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 class DefaultController implements ErrorController {
 
+    /**
+     * 에러발생시 지정된 페이지로 이동합니다.
+     * @param request
+     * @param response
+     * @param member
+     * @param model
+     * @return
+     */
     @RequestMapping("/errorPage")
     public ModelAndView handleError(HttpServletRequest request, HttpServletResponse response, @CurrentUser Member member, Model model) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
@@ -41,6 +49,10 @@ class DefaultController implements ErrorController {
         return modelAndView;
     }
 
+    /**
+     * Deprecated. since 2.3.0 in favor of setting the property.
+     * @return
+     */
     @Override
     public String getErrorPath() {
         return null;

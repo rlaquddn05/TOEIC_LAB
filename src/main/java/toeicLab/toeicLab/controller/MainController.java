@@ -6,10 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.*;
@@ -147,10 +145,8 @@ public class MainController {
     @ResponseBody
     public String resetCheckTokens(@RequestParam("resetPasswordEmail") String resetPasswordEmail,
                                    @RequestParam("token") String resetPasswordEmailToken) {
-        log.info("비밀번호 초기화 인증키 판단");
         JsonObject jsonObject = new JsonObject();
         MailDto getResetPasswordTokenMail = mailRepository.findByEmail(resetPasswordEmail);
-        log.info(getResetPasswordTokenMail.getEmail());
         boolean result = false;
 
         result = getResetPasswordTokenMail.getEmailCheckToken().equals(resetPasswordEmailToken);
@@ -182,7 +178,6 @@ public class MainController {
     @PostMapping("/reset_password")
     public String resetPassword(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
         memberService.resetPassword(email, password);
-        log.info("비밀번호 수정 완료");
         model.addAttribute("result_code", "password.reset.success");
         return "member/notify_password";
     }
@@ -235,15 +230,13 @@ public class MainController {
     @PostMapping("/signup")
     public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
         if (errors.hasErrors()) {
-            log.info("유효성 에러 발생!");
             return "member/signup";
         }
         signUpValidator.validate(signUpForm, errors);
-        log.info("유효성 검사 끝!");
 
         Member member = memberService.createNewMember(signUpForm);
 
-        memberService.autologin(member); // 해당 멤버를 자동 로그인 해주기
+        memberService.autologin(member);
 
         return "redirect:/index";
     }
@@ -289,11 +282,9 @@ public class MainController {
     @GetMapping("/signup/checkTokens")
     @ResponseBody
     public String checkTokens(@RequestParam("email") String email, @RequestParam("certification_number") String certification_number) {
-        log.info(certification_number);
 
         JsonObject jsonObject = new JsonObject();
         MailDto getTokenMail = mailRepository.findByEmail(email);
-        log.info(getTokenMail.getEmail());
         boolean result = false;
 
         result = getTokenMail.getEmailCheckToken().equals(certification_number);
@@ -415,7 +406,6 @@ public class MainController {
         }
         Member currentUser = memberRepository.findByEmail(member.getEmail());
         model.addAttribute("currentUser", currentUser);
-        log.info(String.valueOf(currentUser.getGenderType()));
         model.addAttribute("member", member);
         model.addAttribute(new UpdateForm());
         return "member/my_page";

@@ -7,14 +7,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
-import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
-import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
-import toeicLab.toeicLab.service.VisionService;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -28,17 +24,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ServiceConfiguration {
-    private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final StudyGroupApplicationService studyGroupApplicationService;
-    private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private final QuestionSetService questionSetService;
-    private static final int NUMBER_OF_DUMMY_USERS = 500;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private static final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};
-    private static final int[] tagValues = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
     private static final int PART1_NUMBER = 100;
     private static final int PART2_NUMBER = 100;
@@ -48,7 +39,6 @@ public class ServiceConfiguration {
     private static final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
     private int smallSetId = 1;
-    private final VisionService visionService;
 
     /**
      * 오전 04시 마다 사용자들의 신청서를 검토한 뒤 자동으로 매칭합니다.
@@ -280,7 +270,6 @@ public class ServiceConfiguration {
         Member member = Member.builder()
                 .userId("testUser")
                 .email("a@a.a")
-//                .password(passwordEncoder.encode("1234"))
                 .password("1234")
                 .memberType(MemberType.USER)
                 .levelType(levelTypes[(int) (Math.random() * 3)])

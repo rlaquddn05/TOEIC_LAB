@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toeicLab.toeicLab.domain.*;
@@ -26,7 +25,6 @@ import java.util.Map;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ReviewNoteRepository reviewNoteRepository;
     private final QuestionRepository questionRepository;
     private final QuestionSetRepository questionSetRepository;
@@ -62,7 +60,6 @@ public class MemberService implements UserDetailsService {
             member.setGenderType(GenderType.FEMALE);
         }
 
-//        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
         return member;
     }
@@ -131,7 +128,6 @@ public class MemberService implements UserDetailsService {
     public void resetPassword(String email, String password) {
         Member member = memberRepository.findByEmail(email);
         member.setPassword("{noop}" + password);
-//        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
     }
 

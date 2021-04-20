@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import toeicLab.toeicLab.configuration.oauth.PrincipalOauth2UserService;
-import toeicLab.toeicLab.service.MemberService;
 
 import javax.sql.DataSource;
 

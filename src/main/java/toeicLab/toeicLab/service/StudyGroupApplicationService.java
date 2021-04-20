@@ -82,6 +82,12 @@ public class StudyGroupApplicationService {
         return result;
     }
 
+    /**
+     * 사용자가 제출한 신청서의 날짜 value 환산한다.
+     * @param a
+     * @param b
+     * @return result
+     */
     public int gcd(int a, int b) {
         BigInteger b1 = BigInteger.valueOf(a);
         BigInteger b2 = BigInteger.valueOf(b);

@@ -254,7 +254,6 @@ public class DevConfiguration {
                     .build();
             studyGroupApplicationRepository.save(studyGroupApplication);
         }
-        log.info("DummyUsers created.");
     }
 
     public void createTestUsers() {
@@ -270,7 +269,6 @@ public class DevConfiguration {
                 .build();
 
         memberRepository.save(member);
-        log.info("a@a.a created.");
     }
 
 //    @PostConstruct

@@ -31,8 +31,6 @@ public class MyFunctionController {
     private final MemberRepository memberRepository;
     private final QuestionService questionService;
     private final MemberService memberService;
-    private final StudyGroupApplicationValidator studyGroupApplicationValidator;
-    private final StudyGroupApplicationService studyGroupApplicationService;
 
     /**
      * 사용자가 문제풀이를 한 뒤에 자신의 학습현황 페이지로 이동합니다.
@@ -108,7 +106,6 @@ public class MyFunctionController {
     @ResponseBody
     public String dictionary(@PathVariable String word) throws Exception {
         String result;
-        System.out.println(word);
         String[] splitedWord = word.split("");
         if (Pattern.matches("[a-zA-Z]", splitedWord[0])) {
             String loweredWord = word.toLowerCase();

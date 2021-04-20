@@ -6,13 +6,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import toeicLab.toeicLab.domain.StudyGroupApplicationTag;
-import toeicLab.toeicLab.service.StudyGroupApplicationService;
 
 @Component
 @RequiredArgsConstructor
 public class StudyGroupApplicationValidator implements Validator {
-
-    private final StudyGroupApplicationService studyGroupApplicationService;
 
     @Override
     public boolean supports(Class<?> clazz) {
