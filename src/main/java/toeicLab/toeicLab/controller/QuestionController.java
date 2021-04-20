@@ -22,13 +22,24 @@ import java.util.*;
 @RequiredArgsConstructor
 public class QuestionController {
 
-    private final QuestionSetService questionSetService;
     private final QuestionSetRepository questionSetRepository;
-    private final QuestionService questionService;
     private final MemberRepository memberRepository;
-    private final ReviewNoteRepository reviewNoteRepository;
-    private final MemberService memberService;
     private final MeetingRepository meetingRepository;
+    private final MemberService memberService;
+    private final QuestionService questionService;
+    private final QuestionSetService questionSetService;
+
+    /**
+     * [ToeicLab]의 모의고사 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/select_test
+     */
+    @GetMapping("/select_test")
+    public String selectTest(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
+        return "view/select_test";
+    }
 
     /**
      * 사용자가 선택한 연습문제(LR/RC/SPK)페이지로 이동합니다.
@@ -93,10 +104,6 @@ public class QuestionController {
             Meeting meeting = meetingRepository.getOne(Long.parseLong(id));
             List<QuestionSet> qsList = meeting.getQuestionSets();
 
-//            QuestionSet qs1 = meeting.getQuestionSet1();
-//            QuestionSet qs2 = meeting.getQuestionSet2();
-//            QuestionSet qs3 = meeting.getQuestionSet3();
-//            QuestionSet qs4 = meeting.getQuestionSet4();
 
             QuestionSet questionSet = new QuestionSet();
 
@@ -105,10 +112,6 @@ public class QuestionController {
                     questionSet = qs;
                 }
             }
-//            if(qs1.getMember().getId().equals(member.getId())) questionSet = qs1;
-//            if(qs2.getMember().getId().equals(member.getId())) questionSet = qs2;
-//            if(qs3.getMember().getId().equals(member.getId())) questionSet = qs3;
-//            if(qs4.getMember().getId().equals(member.getId())) questionSet = qs4;
 
             List<Question> questions = questionSet.getQuestions();
             for(Question q : questions){
@@ -240,79 +243,5 @@ public class QuestionController {
         return "view/detail";
     }
 
-    /**
-     * 사용자가 추가한 문제들을 볼 수 있는 오답노트페이지로 이동합니다.
-     * @param member
-     * @param model
-     * @return view/my_review_note
-     */
-    @GetMapping("/my_review_note")
-    public String myReviewNote(@CurrentUser Member member, Model model) {
-        ReviewNote reviewNote = reviewNoteRepository.findByMember(member);
-        if(reviewNote == null){
-            reviewNote = new ReviewNote();
-            model.addAttribute("exist", "noReviewNote");
-        }
-        List<Question> list = reviewNote.getQuestions();
-        if(list.isEmpty()){
-            model.addAttribute("exist", "noQuestion");
-        }
-        QuestionSet questionSet = new QuestionSet();
-        questionSet.setQuestions(list);
-        List<String> str = new ArrayList<>();
-        questionService.checkTypeList(questionSet, str);
 
-        model.addAttribute("questionType", str);
-        model.addAttribute("questionList", list);
-        model.addAttribute("member", member);
-        model.addAttribute("userAnswer", reviewNote.getSubmittedAnswers());
-        return "view/my_review_note";
-    }
-
-    /**
-     * 사용자가 원하는 문제를 오답노트에 추가합니다.
-     * @param member
-     * @param id
-     * @param answer
-     * @return
-     */
-    @GetMapping("/add_review_note")
-    @ResponseBody
-    public String AddReviewNote(@CurrentUser Member member, @RequestParam("id") Long id, @RequestParam("answer") String answer){
-        JsonObject jsonObject = new JsonObject();
-        boolean result = false;
-        try {
-            result = memberService.addReviewNote(member, id, answer);
-            if(result) {
-                jsonObject.addProperty("message", "오답노트에 추가되었습니다.");
-            }
-            else {
-                jsonObject.addProperty("message", "오답노트에 이미 있습니다.");
-            }
-
-        } catch (IllegalArgumentException e){
-            jsonObject.addProperty("message", "잘못된정보");
-        }
-        return jsonObject.toString();
-    }
-
-    /**
-     * 사용자가 선택한 문제를 오답노트에서 삭제합니다.
-     * @param member
-     * @param id
-     * @return
-     */
-    @GetMapping("/delete_review_note")
-    @ResponseBody
-    public String TestReviewNote(@CurrentUser Member member, @RequestParam("id") Long id){
-        JsonObject jsonObject = new JsonObject();
-        try {
-            memberService.deleteReviewNote(member, id);
-            jsonObject.addProperty("message", "오답노트에서 삭제되었습니다.");
-        }
-        catch (Exception e){
-            jsonObject.addProperty("message", "예상치 못한 오류");
-        }
-        return jsonObject.toString();
-    }
 }

@@ -34,7 +34,7 @@ public class TestConfiguration {
     private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
     private final QuestionSetService questionSetService;
-    private static final int NUMBER_OF_DUMMY_USERS = 100;
+    private static final int NUMBER_OF_DUMMY_USERS = 150;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
     private static final GenderType[] genderTypes = {GenderType.MALE, GenderType.FEMALE};

@@ -6,27 +6,35 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import toeicLab.toeicLab.domain.Bulletin;
-import toeicLab.toeicLab.domain.BulletinComment;
-import toeicLab.toeicLab.domain.Member;
-import toeicLab.toeicLab.service.Pagination;
-import toeicLab.toeicLab.repository.BulletinCommentRepository;
-import toeicLab.toeicLab.repository.BulletinRepository;
-import toeicLab.toeicLab.repository.MemberRepository;
+import org.springframework.web.multipart.MultipartFile;
+import toeicLab.toeicLab.domain.*;
+import toeicLab.toeicLab.repository.*;
+import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.CurrentUser;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CommunityController
+ * 
+ */
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class BulletinController {
+public class CommunityController {
 
     private final BulletinRepository bulletinRepository;
     private final BulletinCommentRepository bulletinCommentRepository;
     private final MemberRepository memberRepository;
+    private final ForumRepository forumRepository;
+    private final QuestionRepository questionRepository;
+    private final VisionService visionService;
+    private final QuestionService questionService;
+    private final ForumService forumService;
 
     /**
      * 현재 게시판에 등록되어 있는 글 제목, 작성자, 일시, 내용, 조회수, 좋아요 정보를 전부 가져옵니다.
@@ -270,5 +278,182 @@ public class BulletinController {
         return "redirect:/bulletin";
     }
 
+    /**
+     * 현재 문제등록에 게시되어있는 게시물들을 보여주는 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @param page
+     * @return view/forum
+     */
+    @GetMapping("/forum")
+    public String forum(@CurrentUser Member member, Model model, @RequestParam(defaultValue = "1") int page) {
+        List<Forum> forumList = forumRepository.findAll();
+
+        int size = forumList.size();
+        int totalListCnt = size;
+
+        Pagination pagination = new Pagination(totalListCnt, page);
+
+        int startIndex = pagination.getStartIndex();
+        int pageSize = pagination.getPageSize();
+        int pageCheck = startIndex + pageSize;
+
+        List<Forum> forumList2 = new ArrayList<>();
+
+        if(totalListCnt == 0){
+            pagination.setEndPage(1);
+            pagination.setNextBlock(1);
+            pagination.setTotalPageCnt(1);
+
+            model.addAttribute(member);
+            model.addAttribute("forumList", forumList2);
+            model.addAttribute("pagination", pagination);
+            return "view/forum";
+        }
+        for (int i = startIndex; i < pageCheck; i++){
+            Forum forum = forumList.get(i);
+
+            forumList2.add(forum);
+
+            if(i == (totalListCnt-1)){
+                pageCheck = totalListCnt-1;
+            }
+        }
+
+        model.addAttribute(member);
+        model.addAttribute("forumList", forumList2);
+        model.addAttribute("pagination", pagination);
+        return "view/forum";
+    }
+
+    /**
+     * 문제등록을 할 수 있는 페이지로 이동합니다.
+     * @param member
+     * @param model
+     * @return view/forum_upload
+     */
+    @GetMapping("/forum_upload")
+    public String uploadQuestion(@CurrentUser Member member, Model model) {
+        model.addAttribute("member", member);
+        return "view/forum_upload";
+    }
+
+    /**
+     * 사용자가 이미지를 통해 추출한 데이터들을 게시글의 정보로 저장합니다.
+     * @param member
+     * @param model
+     * @param title
+     * @param questionType
+     * @param content
+     * @param content2
+     * @param content3
+     * @param question
+     * @param exampleA
+     * @param exampleB
+     * @param exampleC
+     * @param exampleD
+     * @param answer
+     * @param solution
+     * @return redirect:/forum
+     */
+    @PostMapping("/forum_upload")
+    public String addQuestion(@CurrentUser Member member, Model model, @RequestParam String title,
+                              @RequestParam String questionType, @RequestParam(required = false) String content,
+                              @RequestParam(required = false) String content2, @RequestParam(required = false) String content3,
+                              @RequestParam String question, @RequestParam String exampleA,
+                              @RequestParam String exampleB, @RequestParam String exampleC,
+                              @RequestParam String exampleD, @RequestParam String answer,
+                              @RequestParam String solution) {
+
+        Question q = questionService.createQuestion(questionType, content, content2, content3, question, exampleA, exampleB,
+                exampleC, exampleD, answer, solution);
+
+        forumService.addForum(member, title, q);
+        model.addAttribute("member", member);
+        return "redirect:/forum";
+    }
+
+    /**
+     * 사용자가 선택한 게시글의 상세보기 페이지로 이동합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @return view/forum_detail
+     */
+    @GetMapping("/forumDetail/{id}")
+    public String forumDetailView(@CurrentUser Member member, @PathVariable Long id, Model model) {
+        Forum forum = forumRepository.findById(id).orElse(null);
+        long hit = forum.getHit();
+        hit++;
+        forum.setHit(hit);
+        forumRepository.save(forum);
+
+        Question question = questionRepository.findById(forum.getQuestionId()).orElse(null);
+        assert question != null;
+
+        QuestionType type = question.getQuestionType();
+        if (type==QuestionType.PART1||type==QuestionType.PART2||type==QuestionType.PART3||type==QuestionType.PART4) {
+            model.addAttribute("content",((LC) question).getContent());
+            model.addAttribute("recording",((LC) question).getRecording());
+            model.addAttribute("exampleA", ((LC) question).getExampleA());
+            model.addAttribute("exampleB", ((LC) question).getExampleB());
+            model.addAttribute("exampleC", ((LC) question).getExampleC());
+            model.addAttribute("exampleD", ((LC) question).getExampleD());
+            model.addAttribute("solution", ((LC) question).getSolution());
+        }
+        else {
+            model.addAttribute("content", ((RC) question).getContent());
+            model.addAttribute("content2", ((RC) question).getContent2());
+            model.addAttribute("content3", ((RC) question).getContent3());
+            model.addAttribute("exampleA", ((RC) question).getExampleA());
+            model.addAttribute("exampleB", ((RC) question).getExampleB());
+            model.addAttribute("exampleC", ((RC) question).getExampleC());
+            model.addAttribute("exampleD", ((RC) question).getExampleD());
+            model.addAttribute("solution", ((RC) question).getSolution());
+        }
+        model.addAttribute("forum", forum);
+        model.addAttribute("member", member);
+        model.addAttribute("question", question);
+        model.addAttribute("type", question.getQuestionType());
+        model.addAttribute("answer", question.getAnswer());
+        model.addAttribute("questionExplanation", question.getQuestionExplanation());
+
+        return "view/forum_detail";
+    }
+
+    /**
+     * 사용자가 추출하려는 문제의 이미지를 업로드합니다.
+     * @param member
+     * @param model
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws IllegalStateException
+     */
+    @RequestMapping(value="/upload_img", method = RequestMethod.POST)
+    @ResponseBody
+    public StringBuilder upload(@CurrentUser Member member, Model model, @RequestParam("file") MultipartFile file) throws IOException, IllegalStateException{
+        StringBuilder loadText = new StringBuilder();
+        FileOutputStream fos = null;
+
+        try {
+            byte fileData[] = file.getBytes();
+            fos = new FileOutputStream(System.getProperty("java.io.tmpdir")+file.getName()+".jpg");
+            fos.write(fileData);
+
+        } finally {
+            if (fos!= null){
+                try {
+                    fos.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        visionService.readText(file.getName(), loadText);
+
+        model.addAttribute(member);
+        return loadText;
+    }
 
 }
