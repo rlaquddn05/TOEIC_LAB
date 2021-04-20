@@ -22,7 +22,7 @@ public class StudyGroupApplicationValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         StudyGroupApplicationForm studyGroupApplicationForm = (StudyGroupApplicationForm) target;
-        int value = 1;
+        double value = 1;
         StudyGroupApplicationTag[] tags = studyGroupApplicationForm.getTags();
         for (int i = 0; i < tags.length; i++) {
             value = value * tags[i].get();
