@@ -344,7 +344,7 @@ public class CommunityController {
      * @param model
      * @param title
      * @param questionType
-     * @param content
+     * @param content1
      * @param content2
      * @param content3
      * @param question
@@ -364,7 +364,6 @@ public class CommunityController {
                               @RequestParam String exampleB, @RequestParam String exampleC,
                               @RequestParam String exampleD, @RequestParam String answer,
                               @RequestParam String solution) {
-        System.out.println(content1);
         Question q = questionService.createQuestion(questionType, content1, content2, content3, question, exampleA, exampleB,
                 exampleC, exampleD, answer, solution);
 
