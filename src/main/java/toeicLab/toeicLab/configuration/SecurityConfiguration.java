@@ -47,10 +47,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .mvcMatchers("/index",
                         "/",
-                        "/create_meeting",
-                        "/lc_sheet",
-                        "/rc_sheet",
-                        "/rc_answer_sheet",
                         "/select_test",
                         "/login",
                         "/signup",
@@ -58,12 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/send_find_id_link",
                         "/send_reset_password_link",
                         "/my_review_note",
-                        "/spk_sheet",
-                        "/spk_confirm_answer",
                         "/result_sheet",
-                        "/lc_answer_sheet",
-                        "/my_page",
-                        "/spk_answer_sheet",
                         "/my_studygroup_list",
                         "/my_studygroup_detail",
                         "/practice_test/**",
@@ -85,7 +76,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/my_vocabulary_list",
                         "/delete_word",
                         "/readText",
-                        "/forum_upload"
+                        "/forum_upload",
+                        "/spk_sheet",
+                        "/spk_confirm_answer",
+                        "/spk_answer_sheet"
                         )
                 .permitAll()
 

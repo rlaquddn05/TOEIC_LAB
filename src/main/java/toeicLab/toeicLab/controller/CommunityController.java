@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * CommunityController
- * 
+ * 게시판과 문제등록 게시판을 다루는 컨트롤러 입니다.
  */
 @Controller
 @Slf4j
@@ -240,7 +240,7 @@ public class CommunityController {
     /**
      * 사용자가 선택한 게시물의 수정페이지로 이동동합니다.
      * @param id
-    * @param member
+     * @param member
      * @param model
      * @return view/updateBulletin
      */
