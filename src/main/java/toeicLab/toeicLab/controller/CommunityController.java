@@ -65,7 +65,7 @@ public class CommunityController {
                 model.addAttribute(member);
                 model.addAttribute("bulletinList", bulletinList2);
                 model.addAttribute("pagination", pagination);
-                return "view/bulletin";
+                return "community/bulletin";
             }
 
             for (int i = startIndex; i < pageCheck; i++){
@@ -82,7 +82,7 @@ public class CommunityController {
             model.addAttribute("pagination", pagination);
 
         model.addAttribute(member);
-        return "view/bulletin";
+        return "community/bulletin";
     }
 
     /**
@@ -95,7 +95,7 @@ public class CommunityController {
     public String showBulletinUploadView(@CurrentUser Member member, Model model){
         model.addAttribute("member", member);
 
-        return "view/bulletin_upload";
+        return "community/bulletin_upload";
     }
 
     /**
@@ -148,7 +148,7 @@ public class CommunityController {
         model.addAttribute("bulletinCommentList", bulletinCommentList);
         model.addAttribute("bulletin", bulletin);
         model.addAttribute("member", member);
-        return "view/bulletinDetail";
+        return "community/bulletinDetail";
     }
 
     /**
@@ -253,7 +253,7 @@ public class CommunityController {
         model.addAttribute(member);
         model.addAttribute("id", id);
 
-        return "view/updateBulletin";
+        return "community/updateBulletin";
     }
 
     /**
@@ -308,7 +308,7 @@ public class CommunityController {
             model.addAttribute(member);
             model.addAttribute("forumList", forumList2);
             model.addAttribute("pagination", pagination);
-            return "view/forum";
+            return "community/forum";
         }
         for (int i = startIndex; i < pageCheck; i++){
             Forum forum = forumList.get(i);
@@ -323,7 +323,7 @@ public class CommunityController {
         model.addAttribute(member);
         model.addAttribute("forumList", forumList2);
         model.addAttribute("pagination", pagination);
-        return "view/forum";
+        return "community/forum";
     }
 
     /**
@@ -335,7 +335,7 @@ public class CommunityController {
     @GetMapping("/forum_upload")
     public String uploadQuestion(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/forum_upload";
+        return "community/forum_upload";
     }
 
     /**
@@ -418,7 +418,7 @@ public class CommunityController {
         model.addAttribute("answer", question.getAnswer());
         model.addAttribute("questionExplanation", question.getQuestionExplanation());
 
-        return "view/forum_detail";
+        return "community/forum_detail";
     }
 
     /**

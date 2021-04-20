@@ -9,15 +9,12 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.CurrentUser;
 import toeicLab.toeicLab.user.StudyGroupApplicationValidator;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,19 +83,7 @@ public class MyFunctionController {
         model.addAttribute("part7m", memberService.createCommentByQuestionType(member, QuestionType.PART7_MULTIPLE_PARAGRAPH));
         model.addAttribute("level", member.getLevelType() == null ? "데이터가 없습니다" : member.getLevelType());
         model.addAttribute("member", member);
-        return "/view/my_progress";
-    }
-
-    /**
-     * 단어시험 페이지로 이동합니다.
-     * @param member
-     * @param model
-     * @return view/vocabulary_test
-     */
-    @GetMapping("/vocabulary_test")
-    public String vocabularyTest(@CurrentUser Member member, Model model) {
-        model.addAttribute("member", member);
-        return "view/vocabulary_test";
+        return "function/my_progress";
     }
 
     /**
@@ -110,7 +95,7 @@ public class MyFunctionController {
     @GetMapping("/popup_dictionary")
     public String popupLayout(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/popup_dictionary";
+        return "function/popup_dictionary";
     }
 
     /**
@@ -197,7 +182,7 @@ public class MyFunctionController {
         model.addAttribute("wordList", map);
         model.addAttribute(member);
 
-        return "view/my_vocabulary_list";
+        return "function/my_vocabulary_list";
     }
 
     /**
@@ -241,7 +226,7 @@ public class MyFunctionController {
         model.addAttribute("questionList", list);
         model.addAttribute("member", member);
         model.addAttribute("userAnswer", reviewNote.getSubmittedAnswers());
-        return "view/my_review_note";
+        return "function/my_review_note";
     }
 
     /**
