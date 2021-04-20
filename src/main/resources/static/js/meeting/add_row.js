@@ -1,4 +1,4 @@
-/*11111111111111111111111111111111111111111111111111111111111111111111111111111*/
+
 $(document).ready(function (){
     $("#btn-p-1").click(function(){
         $("#RC-LC-box1").find("label, select, option").prop("disabled", false);
@@ -46,7 +46,8 @@ function partChange1(){
         $('#form1_2').append(option);
     }
 }
-/*22222222222222222222222222222222222222222222222222222222222222222222222222222222*/
+
+
 
 $(document).ready(function (){
     $("#btn-p-2").click(function(){
@@ -112,7 +113,7 @@ function partChange2(){
     }
 }
 
-/*33333333333333333333333333333333333333333333333333333333333333333333333333333*/
+
 
 $(document).ready(function (){
     $("#btn-p-3").click(function(){
@@ -179,7 +180,7 @@ function partChange3(){
     }
 }
 
-/*444444444444444444444444444444444444444444444444444444444444444444444444444444444*/
+
 
 $(document).ready(function (){
     $("#btn-p-4").click(function(){
@@ -247,7 +248,7 @@ function partChange4(){
 }
 
 
-/*55555555555555555555555555555555555555555555555555555555555555555555555555555555555555555*/
+
 
 $(document).ready(function (){
     $("#btn-p-5").click(function(){
@@ -314,7 +315,7 @@ function partChange5(){
     }
 }
 
-/*66666666666666666666666666666666666666666666666666666666666666666666666666666666666666*/
+
 
 $(document).ready(function (){
     $("#btn-p-6").click(function(){
@@ -381,7 +382,7 @@ function partChange6(){
     }
 }
 
-/*77777777777777777777777777777777777777777777777777777777777777777777777777777777777777777*/
+
 
 $(document).ready(function (){
     $("#btn-p-7").click(function(){
@@ -453,7 +454,7 @@ function partChange7(){
     }
 }
 
-/*==============================================================*/
+
 $(document).ready(function (){
     $("#btn-m-8").click(function(){
         $("#RC-LC-box7").find("label, select, option").prop("disabled", true);

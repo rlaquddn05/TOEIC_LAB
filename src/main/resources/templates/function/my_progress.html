@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout" th:with="title='ReviewNote'">
+      layout:decorate="layout" th:with="title='My_Progress'">
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/member/progress.css}">
@@ -15,7 +15,7 @@
         <div class="row">
 
             <div class="div-common-main" id="common-div1">
-                <div class="row justify-content-center div-margin-bottom" id="head-word">
+                <div class="row justify-content-center div-margin-bottom head-word">
                     <a class="lead"><b class="level">TOEIC Lv .</b><b th:text="${level}"></b></a>
                 </div>
                 <div class="div-common div-margin-bottom">
@@ -89,7 +89,7 @@
 
 
             <div class="div-common-main" id="common-div2">
-                <div class="row justify-content-center div-margin-bottom2" id="head-word">
+                <div class="row justify-content-center div-margin-bottom2 head-word">
                     <a class="lead"><b  class="level">SPRAKING Lv .</b></a>
                 </div>
                 <div class="div-common div-margin-bottom2">

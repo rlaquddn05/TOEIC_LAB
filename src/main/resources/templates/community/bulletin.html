@@ -25,8 +25,6 @@
                     <td class="col-1">좋아요</td>
                     <td class="col-1">조회수</td>
                     <td class="col-2">날짜</td>
-<!--                    <td class="col-1">좋아요</td>-->
-<!--                    <td>상세/댓글</td>-->
                 </tr>
                 </thead>
 
@@ -38,8 +36,6 @@
                         <td id="get-like" class="col-1" th:text="${bulletin.getLikeNumber()}"></td>
                         <td id="hit" class="col-1" th:text="${bulletin.getHit()}"></td>
                         <td id="date" class="col-2" th:text="${bulletin.getDate()}"></td>
-<!--                        <td th:text="${bulletin.getLikeNumber()}"></td>-->
-<!--                        <td> <a th:href="@{/bulletinDetail/{id}(id=${bulletin.id})}" class="btn btn-outline-primary btn-sm">상세 보기</a></td>-->
                     </tr>
                 </tbody>
             </table>

@@ -7,9 +7,8 @@
 <th:block layout:fragment="js">
     <script th:src="@{/js/user/form_validation.js}"></script>
     <script th:src="@{/js/user/daum_address.js}"></script>
-<!--    <script th:src="@{/js/user/my_page.js}"></script>-->
+    <script th:src="@{/js/user/my_page.js}"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 </th:block>
 
 <th:block layout:fragment="css">
@@ -72,23 +71,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <script th:inline="javascript">
-                        $(document).ready(function (){
-                            $("#nickname-button").click(function (){
-                                $.ajax({
-                                   method: 'GET',
-                                   url: '/update/checkNickname',
-                                   data: 'nickname=' + $('#nickname').val(),
-                                   dataType: 'json',
-                                   success: function (result) {
-                                       $('.modal-body').html(result.message);
-                                       $('#show-modal').modal('show');
-                                    }
-                                });
-                            });
-                        });
-                    </script>
 
                     <div class="row g-3">
                         <div class="col-12" th:if="${currentUser.getGenderType().toString().equals('MALE')}">
@@ -212,37 +194,6 @@
         </div>
 
     </div>
-    <script th:inline="javascript">
-        $(document).ready(function () {
-            $("#update_password_button").click(function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/update/password',
-                    data: 'password=' + $("#password").val() + '&userId=' + $("#userId").val(),
-                    dataType: 'json',
-                    success: function (result) {
-                        $(".modal-body").html(result.message);
-                        $("#show-modal").modal();
-                    }
-                });
-            });
-
-            $("#delete_button").click(function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/update/delete',
-                    data: 'userId=' + $("#userId").val(),
-                    dataType: 'json',
-                    success: function (result) {
-                        $(".modal-body").html(result.message);
-                        $("#myPageButton2").modal();
-                    }
-                });
-            });
-        });
-    </script>
-
-
 
     <!-- The Modal -->
     <div class="modal fade" id="show-modal" tabindex="-1" role="dialog"
