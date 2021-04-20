@@ -3,7 +3,6 @@ package toeicLab.toeicLab.controller;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -14,9 +13,10 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.*;
 import toeicLab.toeicLab.service.*;
 import toeicLab.toeicLab.user.CurrentUser;
-import toeicLab.toeicLab.user.SignUpValidator;
+import toeicLab.toeicLab.user.StudyGroupApplicationForm;
 import toeicLab.toeicLab.user.StudyGroupApplicationValidator;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +35,8 @@ public class StudyGroupController {
     private final MemberService memberService;
     private final QuestionSetService questionSetService;
     private final StudyGroupService studyGroupService;
+    private final StudyGroupApplicationValidator studyGroupApplicationValidator;
+    private final StudyGroupApplicationService studyGroupApplicationService;
 
     /**
      * [ToeicLab]의 스터디 그룹 신청 페이지로 이동합니다.
@@ -46,7 +48,7 @@ public class StudyGroupController {
     public String applyStudyGroup(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
         model.addAttribute(new StudyGroupApplicationForm());
-        return "view/apply_studygroup";
+        return "study_group/apply_studygroup";
     }
 
     /**
@@ -67,11 +69,11 @@ public class StudyGroupController {
                 sb.append(error.getDefaultMessage() + "<br/>");
             }
             model.addAttribute("errorMessage", sb);
-            return "view/apply_studygroup";
+            return "study_group/apply_studygroup";
         }
         studyGroupApplicationService.createNewStudyGroupApplication(studyGroupApplicationForm, member);
         model.addAttribute("successMessage", "스터디 신청이 완료되었습니다.");
-        return "view/apply_studygroup";
+        return "study_group/apply_studygroup";
     }
 
     @GetMapping("/my_studygroup_detail/{id}")
@@ -122,7 +124,7 @@ public class StudyGroupController {
 
 
 
-        return "view/my_studygroup_detail";
+        return "study_group/my_studygroup_detail";
     }
 
     @GetMapping("/secession_studyGroup")
@@ -269,6 +271,6 @@ public class StudyGroupController {
     public String viewCreateMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {
         model.addAttribute("member", member);
         model.addAttribute("studyGroupId", id);
-        return "view/create_meeting";
+        return "study_group/create_meeting";
     }
 }

@@ -15,7 +15,7 @@
 <div layout:fragment="content">
     <div class="container">
         <div class="py-5">
-             <div>
+             <div id="detail-div">
                 <label for="title" class="sub">글 제목</label>
                 <input class="form-control" id="id" type="hidden" th:value="${forum.getId()}" name="id" readonly>
                 <input class="form-control" id="writerId" type="hidden" th:value="${forum.getUserId()}" name="writerId"
@@ -84,7 +84,7 @@
 
             </div>
             <br/>
-            <hr class="col-12 my-4">
+            <hr class="my-4" id="line-detail">
             <div id="back-list">
                 <button class="btn btn-dark" onclick="location.href='/forum'">목록으로 돌아가기</button>
             </div>

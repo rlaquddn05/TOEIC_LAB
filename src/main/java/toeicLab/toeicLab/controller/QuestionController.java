@@ -1,6 +1,5 @@
 package toeicLab.toeicLab.controller;
 
-import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -38,7 +37,7 @@ public class QuestionController {
     @GetMapping("/select_test")
     public String selectTest(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/select_test";
+        return "question/select_test";
     }
 
     /**
@@ -54,7 +53,7 @@ public class QuestionController {
         if(id.equals("lc")) model.addAttribute("practice", "lc");
         if(id.equals("spk")) model.addAttribute("practice", "spk");
         model.addAttribute("member", member);
-        return "view/practice_select";
+        return "question/practice_select";
     }
 
     /**
@@ -83,7 +82,7 @@ public class QuestionController {
             questionSetRepository.save(list);
             model.addAttribute("questionList", list.getQuestions());
             model.addAttribute("questionSet", list);
-            return "view/practice_sheet";
+            return "question/practice_sheet";
         }
         else if (("rc").equals(id)){
             int p5 = Integer.parseInt(request.getParameter("PART5"));
@@ -98,7 +97,7 @@ public class QuestionController {
             questionSetRepository.save(list);
             model.addAttribute("questionList", list.getQuestions());
             model.addAttribute("questionSet", list);
-            return "view/practice_sheet";
+            return "question/practice_sheet";
         }
         else {
             Meeting meeting = meetingRepository.getOne(Long.parseLong(id));
@@ -128,7 +127,7 @@ public class QuestionController {
             model.addAttribute("questionSet", questionSet);
             model.addAttribute("studyGroupId", meeting.getStudyGroup().getId());
             System.out.println(meeting.getStudyGroup().getId());
-            return "view/practice_sheet";
+            return "question/practice_sheet";
         }
     }
 
@@ -164,7 +163,7 @@ public class QuestionController {
         model.addAttribute("questionList", list.getQuestions());
         model.addAttribute("type", type);
         model.addAttribute("member", member);
-        return "view/question/test";
+        return "question/test";
     }
 
     /**
@@ -215,7 +214,7 @@ public class QuestionController {
         memberService.CreateLevelByAllQuestions(member);
         String[] eachstrings = questionSetService.getPercentageEachOfQuestionSet(questionSet);
         model.addAttribute("eachstrings", eachstrings);
-        return "view/result_sheet";
+        return "question/result_sheet";
     }
 
     /**
@@ -240,7 +239,7 @@ public class QuestionController {
         model.addAttribute("member", member);
         model.addAttribute("questionSetId", questionSetId);
         model.addAttribute("userAnswer", questionSet.getSubmittedAnswers());
-        return "view/detail";
+        return "question/detail";
     }
 
 

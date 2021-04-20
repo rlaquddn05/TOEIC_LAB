@@ -18,12 +18,12 @@
             </div>
             <table class="table table-striped">
                 <thead>
-                <tr class="row">
+                <tr class="row" id="list-row">
                     <td class="col-1">번호</td>
                     <td class="col-7">제목</td>
                     <td class="col-1">작성자</td>
                     <td class="col-2">날짜</td>
-                    <td class="col=1">조회수</td>
+                    <td class="col-1">조회수</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
 
                 </tbody>
             </table>
-            <hr/>
+            <hr id="line-forum"/>
             <nav>
                 <ul class="pagination justify-content-center">
                     <li class="page-item"><a class="page-link" th:href="@{/forum?page=1}" aria-label="Previous"><span aria-hidden="true">처음</span></a></li>

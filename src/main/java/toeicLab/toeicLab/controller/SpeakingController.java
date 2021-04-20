@@ -22,7 +22,7 @@ public class SpeakingController {
     @GetMapping("/spk_sheet")
     public String spkSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/spk_sheet";
+        return "speaking/spk_sheet";
     }
 
     /**
@@ -34,7 +34,7 @@ public class SpeakingController {
     @GetMapping("/spk_confirm_answer")
     public String spkConfirmAnswer(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/spk_confirm_answer";
+        return "speaking/spk_confirm_answer";
     }
 
     /**
@@ -46,7 +46,7 @@ public class SpeakingController {
     @GetMapping("/spk_answer_sheet")
     public String spkAnswerSheet(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/spk_answer_sheet";
+        return "speaking/spk_answer_sheet";
     }
 
     /**
@@ -58,6 +58,15 @@ public class SpeakingController {
     @GetMapping("/schedule")
     public String schedule(@CurrentUser Member member, Model model) {
         model.addAttribute("member", member);
-        return "view/schedule";
+        return "speaking/schedule";
+    }
+
+    /**
+     * [ToeicLab]의 소개페이지로 이동합니다.
+     * @return view/toeiclab_intro
+     */
+    @GetMapping("/toeiclab_introduction")
+    public String toeiclabIntroduction() {
+        return "speaking/toeiclab_intro";
     }
 }

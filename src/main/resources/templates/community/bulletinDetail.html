@@ -34,7 +34,7 @@
 
                     <h5 class="sub">댓글쓰기</h5>
                     <br/>
-                    <div class="row">
+                    <div class="row" id="upload-comment">
                         <input class="form-control" id="commentWriter" type="hidden" th:value="${member.getNickname()}" name="commentWriter" readonly>
                         <input class="form-control comment-form" id="comment" name="comment">
                         <div class="space"></div>
@@ -42,12 +42,12 @@
                     </div>
                     <br/>
 
-                <hr class="col-11.5 my-4">
+                <hr class="my-4" id="line-bulletin-detail">
 
                 <h5 class="sub">댓글목록</h5>
                 <table class="table table-striped">
                     <thead>
-                        <tr class="row">
+                        <tr class="row" id="thead-row">
                             <td class="col-1">작성자</td>
                             <td class="col-9">내용</td>
                             <td class="col-2">날짜</td>

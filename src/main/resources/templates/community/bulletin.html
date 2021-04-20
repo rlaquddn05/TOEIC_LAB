@@ -18,7 +18,7 @@
             </div>
             <table class="table table-striped">
                 <thead>
-                <tr class="row">
+                <tr class="row" id="list-row">
                     <td class="col-1">번호</td>
                     <td class="col-6">제목</td>
                     <td class="col-1">작성자</td>
@@ -43,7 +43,7 @@
                     </tr>
                 </tbody>
             </table>
-            <hr/>
+            <hr id="line-bulletin"/>
             <nav>
                 <ul class="pagination justify-content-center">
                     <li class="page-item"><a class="page-link" th:href="@{/bulletin?page=1}" aria-label="Previous"><span aria-hidden="true">처음</span></a></li>

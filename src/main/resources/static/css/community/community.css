@@ -14,15 +14,18 @@ thead {
 
 #forum_list, #bulletin-list {
     font-family: "Hi Melody", sans-serif;
+    margin-left: 0.063em;
+    margin-right: 0.625em;
 }
 
+#list-row {
+    margin-left: 0.063em;
+    margin-right: 0.625em;
+}
 textarea {
     min-height: 10em;
 }
 
-.row {
-    padding-left: 0.938em;
-}
 
 #file_form {
     width: 85%;
@@ -45,6 +48,7 @@ textarea {
 #back-list {
     text-align: right;
     font-family: "Gugi", sans-serif;
+    margin-right: 3.125em;
 }
 
 #date, #hit, #number, #nickname, #get-like {
@@ -70,6 +74,7 @@ textarea {
 
 .sub {
     font-family: "Gugi", sans-serif;
+    margin-left: 0.313em;
 }
 
 .comment-form {
@@ -83,4 +88,31 @@ textarea {
     height: 2.500em;
     margin-top: 5.000em;
     width: 6.250em;
+}
+
+.custom-file {
+    margin-left: 0.063em;
+}
+
+#detail-div {
+    padding-left: 3.125em;
+    padding-right: 3.125em;
+}
+
+#line-detail {
+    width: 90%;
+}
+
+#line-forum, #line-bulletin {
+    margin-right: 0.625em;
+}
+
+#thead-row, #line-bulletin-detail{
+    margin-left: 0.125em;
+    margin-right: 0.625em;
+}
+
+#upload-comment {
+    margin-left: 0.125em;
+    margin-right: -0.375em;
 }

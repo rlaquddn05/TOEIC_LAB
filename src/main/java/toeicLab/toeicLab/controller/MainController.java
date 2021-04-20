@@ -46,7 +46,7 @@ public class MainController {
         if (member != null) {
             model.addAttribute(member);
         }
-        return "view/index";
+        return "member/index";
     }
 
     @GetMapping("/index")
@@ -54,7 +54,7 @@ public class MainController {
         if (member != null) {
             model.addAttribute(member);
         }
-        return "view/index";
+        return "member/index";
     }
 
     /**
@@ -63,7 +63,7 @@ public class MainController {
      */
     @GetMapping("/login")
     public String showLoginPage() {
-        return "view/login";
+        return "member/login";
     }
 
     /**
@@ -72,7 +72,7 @@ public class MainController {
      */
     @GetMapping("/logout")
     public String showLogoutPage() {
-        return "view/index";
+        return "member/index";
     }
 
     /**
@@ -81,7 +81,7 @@ public class MainController {
      */
     @GetMapping("/send_reset_password_link")
     public String sendResetPasswordView() {
-        return "view/send_reset_password_link";
+        return "member/send_reset_password_link";
     }
 
     /**
@@ -109,10 +109,10 @@ public class MainController {
 
         } catch (IllegalArgumentException e) {
             model.addAttribute("error_code", "password.reset.failed");
-            return "view/notify_password";
+            return "member/notify_password";
         }
         model.addAttribute("result_code", "password.reset.send");
-        return "view/notify_password";
+        return "member/notify_password";
     }
 
     /**
@@ -121,7 +121,7 @@ public class MainController {
      */
     @GetMapping("/notify_password")
     public String notifyPasswordView() {
-        return "view/notify_password";
+        return "member/notify_password";
     }
 
     /**
@@ -134,7 +134,7 @@ public class MainController {
     public String goResetPassword(@RequestParam("token") String resetPasswordEmailToken, Model model) {
         MailDto mailByEmailCheckToken = mailRepository.findByEmailCheckToken(resetPasswordEmailToken);
         model.addAttribute("email", mailByEmailCheckToken.getEmail());
-        return "view/reset_password";
+        return "member/reset_password";
     }
 
     /**
@@ -169,7 +169,7 @@ public class MainController {
      */
     @GetMapping("reset_password")
     public String resetPasswordView() {
-        return "view/reset_password";
+        return "member/reset_password";
     }
 
     /**
@@ -184,7 +184,7 @@ public class MainController {
         memberService.resetPassword(email, password);
         log.info("비밀번호 수정 완료");
         model.addAttribute("result_code", "password.reset.success");
-        return "view/notify_password";
+        return "member/notify_password";
     }
 
     /**
@@ -193,7 +193,7 @@ public class MainController {
      */
     @GetMapping("/send_find_id_link")
     public String sendFindIdView() {
-        return "view/send_find_id_link";
+        return "member/send_find_id_link";
     }
 
     /**
@@ -209,10 +209,10 @@ public class MainController {
             model.addAttribute("findIdMember", findIdMember);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error_code", "find.id.failed");
-            return "view/find_id";
+            return "member/find_id";
         }
         model.addAttribute("success_code", "find.id.success");
-        return "view/find_id";
+        return "member/find_id";
     }
 
     /**
@@ -223,7 +223,7 @@ public class MainController {
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute(new SignUpForm());
-        return "/view/signup";
+        return "member/signup";
     }
 
     /**
@@ -236,7 +236,7 @@ public class MainController {
     public String signUpSubmit(@Valid SignUpForm signUpForm, Errors errors) {
         if (errors.hasErrors()) {
             log.info("유효성 에러 발생!");
-            return "view/signup";
+            return "member/signup";
         }
         signUpValidator.validate(signUpForm, errors);
         log.info("유효성 검사 끝!");
@@ -418,7 +418,7 @@ public class MainController {
         log.info(String.valueOf(currentUser.getGenderType()));
         model.addAttribute("member", member);
         model.addAttribute(new UpdateForm());
-        return "view/my_page";
+        return "member/my_page";
     }
 
     /**
@@ -534,12 +534,4 @@ public class MainController {
         return jsonObject.toString();
     }
 
-    /**
-     * [ToeicLab]의 소개페이지로 이동합니다.
-     * @return view/toeiclab_intro
-     */
-    @GetMapping("/toeiclab_introduction")
-    public String toeiclabIntroduction() {
-        return "view/toeiclab_intro";
-    }
 }
