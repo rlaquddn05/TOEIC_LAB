@@ -27,23 +27,26 @@
                 <input class="form-control" id="questionType" type="textarea" th:value="${question.getQuestionType()}"
                        name="content" readonly>
 
-
+                 <br/>
                 <div th:if="${content != null}">
                     <label for="content" class="sub">지문1</label>
                     <input class="form-control" id="content" type="textarea" th:value="${content}" name="content"
                            readonly>
+                    <br/>
                 </div>
 
                 <div th:if="${content2 != null}">
                     <label for="content2" class="sub">지문2</label>
                     <input class="form-control" id="content2" type="textarea" th:value="${content2}" name="content2"
                            readonly>
+                    <br/>
                 </div>
 
                 <div th:if="${content3 != null}">
                     <label for="content3" class="sub">지문3</label>
                     <input class="form-control" id="content3" type="textarea" th:value="${content3}" name="content3"
                            readonly>
+                    <br/>
                 </div>
 
                 <div th:if="${questionExplanation != null}">
@@ -51,31 +54,36 @@
                     <input class="form-control" id="questionExplanation" type="textarea"
                            th:value="${questionExplanation}" name="questionExplanation" readonly>
                 </div>
-
+                <br/>
                 <div>
                     <label for="exampleA" class="sub">A.</label>
                     <input class="form-control" id="exampleA" type="textarea" th:value="${exampleA}" name="exampleA"
                            readonly>
                 </div>
+                <br/>
                 <div>
                     <label for="exampleA" class="sub">B.</label>
                     <input class="form-control" id="exampleB" type="textarea" th:value="${exampleB}" name="exampleB"
                            readonly>
                 </div>
+                <br/>
                 <div>
                     <label for="exampleC" class="sub">C.</label>
                     <input class="form-control" id="exampleC" type="textarea" th:value="${exampleC}" name="exampleC"
                            readonly>
                 </div>
+                <br/>
                 <div>
                     <label for="exampleD" class="sub">D.</label>
                     <input class="form-control" id="exampleD" type="textarea" th:value="${exampleD}" name="exampleD"
                            readonly>
                 </div>
+                <br/>
                 <div>
                     <label for="answer" class="sub">정답.</label>
                     <input class="form-control" id="answer" type="textarea" th:value="${answer}" name="answer" readonly>
                 </div>
+                <br/>
                 <div>
                     <label for="solution" class="sub">해설.</label>
                     <input class="form-control" id="solution" type="textarea" th:value="${solution}" name="solution"

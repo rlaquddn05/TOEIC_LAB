@@ -293,7 +293,7 @@ public class QuestionService {
     /**
      * 전체 문제들을 형성한다.
      * @param questionType
-     * @param content
+     * @param content1
      * @param content2
      * @param content3
      * @param question
@@ -305,7 +305,7 @@ public class QuestionService {
      * @param solution
      * @return result
      */
-    public Question createQuestion(String questionType, String content, String content2, String content3, String question, String exampleA, String exampleB, String exampleC, String exampleD, String answer, String solution) {
+    public Question createQuestion(String questionType, String content1, String content2, String content3, String question, String exampleA, String exampleB, String exampleC, String exampleD, String answer, String solution) {
         QuestionType type=null;
         Question result = new Question();
 
@@ -348,6 +348,7 @@ public class QuestionService {
             lc.setExampleB(exampleB);
             lc.setExampleC(exampleC);
             lc.setExampleD(exampleD);
+            lc.setContent(content1);
             lc.setSolution(solution);
             lc.setQuestionType(type);
             lc.setAnswer(answer);
@@ -360,7 +361,7 @@ public class QuestionService {
             rc.setExampleC(exampleC);
             rc.setExampleD(exampleD);
             rc.setSolution(solution);
-            rc.setContent(content);
+            rc.setContent(content1);
             rc.setContent2(content2);
             rc.setContent3(content3);
             rc.setAnswer(answer);

@@ -116,3 +116,7 @@ textarea {
     margin-left: 0.125em;
     margin-right: -0.375em;
 }
+
+#output-text {
+    margin-left: 0px;
+}

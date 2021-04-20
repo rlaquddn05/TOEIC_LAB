@@ -358,14 +358,14 @@ public class CommunityController {
      */
     @PostMapping("/forum_upload")
     public String addQuestion(@CurrentUser Member member, Model model, @RequestParam String title,
-                              @RequestParam String questionType, @RequestParam(required = false) String content,
+                              @RequestParam String questionType, @RequestParam(required = false) String content1,
                               @RequestParam(required = false) String content2, @RequestParam(required = false) String content3,
                               @RequestParam String question, @RequestParam String exampleA,
                               @RequestParam String exampleB, @RequestParam String exampleC,
                               @RequestParam String exampleD, @RequestParam String answer,
                               @RequestParam String solution) {
-
-        Question q = questionService.createQuestion(questionType, content, content2, content3, question, exampleA, exampleB,
+        System.out.println(content1);
+        Question q = questionService.createQuestion(questionType, content1, content2, content3, question, exampleA, exampleB,
                 exampleC, exampleD, answer, solution);
 
         forumService.addForum(member, title, q);
