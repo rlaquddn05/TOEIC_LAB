@@ -1,3 +1,9 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+    path: /errorPage
+
 spring:
   h2:
     console:
@@ -44,7 +50,7 @@ spring:
       max-request-size: 100MB
 
   profiles:
-    active: service
+    active: dev
 
 #logging:
 #  level:

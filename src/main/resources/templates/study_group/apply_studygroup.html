@@ -72,23 +72,6 @@
                     <label>하</label>
                 </div>
             </div>
-
-            <hr class="my-2">
-            <br/>
-            <div class="component">
-                <h4>희망성별(복수응답가능)</h4>
-            </div>
-            <div class="row">
-                <div class="col-1">
-                    <input type="checkbox" name="tag" th:field="*{tags}" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).MALE}">
-                    <label>남</label>
-                </div>
-                <div class="col-1">
-                    <input type="checkbox" name="tag" th:field="*{tags}" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).FEMALE}">
-                    <label>여</label>
-                </div>
-            </div>
-
             <hr class="my-2">
             <br/>
             <div class="component">
@@ -102,6 +85,21 @@
                 <div class="col-1">
                     <input type="checkbox" name="tag" th:field="*{tags}" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).WEEKEND}">
                     <label>주말</label>
+                </div>
+            </div>
+            <hr class="my-2">
+            <br/>
+            <div class="component">
+                <h4>희망성별(복수응답가능)</h4>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <input type="checkbox" name="tag" th:field="*{tags}" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).MALE}">
+                    <label>남</label>
+                </div>
+                <div class="col-1">
+                    <input type="checkbox" name="tag" th:field="*{tags}" th:value="${T(toeicLab.toeicLab.domain.StudyGroupApplicationTag).FEMALE}">
+                    <label>여</label>
                 </div>
             </div>
             <br/>
