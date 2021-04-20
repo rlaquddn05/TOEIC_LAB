@@ -64,6 +64,7 @@
                             <label for="nickname" class="form-label">닉네임</label>
                             <div class="input-group">
                                 <input type="text" class="form-control"
+                                       maxlength="6" placeholder="6글자 이하로 수정"
                                        name="nickname" id="nickname"
                                        aria-describedby="nickname_help_text"
                                        th:value="${currentUser.getNickname()}" required>
