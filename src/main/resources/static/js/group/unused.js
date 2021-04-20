@@ -1,8 +1,9 @@
+/*html 단에서만 먹히는 거임*/
 function a(id){
     $.ajax({
         type: 'GET',
         url: '/modify_study_leader',
-        data: {"target":id,"group":$("#stdId").val()},
+        data: {"target":id,"group":[[${thisStudyGroup.id}]]},
         dataType: 'json',
         success: function (result){
             $('.modal-body').html(result.message);
@@ -17,7 +18,7 @@ function b(){
     $.ajax({
         type: 'GET',
         url: '/modify_study_name',
-        data: {"name":$('#name').val(),"group":$("#stdId").val()},
+        data: {"name":$('#name').val(),"group":[[${thisStudyGroup.id}]]},
         dataType: 'json',
         success: function (result){
             $('.modal-body').html(result.message);
@@ -49,7 +50,7 @@ function add(){
     $.ajax({
         type: 'GET',
         url: '/add_comment',
-        data: {"content":$('#comment').val(),"group":$("#stdId").val()},
+        data: {"content":$('#comment').val(),"group":[[${thisStudyGroup.id}]]},
         dataType: 'json',
         success: function (result){
             location.reload();
@@ -61,7 +62,3 @@ function check(){
     $('.modal-body').html('정말로 해당 그룹을 탈퇴하시겠습니까?');
     $('#check_modal').modal('show');
 }
-
-$(document).ready(function (){
-    $('#chatContent').scrollTop($('#chatContent')[0].scrollHeight);
-});

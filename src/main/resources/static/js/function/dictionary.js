@@ -19,19 +19,17 @@ $(document).ready(function (){
 
 
     $("#add_word_list").click(function (){
-        console.log("aa");
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
-        $.ajax({
-        type: 'POST',
-        url: '/add_word_list',
-        data: {"word": $("#word").val().toString(), "meaning": $("#meaning").val().toString(), "_csrf":token},
-        // data: "word=" + $("#word").val().toString() + "&meaning=" + $("#meaning").val().toString() + "&_csrf=" + token,
-        dataType: 'json',
-        success: function(result){
-            $('.modal-body').html(result.message);
-            $('#exampleModalCenter').modal('show');
-        },
+            $.ajax({
+            type: 'POST',
+            url: '/add_word_list',
+            data: {"word": $("#word").val().toString(), "meaning": $("#meaning").val().toString(), "_csrf":token},
+            dataType: 'json',
+            success: function(result){
+                $('.modal-body').html(result.message);
+                $('#exampleModalCenter').modal('show');
+            },
         });
     });
 });

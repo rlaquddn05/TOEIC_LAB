@@ -63,12 +63,12 @@
                 </form>
             </div>
             <div th:if="!${question.answer.equals(userAnswer.get(question.id))}" id="review-note-div">
+                <input type="hidden" id="id" name="id" th:attr="value=|${question.id}|">
+                <input type="hidden" id="answer" name="answer" th:attr="value=|${userAnswer.get(question.id)}|">
                 <button id="addReview" class="btn btn-warning"> 오답노트 추가</button>
             </div>
         </div>
     </div>
+
 </div>
-
-
-
 </html>

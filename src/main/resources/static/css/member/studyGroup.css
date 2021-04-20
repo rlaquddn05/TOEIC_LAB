@@ -94,8 +94,31 @@
     font-size: 0.75rem;
 }
 
+#other-content {
+    font-family: "Hi Melody", sans-serif;
+    text-align: left;
+    padding-right: 4em;
+    padding-left: 0.938em;
+}
+
+#user-nickname {
+   font-family: "Gugi", sans-serif;
+   font-size: 0.813rem;
+   padding-left: 0.313em;
+}
+
+#current-user-nickname {
+    text-align: right;
+    font-family: "Gugi", sans-serif;
+    font-size: 0.813rem;
+    padding-right: 0.313em;
+}
+
 #content {
     font-family: "Hi Melody", sans-serif;
+    text-align: right;
+    padding-left: 4em;
+    padding-right: 0.938em;
 }
 
 #content-row {
