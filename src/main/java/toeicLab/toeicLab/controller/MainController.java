@@ -417,16 +417,43 @@ public class MainController {
      * @return redirect:/my_page
      */
     @PostMapping("/my_page")
+    @ResponseBody
     public String myPageSubmit(UpdateForm updateForm) {
+        JsonObject jsonObject = new JsonObject();
         Member updatedMember = memberRepository.findByUserId(updateForm.getUserId());
-        updatedMember.setAge(updateForm.getAge());
-        updatedMember.setContact(updateForm.getContact());
-        updatedMember.setNickname(updateForm.getNickname());
-        updatedMember.setAddress(Address.builder()
-                .zipcode(updateForm.getZipcode())
-                .city(updateForm.getCity())
-                .street(updateForm.getStreet())
-                .build());
+        if (updateForm.getNickname().equals("")){
+            jsonObject.addProperty("message", "닉네임은 공란으로 설정할 수 없습니다.");
+            return jsonObject.toString();
+        }
+        if (memberRepository.existsByNickname(updateForm.getNickname())){
+            jsonObject.addProperty("message", "중복된 닉네임으로 변경할 수 없습니다.");
+            return jsonObject.toString();
+        }
+        if(updateForm.getAge() == null ){
+            jsonObject.addProperty("message", "나이를 입력해주세요");
+            return jsonObject.toString();
+        }
+        if(updateForm.getAge() < 1 ){
+            jsonObject.addProperty("message", "올바른 나이를 입력해주세요");
+            return jsonObject.toString();
+        }
+        if (updateForm.getContact().equals("")){
+            jsonObject.addProperty("message", "전화번호를 입력해주세요");
+            return jsonObject.toString();
+        }
+        try {
+            updatedMember.setAge(updateForm.getAge());
+            updatedMember.setContact(updateForm.getContact());
+            updatedMember.setNickname(updateForm.getNickname());
+            updatedMember.setAddress(Address.builder()
+                    .zipcode(updateForm.getZipcode())
+                    .city(updateForm.getCity())
+                    .street(updateForm.getStreet())
+                    .build());
+        }catch (Exception e){
+            jsonObject.addProperty("message", "예상치 못한 오류가 발생하였습니다.");
+            return jsonObject.toString();
+        }
         if (!updatedMember.getStudyGroupList().isEmpty()){
             List<StudyGroup> studyGroupList = updatedMember.getStudyGroupList();
             for (StudyGroup sg : studyGroupList){
@@ -448,7 +475,8 @@ public class MainController {
             updatedMember.setGenderType(updatedMember.getGenderType());
         }
         memberRepository.save(updatedMember);
-        return "redirect:/my_page";
+        jsonObject.addProperty("message", "정보수정 완료");
+        return jsonObject.toString();
     }
 
     /**
@@ -508,12 +536,22 @@ public class MainController {
         return jsonObject.toString();
     }
 
+    /**
+     * 사용자가 변경하고자하는 닉네임의 존재 유무를 확인합니다.
+     * @param nickname
+     * @return
+     */
     @GetMapping("/update/checkNickname")
     @ResponseBody
     public String checkNicknameAgain(@RequestParam("nickname") String nickname) {
         JsonObject jsonObject = new JsonObject();
 
         boolean result = false;
+
+        if (nickname.equals("")){
+            jsonObject.addProperty("message", "닉네임은 공란으로 설정할 수 없습니다.");
+            return jsonObject.toString();
+        }
 
         result = memberRepository.existsByNickname(nickname);
         if (result) {

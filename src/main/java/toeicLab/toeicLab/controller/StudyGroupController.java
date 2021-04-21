@@ -53,27 +53,28 @@ public class StudyGroupController {
 
     /**
      * 회원이 선택한 신청서를 제출합니다.
-     * @param model
      * @param member
      * @param studyGroupApplicationForm
      * @param errors
      * @return view/apply_studygroup
      */
     @PostMapping("/apply_studygroup")
-    public String SubmitStudyGroupApplication(Model model, @CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors) {
-        model.addAttribute("member", member);
+    @ResponseBody
+    public String SubmitStudyGroupApplication(@CurrentUser Member member, @Valid StudyGroupApplicationForm studyGroupApplicationForm, Errors errors) {
+
+        JsonObject jsonObject = new JsonObject();
         studyGroupApplicationValidator.validate(studyGroupApplicationForm, errors);
         if (errors.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             for (FieldError error : errors.getFieldErrors()){
                 sb.append(error.getDefaultMessage() + "<br/>");
             }
-            model.addAttribute("errorMessage", sb);
-            return "study_group/apply_studygroup";
+            jsonObject.addProperty("message", sb.toString());
+            return jsonObject.toString();
         }
         studyGroupApplicationService.createNewStudyGroupApplication(studyGroupApplicationForm, member);
-        model.addAttribute("successMessage", "스터디 신청이 완료되었습니다.");
-        return "study_group/apply_studygroup";
+        jsonObject.addProperty("message", "ok");
+        return jsonObject.toString();
     }
 
     @GetMapping("/my_studygroup_detail/{id}")

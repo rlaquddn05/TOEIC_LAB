@@ -9,7 +9,7 @@
 </th:block>
 
 <th:block layout:fragment="js">
-    <!--<script type="text/javascript" th:src="@{/js/group/apply.js}"></script>-->
+    <script type="text/javascript" th:src="@{/js/group/apply.js}"></script>
 </th:block>
 
 <div layout:fragment="content">
@@ -19,7 +19,7 @@
             <p class="lead">신청서를 작성하고 제출 버튼을 클릭해주세요</p>
         </div>
 
-        <form th:action="@{/apply_studygroup}" th:object="${studyGroupApplicationForm}" method="post" name="applyForm">
+        <form th:action="@{/apply_studygroup}" th:object="${studyGroupApplicationForm}" method="post" id="apply-form" name="applyForm">
 
             <div id="consent-form">
                 <h4>스터디 안내사항</h4>
@@ -106,13 +106,13 @@
                 </div>
             </div>
             <br/>
-            <button type="submit" class="w-100 btn btn-dark btn-lg">신청서 제출하기</button>
+            <button type="button" id="apply-button" class="w-100 btn btn-dark btn-lg">신청서 제출하기</button>
 
         </form>
     </div>
     <br>
 
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -130,24 +130,6 @@
             </div>
         </div>
     </div>
-
-    <script th:inline="javascript">
-        window.onload = function() {
-            var error = [[${errorMessage}]];
-            var success = [[${successMessage}]];
-            if (error != null) {
-                $('.modal-body').html(error);
-                $('#errorModal').modal('show');
-            }
-            if (success != null) {
-                $('.modal-body').html(success);
-                $('#exampleModalCenter').modal('show');
-                $('#exampleModalCenter').on('hidden.bs.modal', function () {
-                    location.href='/'
-                })
-            }
-        }
-    </script>
 
 </div>
 

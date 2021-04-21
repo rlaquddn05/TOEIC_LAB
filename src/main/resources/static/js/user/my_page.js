@@ -37,5 +37,20 @@ $(document).ready(function (){
             }
         });
     });
+
+    $("#modify-button").click(function () {
+        var updateForm = $('#form').serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/my_page',
+            data: updateForm,
+            dataType: 'json',
+            success: function (result) {
+                $(".modal-body").html(result.message);
+                $("#show-modal").modal();
+            }
+        });
+    });
+
 });
 

@@ -25,7 +25,7 @@
             </div>
 
             <div class="g-10">
-                <form th:action="@{/my_page}" th:object="${updateForm}" method="post" name="updateForm">
+                <form th:action="@{/my_page}" th:object="${updateForm}" method="post" id="form" name="updateForm">
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="userId" class="form-label">아이디</label>
@@ -93,7 +93,7 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="age" class="form-label">나이</label>
-                            <input type="tel" class="form-control"
+                            <input type="number" class="form-control"
                                    name="age" id="age"
                                    aria-describedby="age_help_text"
                                    th:value="${currentUser.getAge()}" required>
@@ -183,7 +183,7 @@
 
                     <div id="group-button" >
                         <div>
-                            <button type="submit" class="btn btn-dark">정보수정</button>
+                            <button type="button" id="modify-button" class="btn btn-dark">정보수정</button>
                             <button type="button" class="btn btn-dark" onclick="location.href='/'">뒤로가기</button>
                             <button type="button" id="delete_button" class="btn btn-danger">탈퇴하기</button>
                         </div>
