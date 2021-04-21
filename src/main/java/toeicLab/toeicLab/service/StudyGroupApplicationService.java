@@ -26,7 +26,7 @@ public class StudyGroupApplicationService {
 
     /**
      * 사용자들이 제출한 스터디그룹 신청서를 조회한다.
-     * @return
+     * @return false
      */
     public List<StudyGroupApplication> getStudyGroupApplicationList() {
         return studyGroupApplicationRepository.findAllByMatching(false);

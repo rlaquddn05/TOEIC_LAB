@@ -16,7 +16,7 @@ public class MailService {
     /**
      * 회원가입시 사용자의 이메일로 token을 전송한다.
      * @param mailDto
-     * @return
+     * @return mailDto
      */
     public MailDto mailSend(MailDto mailDto) {
         SimpleMailMessage message = new SimpleMailMessage();

@@ -36,7 +36,7 @@ public class MyFunctionController {
      * 사용자가 문제풀이를 한 뒤에 자신의 학습현황 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/my_progress
+     * @return function/my_progress
      */
     @GetMapping("/my_progress")
     public String myProgress(@CurrentUser Member member, Model model) {
@@ -88,7 +88,7 @@ public class MyFunctionController {
      * 기존 페이지에 팝업사전(새 창)을 띄웁니다.
      * @param member
      * @param model
-     * @return view/popup_dictionary
+     * @return function/popup_dictionary
      */
     @GetMapping("/popup_dictionary")
     public String popupLayout(@CurrentUser Member member, Model model) {
@@ -99,7 +99,7 @@ public class MyFunctionController {
     /**
      * 단어검색시 한글은 영어로 영어는 한글로 검색한 결과를 보여줍니다.(네이버 검색 페이지 실시간 크롤링)
      * @param word
-     * @return
+     * @return ajax data
      * @throws Exception
      */
     @RequestMapping("/popup_dictionary_find/{word}")
@@ -134,7 +134,7 @@ public class MyFunctionController {
      * @param member
      * @param word
      * @param meaning
-     * @return
+     * @return jsonObject
      */
     @RequestMapping("/add_word_list")
     @ResponseBody
@@ -162,7 +162,7 @@ public class MyFunctionController {
      * 사용자가 추가한 단어들을 볼 수 있는 단어장페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/my_vocabulary_list
+     * @return function/my_vocabulary_list
      */
     @GetMapping("/my_vocabulary_list")
     public String myVocabularyList(@CurrentUser Member member, Model model) {
@@ -201,7 +201,7 @@ public class MyFunctionController {
      * 사용자가 추가한 문제들을 볼 수 있는 오답노트페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/my_review_note
+     * @return function/my_review_note
      */
     @GetMapping("/my_review_note")
     public String myReviewNote(@CurrentUser Member member, Model model) {
@@ -231,7 +231,7 @@ public class MyFunctionController {
      * @param member
      * @param id
      * @param answer
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/add_review_note")
     @ResponseBody
@@ -257,7 +257,7 @@ public class MyFunctionController {
      * 사용자가 선택한 문제를 오답노트에서 삭제합니다.
      * @param member
      * @param id
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/delete_review_note")
     @ResponseBody

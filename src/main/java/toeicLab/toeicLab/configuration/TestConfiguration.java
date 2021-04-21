@@ -12,7 +12,6 @@ import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
-import toeicLab.toeicLab.service.VisionService;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;

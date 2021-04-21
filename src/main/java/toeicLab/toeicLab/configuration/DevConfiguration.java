@@ -11,9 +11,7 @@ import toeicLab.toeicLab.domain.*;
 import toeicLab.toeicLab.repository.MemberRepository;
 import toeicLab.toeicLab.repository.QuestionRepository;
 import toeicLab.toeicLab.repository.StudyGroupApplicationRepository;
-import toeicLab.toeicLab.service.QuestionSetService;
 import toeicLab.toeicLab.service.StudyGroupApplicationService;
-import toeicLab.toeicLab.service.VisionService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -30,9 +28,9 @@ public class DevConfiguration {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
-    private final StudyGroupApplicationService studyGroupApplicationService;
     private final StudyGroupApplicationRepository studyGroupApplicationRepository;
-    private final QuestionSetService questionSetService;
+    private final StudyGroupApplicationService studyGroupApplicationService;
+
     private static final int NUMBER_OF_DUMMY_USERS = 500;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};
@@ -47,7 +45,6 @@ public class DevConfiguration {
     private static final int PART7_SINGLE_NUMBER_OF_SMALL_SETS = 100;
     private static final int PART7_MULTIPLE_NUMBER_OF_SMALL_SETS = 100;
     private int smallSetId = 1;
-    private final VisionService visionService;
 
 
     public void initPart1() throws IOException {

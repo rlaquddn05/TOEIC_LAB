@@ -18,10 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CommunityController
- * 게시판과 문제등록 게시판을 다루는 컨트롤러 입니다.
- */
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -41,7 +37,7 @@ public class CommunityController {
      * @param member
      * @param model
      * @param page
-     * @return view/bulletin
+     * @return community/bulletin
      */
     @GetMapping("/bulletin")
     public String bulletin(Member member, Model model, @RequestParam(defaultValue = "1") int page) {
@@ -89,7 +85,7 @@ public class CommunityController {
      * 사용자가 선택한 게시물의 수정페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/bulletin_upload
+     * @return community/bulletin_upload
      */
     @GetMapping("/bulletin_upload")
     public String showBulletinUploadView(@CurrentUser Member member, Model model){
@@ -131,7 +127,7 @@ public class CommunityController {
      * @param member
      * @param id
      * @param model
-     * @return view/bulletinDetail
+     * @return community/bulletinDetail
      */
     @GetMapping("/bulletinDetail/{id}")
     public String bulletinDetailView(@CurrentUser Member member, @PathVariable Long id, Model model){
@@ -156,7 +152,7 @@ public class CommunityController {
      * @param member
      * @param id
      * @param model
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/bulletinDetail/likeNumber")
     @ResponseBody
@@ -215,7 +211,7 @@ public class CommunityController {
      * 사용자가 선택한 게시판의 게시물을 삭제합니다.
      * @param id
      * @param writerId
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/bulletinDetail/deleteBulletin")
     @ResponseBody
@@ -242,7 +238,7 @@ public class CommunityController {
      * @param id
      * @param member
      * @param model
-     * @return view/updateBulletin
+     * @return community/updateBulletin
      */
     @GetMapping("/updateBulletin/{id}")
     public String updateBulletinView(@PathVariable Long id, @CurrentUser Member member, Model model ){
@@ -283,7 +279,7 @@ public class CommunityController {
      * @param member
      * @param model
      * @param page
-     * @return view/forum
+     * @return community/forum
      */
     @GetMapping("/forum")
     public String forum(@CurrentUser Member member, Model model, @RequestParam(defaultValue = "1") int page) {
@@ -330,7 +326,7 @@ public class CommunityController {
      * 문제등록을 할 수 있는 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/forum_upload
+     * @return community/forum_upload
      */
     @GetMapping("/forum_upload")
     public String uploadQuestion(@CurrentUser Member member, Model model) {
@@ -377,7 +373,7 @@ public class CommunityController {
      * @param member
      * @param id
      * @param model
-     * @return view/forum_detail
+     * @return community/forum_detail
      */
     @GetMapping("/forumDetail/{id}")
     public String forumDetailView(@CurrentUser Member member, @PathVariable Long id, Model model) {
@@ -425,7 +421,7 @@ public class CommunityController {
      * @param member
      * @param model
      * @param file
-     * @return
+     * @return loadText
      * @throws IOException
      * @throws IllegalStateException
      */

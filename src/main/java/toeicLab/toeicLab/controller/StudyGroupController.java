@@ -42,7 +42,7 @@ public class StudyGroupController {
      * [ToeicLab]의 스터디 그룹 신청 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/apply_studygroup
+     * @return study_group/apply_studygroup
      */
     @GetMapping("/apply_studygroup")
     public String applyStudyGroup(@CurrentUser Member member, Model model) {
@@ -56,7 +56,7 @@ public class StudyGroupController {
      * @param member
      * @param studyGroupApplicationForm
      * @param errors
-     * @return view/apply_studygroup
+     * @return study_group/apply_studygroup
      */
     @PostMapping("/apply_studygroup")
     @ResponseBody
@@ -77,6 +77,13 @@ public class StudyGroupController {
         return jsonObject.toString();
     }
 
+    /**
+     * 회원이 포함된 스터디 그룹으로 이동합니다.
+     * @param member
+     * @param id
+     * @param model
+     * @return study_group/my_studygroup_detail
+     */
     @GetMapping("/my_studygroup_detail/{id}")
     public String myStudyGroupDetail(@CurrentUser Member member, @PathVariable String id, Model model) {
         Long longId = Long.parseLong(id);
@@ -123,11 +130,15 @@ public class StudyGroupController {
 
         model.addAttribute("commentList", commentList);
 
-
-
         return "study_group/my_studygroup_detail";
     }
 
+    /**
+     * 스터디 그룹에서 탈퇴합니다.
+     * @param member
+     * @param id
+     * @return jsonObject
+     */
     @GetMapping("/secession_studyGroup")
     @ResponseBody
     @Transactional
@@ -180,6 +191,13 @@ public class StudyGroupController {
         return jsonObject.toString();
     }
 
+    /**
+     * 스터디 그룹 대화창에 등록을 합니다.
+     * @param member
+     * @param content
+     * @param group
+     * @return jsonObject
+     */
     @GetMapping("/add_comment")
     @ResponseBody
     @Transactional
@@ -208,6 +226,12 @@ public class StudyGroupController {
         return jsonObject.toString();
     }
 
+    /**
+     * 스터디 그룹 이름을 변경합니다.
+     * @param name
+     * @param group
+     * @return jsonObject
+     */
     @GetMapping("/modify_study_name")
     @ResponseBody
     public String modifyStudyName(@RequestParam("name") String name, @RequestParam("group") Long group){
@@ -265,7 +289,7 @@ public class StudyGroupController {
      * @param member
      * @param model
      * @param id
-     * @return view/crete_meeting
+     * @return study_group/crete_meeting
      */
     @GetMapping("/create_meeting/{id}")
     public String viewCreateMeeting(@CurrentUser Member member, Model model, @PathVariable Long id) {

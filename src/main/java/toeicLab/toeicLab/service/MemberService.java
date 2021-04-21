@@ -34,7 +34,7 @@ public class MemberService implements UserDetailsService {
     /**
      * 회원가입시 사용자가 입력한 정보를 DB에 저장한다.
      * @param signUpForm
-     * @return
+     * @return member
      */
     public Member createNewMember(SignUpForm signUpForm) {
         Member member = Member.builder()
@@ -67,7 +67,7 @@ public class MemberService implements UserDetailsService {
     /**
      * 사용자가 입력한 아이디와 비밀번호의 유무와 일치여부를 DB에서 확인한다.
      * @param userId
-     * @return
+     * @return new MemberUser(member)
      * @throws UsernameNotFoundException
      */
     @Override
@@ -102,7 +102,7 @@ public class MemberService implements UserDetailsService {
      * 비밀번호 초기화시 사용자의 아이디를 확인한 후 등록된 이메일로 token을 전송한다.
      * @param userId
      * @param email
-     * @return
+     * @return member
      */
     public Member sendResetPasswordEmail(String userId, String email) {
         Member member = memberRepository.findByUserId(userId);
@@ -134,7 +134,7 @@ public class MemberService implements UserDetailsService {
     /**
      * 입력받은 이메일로 사용자의 아이디를 DB에서 조회한다.
      * @param email
-     * @return
+     * @return member
      */
     public Member sendFindIdByEmail(String email) {
         Member member = memberRepository.findByEmail(email);
@@ -149,7 +149,7 @@ public class MemberService implements UserDetailsService {
      * @param member
      * @param questionId
      * @param answer
-     * @return
+     * @return boolean
      */
     @Transactional
     public boolean addReviewNote(Member member, Long questionId, String answer) {
@@ -202,7 +202,7 @@ public class MemberService implements UserDetailsService {
      * 사용자가 맞추고 틀린 문제를 통해 정답률을 도출한다.
      * @param member
      * @param questionType
-     * @return
+     * @return new int[]{correctCount, totalCount - correctCount}
      */
     public int[] numberOfCorrectAndWrongAnswersByQuestionType(Member member, QuestionType questionType) {
         List<QuestionSet> questionSets = questionSetRepository.getAllByMember(member);
@@ -229,7 +229,7 @@ public class MemberService implements UserDetailsService {
      * @param member
      * @param word
      * @param meaning
-     * @return
+     * @return boolean
      */
     public boolean addWordList(Member member, String word, String meaning) {
         Word wordList = wordRepository.findByMember(member);
@@ -266,7 +266,7 @@ public class MemberService implements UserDetailsService {
      * 사용자의 정답률에 따라 comment를 생성하고 보여준다.
      * @param member
      * @param questionType
-     * @return
+     * @return comment
      */
     public String createCommentByQuestionType(Member member, QuestionType questionType) {
         String comment = "생성된 코멘트가 없습니다";
@@ -292,7 +292,7 @@ public class MemberService implements UserDetailsService {
     /**
      * 문제별로 사용자의 진행상황을 보여준다.
      * @param questionSet
-     * @return
+     * @return date + message + percentage
      */
     public String CreateProgressByQuestionSet(QuestionSet questionSet){
         String date = questionSet.getCreatedAt().format(DateTimeFormatter.ofPattern("yy년MM월dd일HH시"));

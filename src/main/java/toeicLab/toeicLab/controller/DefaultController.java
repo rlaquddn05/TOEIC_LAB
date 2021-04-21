@@ -26,7 +26,7 @@ class DefaultController implements ErrorController {
      * @param response
      * @param member
      * @param model
-     * @return
+     * @return modelAndView
      */
     @RequestMapping("/errorPage")
     public ModelAndView handleError(HttpServletRequest request, HttpServletResponse response, @CurrentUser Member member, Model model) {
@@ -51,7 +51,7 @@ class DefaultController implements ErrorController {
 
     /**
      * Deprecated. since 2.3.0 in favor of setting the property.
-     * @return
+     * @return null
      */
     @Override
     public String getErrorPath() {

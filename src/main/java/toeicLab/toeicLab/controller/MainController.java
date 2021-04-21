@@ -37,7 +37,7 @@ public class MainController {
      * [ToeicLab]의 기본페이지 입니다.
      * @param member
      * @param model
-     * @return view/index
+     * @return member/index
      */
     @GetMapping("/")
     public String index(@CurrentUser Member member, Model model) {
@@ -57,7 +57,7 @@ public class MainController {
 
     /**
      * [ToeicLab]의 로그인페이지 입니다.
-     * @return view/login
+     * @return member/login
      */
     @GetMapping("/login")
     public String showLoginPage() {
@@ -66,7 +66,7 @@ public class MainController {
 
     /**
      * [ToeicLab]의 로그아웃했을 경우 돌아가는 기본페이지입니다.
-     * @return view/index
+     * @return member/index
      */
     @GetMapping("/logout")
     public String showLogoutPage() {
@@ -75,7 +75,7 @@ public class MainController {
 
     /**
      * [ToeicLab]의 비밀번호 초기화페이지입니다.
-     * @return view/send_reset_password_link
+     * @return member/send_reset_password_link
      */
     @GetMapping("/send_reset_password_link")
     public String sendResetPasswordView() {
@@ -87,7 +87,7 @@ public class MainController {
      * @param userId
      * @param email
      * @param model
-     * @return view/notify_password
+     * @return member/notify_password
      */
     @PostMapping("/send_reset_password_link")
     public String sendResetPassword(@RequestParam("userId") String userId, @RequestParam("email") String email, Model model) {
@@ -115,7 +115,7 @@ public class MainController {
 
     /**
      * 비밀번호 초기화 확인여부 페이지입니다.
-     * @return view/notify_password
+     * @return member/notify_password
      */
     @GetMapping("/notify_password")
     public String notifyPasswordView() {
@@ -126,7 +126,7 @@ public class MainController {
      * 재설정 token 확인 후에 재설정 페이지로 넘어갑니다.
      * @param resetPasswordEmailToken
      * @param model
-     * @return view/reset_password
+     * @return member/reset_password
      */
     @PostMapping("/notify_password")
     public String goResetPassword(@RequestParam("token") String resetPasswordEmailToken, Model model) {
@@ -139,7 +139,7 @@ public class MainController {
      * 비밀번호 초기화 시 이메일로 전송된 token과 생성 된 token을 확인합니다.
      * @param resetPasswordEmail
      * @param resetPasswordEmailToken
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/reset/checkTokens")
     @ResponseBody
@@ -161,7 +161,7 @@ public class MainController {
 
     /**
      * 비밀번호 초기화 페이지로 이동합니다.
-     * @return view/reset_password
+     * @return member/reset_password
      */
     @GetMapping("reset_password")
     public String resetPasswordView() {
@@ -173,7 +173,7 @@ public class MainController {
      * @param email
      * @param password
      * @param model
-     * @return view/notify_password
+     * @return member/notify_password
      */
     @PostMapping("/reset_password")
     public String resetPassword(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
@@ -184,7 +184,7 @@ public class MainController {
 
     /**
      * 아이디 찾기 페이지로 이동합니다.
-     * @return
+     * @return member/send_find_id_link
      */
     @GetMapping("/send_find_id_link")
     public String sendFindIdView() {
@@ -195,7 +195,7 @@ public class MainController {
      * 입력받은 이메일로 조회하여 일치하는 아이디를 찾아냅니다.
      * @param email
      * @param model
-     * @return view/find_id
+     * @return member/find_id
      */
     @PostMapping("/send_find_id_link")
     public String sendFindId(String email, Model model) {
@@ -213,7 +213,7 @@ public class MainController {
     /**
      * [ToeicLab]의 회원가입페이지로 이동합니다.
      * @param model
-     * @return view/signup
+     * @return member/signup
      */
     @GetMapping("/signup")
     public String signup(Model model) {
@@ -244,7 +244,7 @@ public class MainController {
     /**
      * 사용자가 입력한 이메일로 token을 전송합니다.
      * @param email
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/signup/email")
     @ResponseBody
@@ -277,7 +277,7 @@ public class MainController {
      * 이메일로 전송받은 token값과 기존의 token값을 비교하여 이메일 인증절차를 진행합니다.
      * @param email
      * @param certification_number
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/signup/checkTokens")
     @ResponseBody
@@ -300,7 +300,7 @@ public class MainController {
     /**
      * 사용자가 입력한 아이디의 사용여부를 판단합니다.
      * @param userId
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/signup/checkUserId")
     @ResponseBody
@@ -323,7 +323,7 @@ public class MainController {
     /**
      * 사용자가 입력한 닉네임의 사용여부를 판단합니다.
      * @param nickname
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/signup/checkNickname")
     @ResponseBody
@@ -346,7 +346,7 @@ public class MainController {
      * 입력한 비밀번호와 재입력한 비밀번호의 일치여부를 판단합니다.
      * @param password
      * @param check_password
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/signup/checkPasswords")
     @ResponseBody
@@ -369,7 +369,7 @@ public class MainController {
      * 기존의 비밀번호 위에 새로운 비밀번호를 저장하여 수정합니다.
      * @param password
      * @param userId
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/update/password")
     @ResponseBody
@@ -396,7 +396,7 @@ public class MainController {
      * 현재 로그인한 사용자의 정보를 조회하여 마이페이지에 불러옵니다.
      * @param member
      * @param model
-     * @return view/my_page
+     * @return member/my_page
      */
     @GetMapping("/my_page")
     public String myPageView(@CurrentUser Member member, Model model) {
@@ -483,7 +483,7 @@ public class MainController {
      * 사용자의 아이디를 조회하여 회원정보를 삭제합니다(탈퇴).
      * @param userId
      * @param request
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/update/delete")
     @ResponseBody
@@ -539,7 +539,7 @@ public class MainController {
     /**
      * 사용자가 변경하고자하는 닉네임의 존재 유무를 확인합니다.
      * @param nickname
-     * @return
+     * @return jsonObject
      */
     @GetMapping("/update/checkNickname")
     @ResponseBody

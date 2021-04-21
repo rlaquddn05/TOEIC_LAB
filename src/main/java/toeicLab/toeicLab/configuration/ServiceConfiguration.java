@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class ServiceConfiguration {
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
+
     private final StudyGroupApplicationService studyGroupApplicationService;
     private static final LevelType[] levelTypes = {LevelType.BEGINNER,
             LevelType.INTERMEDIATE, LevelType.ADVANCED};

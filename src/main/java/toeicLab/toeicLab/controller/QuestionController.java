@@ -32,7 +32,7 @@ public class QuestionController {
      * [ToeicLab]의 모의고사 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/select_test
+     * @return question/select_test
      */
     @GetMapping("/select_test")
     public String selectTest(@CurrentUser Member member, Model model) {
@@ -45,7 +45,7 @@ public class QuestionController {
      * @param member
      * @param id
      * @param model
-     * @return view/practice_select
+     * @return question/practice_select
      */
     @GetMapping("/practice_select/{id}")
     public String practiceTest(@CurrentUser Member member, @PathVariable String id, Model model){
@@ -62,7 +62,7 @@ public class QuestionController {
      * @param id
      * @param request
      * @param model
-     * @return view/practice_sheet
+     * @return question/practice_sheet
      */
     @RequestMapping("/practice/{id}")
     @Transactional
@@ -135,7 +135,7 @@ public class QuestionController {
      * @param member
      * @param type
      * @param model
-     * @return view/question/test
+     * @return question/test
      */
     @GetMapping("/test/{type}")
     @Transactional
@@ -171,7 +171,7 @@ public class QuestionController {
      * @param request
      * @param questionSetId
      * @param model
-     * @return view/result_sheet
+     * @return question/result_sheet
      */
     @PostMapping("/result_sheet/{questionSetId}")
     public String resultSheet(@CurrentUser Member member, HttpServletRequest request, @PathVariable Long questionSetId, Model model) {
@@ -222,7 +222,7 @@ public class QuestionController {
      * @param id
      * @param request
      * @param model
-     * @return view/detail
+     * @return question/detail
      */
     @RequestMapping( "/detail/{id}")
     public String lcAnswerSheet(@CurrentUser Member member, @PathVariable Long id, HttpServletRequest request, Model model) {

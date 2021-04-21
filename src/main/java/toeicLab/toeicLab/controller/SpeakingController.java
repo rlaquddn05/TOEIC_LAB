@@ -17,7 +17,7 @@ public class SpeakingController {
      * [ToeicLab]의 SPK문제풀이 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/spk_sheet
+     * @return speaking/spk_sheet
      */
     @GetMapping("/spk_sheet")
     public String spkSheet(@CurrentUser Member member, Model model) {
@@ -29,7 +29,7 @@ public class SpeakingController {
      * [ToeicLab]의 SPK문제확인 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/spk_confirm_answer
+     * @return speaking/spk_confirm_answer
      */
     @GetMapping("/spk_confirm_answer")
     public String spkConfirmAnswer(@CurrentUser Member member, Model model) {
@@ -41,7 +41,7 @@ public class SpeakingController {
      * SPK정답 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/spk_answer_sheet
+     * @return speaking/spk_answer_sheet
      */
     @GetMapping("/spk_answer_sheet")
     public String spkAnswerSheet(@CurrentUser Member member, Model model) {
@@ -53,7 +53,7 @@ public class SpeakingController {
      * 일정 페이지로 이동합니다.
      * @param member
      * @param model
-     * @return view/schedule
+     * @return speaking/schedule
      */
     @GetMapping("/schedule")
     public String schedule(@CurrentUser Member member, Model model) {
@@ -63,7 +63,7 @@ public class SpeakingController {
 
     /**
      * [ToeicLab]의 소개페이지로 이동합니다.
-     * @return view/toeiclab_intro
+     * @return speaking/toeiclab_intro
      */
     @GetMapping("/toeiclab_introduction")
     public String toeiclabIntroduction() {
