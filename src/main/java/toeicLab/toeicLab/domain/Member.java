@@ -34,8 +34,6 @@ public class Member {
 
     private String email;
 
-//    private String emailCheckToken;
-
     private String contact;
 
     private int age;
@@ -74,8 +72,6 @@ public class Member {
 
     @OneToMany
     private List<Schedule> schedules = new ArrayList<>();
-
-
 
     @Transactional
     public void encodePassword(PasswordEncoder passwordEncoder){

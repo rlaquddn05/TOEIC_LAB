@@ -25,15 +25,6 @@ public class Meeting {
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<QuestionSet> questionSets = new ArrayList<>();
 
-//    @OneToOne
-//    private QuestionSet questionSet1;
-//    @OneToOne
-//    private QuestionSet questionSet2;
-//    @OneToOne
-//    private QuestionSet questionSet3;
-//    @OneToOne
-//    private QuestionSet questionSet4;
-
     private Integer count;
 
     private LocalDateTime duration;
